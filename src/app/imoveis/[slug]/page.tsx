@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { createAdminClient } from "@/utils/supabase/admin";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -67,7 +69,7 @@ export default async function PropertyPage({
                             A
                         </div>
                         <div className="flex flex-col">
-                            <span className="font-extrabold text-[15px] leading-tight text-slate-900">ADigital <span className="text-blue-600 font-bold">Multinível</span></span>
+                            <span className="font-extrabold text-[15px] leading-tight text-slate-900">ADigital <span className="text-blue-600 font-bold">Afiliação</span></span>
                             <span className="text-[10px] text-slate-500 font-medium tracking-wide">Sistema <span className="text-blue-500">4%</span> • <span className="text-emerald-500">2%</span> • <span className="text-amber-500">1%</span></span>
                         </div>
                     </div>
@@ -78,7 +80,7 @@ export default async function PropertyPage({
                         <div className="flex gap-2 items-center">
                             <Link href="/registrar">
                                 <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-2.5 text-sm font-bold shadow-md transition-all">
-                                    Virar gestor multinível
+                                    Virar gestor afiliado
                                 </button>
                             </Link>
                             <button className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-50">
@@ -346,7 +348,7 @@ export default async function PropertyPage({
             {/* Footer */}
             <footer className="bg-slate-50 border-t border-slate-200 mt-20">
                 <div className="max-w-7xl mx-auto px-4 md:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="font-extrabold text-[15px] leading-tight text-slate-900">ADigital <span className="text-blue-600 font-bold">Multinível</span></div>
+                    <div className="font-extrabold text-[15px] leading-tight text-slate-900">ADigital <span className="text-blue-600 font-bold">Afiliação</span></div>
                     <p className="text-[11px] font-semibold text-slate-400">
                         &copy; 2026 Imobiliária ADigital. Todos direitos reservados.
                     </p>

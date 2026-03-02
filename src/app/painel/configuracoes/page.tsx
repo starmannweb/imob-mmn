@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { createClient } from "@/utils/supabase/server";
 import { X, User, FileText, Globe, Award, Share2, Mail, Phone, MapPin, Clock, Edit3, Link as LinkIcon, Facebook, Instagram, Youtube } from "lucide-react";
 import Link from "next/link";

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { createClient } from "@/utils/supabase/server";
 import { Settings, RefreshCcw, Facebook, Save, Info, Plus } from "lucide-react";
 import Link from "next/link";

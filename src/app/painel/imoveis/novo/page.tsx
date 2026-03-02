@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { createClient } from "@/utils/supabase/server";
 import { createProperty } from "../actions";
 import { Button } from "@/components/ui/button";

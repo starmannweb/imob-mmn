@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { createAdminClient } from "@/utils/supabase/admin";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
@@ -33,7 +35,7 @@ export default async function BrokersLandingPage() {
 
                                 <h3 className="font-bold text-lg text-slate-900 mb-1">{broker.full_name}</h3>
                                 <div className="text-sm text-blue-600 font-semibold mb-4 text-center flex items-center justify-center">
-                                    <MapPin className="w-4 h-4 mr-1" /> Especialista MMN
+                                    <MapPin className="w-4 h-4 mr-1" /> Corretor Afiliado
                                 </div>
 
                                 <div className="flex justify-center gap-3 mb-6">

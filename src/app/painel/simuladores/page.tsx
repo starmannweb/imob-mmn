@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { createClient } from "@/utils/supabase/server";
 import { Calculator, MapPin, Search, Plus, Home, Shield, ChevronRight } from "lucide-react";
 import Link from "next/link";

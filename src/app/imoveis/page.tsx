@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { createAdminClient } from "@/utils/supabase/admin";
 import { PropertyCard } from "@/components/property-cards/property-card";
 import Link from "next/link";
@@ -18,7 +20,7 @@ export default async function PublicListingsPage() {
             <div className="bg-white border-b border-slate-200 sticky top-0 z-20 shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row gap-4 items-center justify-between">
                     <Link href="/" className="text-2xl font-bold tracking-tight text-slate-900 shrink-0">
-                        Imob<span className="text-blue-600 text-sm align-top ml-1">MMN</span>
+                        Imob<span className="text-blue-600 text-sm align-top ml-1">Afiliação</span>
                     </Link>
 
                     <div className="w-full max-w-2xl relative">

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { createAdminClient } from "@/utils/supabase/admin";
 import { notFound } from "next/navigation";
 import { PropertyCard } from "@/components/property-cards/property-card";
@@ -38,7 +40,7 @@ export default async function BrokerPage({
             <header className="bg-white border-b border-slate-200 sticky top-0 z-20 shadow-sm">
                 <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
                     <Link href="/" className="text-xl font-bold tracking-tight text-slate-800">
-                        Imob<span className="text-blue-600 text-sm align-top ml-1">MMN</span>
+                        Imob<span className="text-blue-600 text-sm align-top ml-1">Afiliação</span>
                     </Link>
                     <div className="hidden md:block w-full max-w-sm ml-8 relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />

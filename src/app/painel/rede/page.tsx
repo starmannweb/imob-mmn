@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { createClient } from "@/utils/supabase/server";
 import { Users, Copy, Share2, Search, Settings2, LayoutGrid, Network, Eye, ChevronRight, ChevronLeft, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
