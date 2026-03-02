@@ -34,7 +34,7 @@ export default async function MeusSitesPage() {
 
             {/* Breadcrumb */}
             <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-6 w-full">
-                <span className="font-semibold text-slate-600 dark:text-slate-300">ADigital Afiliação</span>
+                <Link href="/painel" className="font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">Home</Link>
                 <ChevronRight className="w-3 h-3" />
                 <span>Meus Sites</span>
             </div>
@@ -96,9 +96,9 @@ export default async function MeusSitesPage() {
                             >
                                 <ExternalLink className="w-4 h-4" /> Visualizar Site
                             </a>
-                            <button className="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-4 py-2 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
+                            <Link href="/painel/configuracoes" className="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-4 py-2 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
                                 <Settings className="w-4 h-4" /> Editar
-                            </button>
+                            </Link>
                         </div>
                     </div>
 

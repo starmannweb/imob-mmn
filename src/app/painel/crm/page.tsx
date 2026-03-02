@@ -1,3 +1,4 @@
+import Link from "next/link";
 export const dynamic = 'force-dynamic';
 
 import { createClient } from "@/utils/supabase/server";
@@ -39,7 +40,7 @@ export default async function CrmPage() {
 
             {/* Breadcrumb */}
             <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-6 w-full">
-                <span className="font-semibold text-slate-600 dark:text-slate-300">ADigital Afiliação</span>
+                <Link href="/painel" className="font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">Home</Link>
                 <ChevronRight className="w-3 h-3" />
                 <span>CRM</span>
             </div>

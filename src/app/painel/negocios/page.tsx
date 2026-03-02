@@ -20,7 +20,7 @@ export default async function NegociosPage({ searchParams }: { searchParams: Pro
         <div className="flex-1 flex flex-col w-full pb-12">
             {/* Breadcrumb text */}
             <div className="flex items-center gap-2 text-xs text-slate-500 mb-6 w-full">
-                <span className="font-semibold text-slate-600 dark:text-slate-300">ADigital Afiliação</span>
+                <Link href="/painel" className="font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">Home</Link>
                 <span>›</span>
                 <span>Negócios</span>
             </div>

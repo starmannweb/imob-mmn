@@ -14,10 +14,10 @@ export default async function Header() {
                 <div className="flex items-center justify-between h-16 -mb-px w-full">
 
                     {/* Botão Convidar Corretor Multinível */}
-                    <div className="flex flex-1 items-center">
-                        <Link href="/painel/rede" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full font-medium flex items-center gap-2 transition-colors text-sm shadow-sm">
+                    <div className="flex flex-1 items-center justify-end mr-6">
+                        <Link href="/painel/rede" className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-bold flex items-center gap-2 transition-colors text-sm shadow-sm">
                             <Share2 className="w-4 h-4" />
-                            Convidar corretor multinível
+                            Convidar o corretor para ser seu afiliado
                         </Link>
                     </div>
 
