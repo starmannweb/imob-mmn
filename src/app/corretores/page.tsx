@@ -11,7 +11,7 @@ export default async function BrokersLandingPage() {
 
     const { data: brokers } = await supabase
         .from("users")
-        .select("id, full_name, avatar_url, phone_whatsapp, referral_code, created_at")
+        .select("id, full_name, referral_code, created_at")
         .limit(20);
 
     return (
@@ -26,7 +26,7 @@ export default async function BrokersLandingPage() {
             <main className="max-w-6xl mx-auto px-4 py-16">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {brokers && brokers.length > 0 ? (
-                        brokers.map((broker) => (
+                        brokers.map((broker: any) => (
                             <div key={broker.id} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 text-center hover:shadow-md transition">
                                 <Avatar className="w-24 h-24 mx-auto mb-4 border-2 border-slate-100">
                                     <AvatarImage src={broker.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${broker.full_name}`} alt={broker.full_name} />

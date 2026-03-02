@@ -16,7 +16,7 @@ export default async function PainelPropertyDetails({
         .from("properties")
         .select(`
             *,
-            owner:users!owner_id(id, full_name, phone_whatsapp)
+            owner:users!owner_id(id, full_name)
         `)
         .eq("id", id)
         .maybeSingle();
