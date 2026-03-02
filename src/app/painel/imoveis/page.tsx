@@ -37,31 +37,31 @@ export default async function ImoveisPage({ searchParams }: { searchParams: Prom
 
             {/* Admin Toggle */}
             <div className="flex items-center gap-3 mb-6">
-                {/* Fake Toggle Switch Dark */}
-                <div className="w-10 h-5 bg-slate-700 rounded-full relative cursor-pointer border border-slate-600">
-                    <div className="w-4 h-4 bg-slate-400 rounded-full absolute top-[1px] left-[1px]"></div>
+                {/* Fake Toggle Switch */}
+                <div className="w-10 h-5 bg-slate-300 dark:bg-slate-700 rounded-full relative cursor-pointer border border-slate-200 dark:border-slate-600 transition-colors">
+                    <div className="w-4 h-4 bg-slate-500 dark:bg-slate-400 rounded-full absolute top-[1px] left-[1px] transition-transform"></div>
                 </div>
-                <span className="text-sm font-bold text-slate-300">Visualizar todos os imóveis (Admin/Dono)</span>
+                <span className="text-sm font-bold text-slate-400 dark:text-slate-300">Visualizar todos os imóveis (Admin/Dono)</span>
             </div>
 
             {/* Action Bar (Search, Count, Filters, Add Button) */}
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
                 <div className="flex items-center gap-4 w-full md:w-auto">
                     <div className="relative w-full md:w-80">
-                        <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                        <Search className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                         <input
                             type="text"
                             placeholder="Busque por alguma informação..."
-                            className="w-full bg-slate-900/50 border border-slate-700 text-slate-300 text-sm rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-slate-500"
+                            className="w-full bg-[#8A95A5] dark:bg-slate-900/50 text-white dark:text-slate-300 placeholder-slate-200 dark:placeholder-slate-500 text-sm font-medium rounded-lg pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#1E293B] shadow-sm border-none dark:border dark:border-slate-700 transition-colors"
                         />
                     </div>
-                    <span className="text-xs font-bold text-slate-300 whitespace-nowrap bg-slate-800 px-3 py-1.5 rounded-md hidden md:inline-block">
+                    <span className="text-sm font-bold text-white whitespace-nowrap bg-[#161e2e] dark:bg-slate-800 px-4 py-2.5 rounded-lg hidden md:inline-block shadow-sm">
                         {properties?.length || 0} resultado{properties?.length === 1 ? '' : 's'}
                     </span>
                 </div>
 
                 <div className="flex items-center gap-3 w-full md:w-auto">
-                    <button className="flex items-center justify-center gap-2 bg-transparent text-slate-300 hover:text-white hover:bg-slate-800 border border-transparent px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    <button className="flex items-center justify-center gap-2 bg-transparent text-slate-400 dark:text-slate-300 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                         <SlidersHorizontal className="w-4 h-4" /> Filtros
                     </button>
                     <Link href="/painel/imoveis/novo" className="w-full md:w-auto">

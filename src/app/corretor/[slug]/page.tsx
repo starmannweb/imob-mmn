@@ -17,13 +17,13 @@ export default async function BrokerPage({
     const supabase = createAdminClient();
 
     // Buscar dados do corretor. Primeiro pelo referral_code (slug), se não achar tenta pelo ID.
-    const { data: broker, error: brokerError } = await supabase
+    const { data: brokerAny, error: brokerError } = await supabase
         .from("users")
-        .select("id, full_name, avatar_url, phone_whatsapp, email, referral_code")
+        .select("id, full_name, referral_code")
         .or(`referral_code.eq.${slug},id.eq.${slug}`)
         .maybeSingle();
 
-    if (!broker) {
+    const broker = brokerAny as any; if (!broker) {
         notFound();
     }
 

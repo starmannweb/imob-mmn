@@ -47,7 +47,7 @@ export default async function PropertyPage({
             .from("properties")
             .select(`
                  *,
-                 owner:users!owner_id(id, full_name, phone_whatsapp)
+                 owner:users!owner_id(id, full_name)
              `)
             .eq("slug", slug)
             .maybeSingle();

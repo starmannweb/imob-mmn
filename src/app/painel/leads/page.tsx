@@ -66,8 +66,8 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
             <div className="bg-slate-900 rounded-xl p-5 md:px-6 mb-6 flex items-center justify-between text-white shadow-xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/30 rounded-full blur-3xl opacity-40 -mr-10 -mt-10 pointer-events-none"></div>
                 <div className="relative z-10">
-                    <h3 className="font-bold text-slate-100 text-sm">Visualização Admin</h3>
-                    <p className="text-xs text-slate-400 mt-0.5 font-light">Ative para ver analytics de todos os corretores do sistema.</p>
+                    <h3 className="font-bold text-slate-100 text-sm">Visão Modo Dono (Rede)</h3>
+                    <p className="text-xs text-slate-400 mt-0.5 font-light">Ative para ver os leads captados por todos os corretores afiliados abaixo da sua rede.</p>
                 </div>
                 {/* Fake Toggle */}
                 <div className="w-11 h-6 bg-slate-700 rounded-full relative cursor-pointer border border-slate-600 z-10">
