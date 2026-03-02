@@ -89,8 +89,10 @@ export default async function ImoveisPage({ searchParams }: { searchParams: Prom
                                 <tbody>
                                     {properties.map((prop) => (
                                         <tr key={prop.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                                            <td className="px-6 py-4 font-medium text-slate-900 max-w-xs truncate">
-                                                {prop.title}
+                                            <td className="px-6 py-4 font-medium text-slate-900 max-w-xs truncate hover:text-blue-600 transition-colors cursor-pointer">
+                                                <Link href={`/painel/imoveis/${prop.id}`}>
+                                                    {prop.title}
+                                                </Link>
                                                 <p className="text-xs text-slate-400 mt-1 font-normal truncate">/{prop.slug}</p>
                                             </td>
                                             <td className="px-6 py-4">

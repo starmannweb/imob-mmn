@@ -1,6 +1,6 @@
 import { signOut } from "@/app/auth/actions";
 import { createClient } from "@/utils/supabase/server";
-import { Bell, User, LogOut } from "lucide-react";
+import { Bell, User, LogOut, Share2 } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "../theme-toggle";
 
@@ -13,8 +13,12 @@ export default async function Header() {
             <div className="px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16 -mb-px w-full">
 
-                    {/* Placeholder left side */}
-                    <div className="flex flex-1">
+                    {/* Botão Convidar Corretor Multinível */}
+                    <div className="flex flex-1 items-center">
+                        <Link href="/painel/rede" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full font-medium flex items-center gap-2 transition-colors text-sm shadow-sm">
+                            <Share2 className="w-4 h-4" />
+                            Convidar corretor multinível
+                        </Link>
                     </div>
 
                     <div className="flex items-center gap-4">
