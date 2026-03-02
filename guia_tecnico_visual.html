@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Técnico de Desenvolvimento - Imob - Multinivel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #334155;
+            --accent: #3b82f6;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --code-bg: #1e293b;
+            --code-text: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 50px;
+            background: var(--card-bg);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        header {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-weight: 400;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: var(--primary);
+            margin-top: 2.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            border-left: 5px solid var(--accent);
+            padding-left: 20px;
+            background: linear-gradient(to right, #eff6ff, transparent);
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1.5rem;
+            margin-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.8rem;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #e11d48;
+        }
+
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .card {
+            padding: 25px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #fff;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+
+        .phase-badge {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            transition: transform 0.2s;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .print-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .tech-tag {
+            display: inline-block;
+            background: #e2e8f0;
+            color: var(--secondary);
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .container {
+                box-shadow: none;
+                margin: 0;
+                max-width: 100%;
+                padding: 0;
+            }
+
+            .print-btn {
+                display: none;
+            }
+
+            .page-break {
+                page-break-before: always;
+            }
+
+            pre {
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                margin: 0;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="print-btn" onclick="window.print()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
+            </path>
+        </svg>
+        Gerar PDF do Guia
+    </button>
+
+    <div class="container">
+        <header>
+            <div class="logo">Imob - <span>Multinivel</span></div>
+            <p class="subtitle">Guia Técnico de Desenvolvimento</p>
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 10px;">Arquitetura, Banco de Dados e
+                Roadmap</p>
+        </header>
+
+        <section>
+            <h2>1. Stack Tecnológica</h2>
+            <p>O ecossistema é baseado em ferramentas que priorizam escalabilidade, segurança e velocidade de entrega.
+            </p>
+            <div class="grid">
+                <div class="card">
+                    <h4>Frontend</h4>
+                    <span class="tech-tag">Next.js 14+</span>
+                    <span class="tech-tag">React</span>
+                    <span class="tech-tag">Tailwind</span>
+                    <p style="margin-top:10px">App Router para performance máxima e SEO otimizado para o portal
+                        imobiliário.</p>
+                </div>
+                <div class="card">
+                    <h4>Backend & Auth</h4>
+                    <span class="tech-tag">Supabase</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <p style="margin-top:10px">Gerenciamento de banco, autenticação SSR e Row Level Security para
+                        proteção de dados.</p>
+                </div>
+                <div class="card">
+                    <h4>Financeiro & Wpp</h4>
+                    <span class="tech-tag">Asaas</span>
+                    <span class="tech-tag">Evolution API</span>
+                    <p style="margin-top:10px">Automação de split de comissionamento e disparos de notificações via
+                        WhatsApp.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-break">
+            <h2>2. Modelagem do Banco de Dados</h2>
+            <p>Esquema otimizado para a árvore hierárquica do Multinível.</p>
+
+            <h3>Tabela: users</h3>
+            <pre>id: uuid (PK)
+full_name: text
+document: text (CPF/CNPJ)
+creci: text
+referral_code: text (Unique)
+referred_by: uuid (FK -> users.id)
+plan_status: enum (active, inactive, trial)</pre>
+
+            <h3>Tabela: properties</h3>
+            <pre>id: uuid (PK)
+owner_id: uuid (FK -> users.id)
+title: text
+price_sale: decimal
+bedrooms, bathrooms, suites: smallint
+slug: text (Unique)</pre>
+
+            <h3>Tabela: leads</h3>
+            <pre>id: uuid
+property_id: uuid (FK)
+assigned_to: uuid (FK -> users.id)
+phone_whatsapp: text
+status: enum (new, negotiating, won...)</pre>
+        </section>
+
+        <section class="page-break">
+            <h2>3. Lógica do Algoritmo MMN</h2>
+            <p>Para o cálculo das comissões, utilizamos queries recursivas no PostgreSQL para identificar a linha
+                ascendente de ganho.</p>
+
+            <div style="background: #eff6ff; padding: 20px; border-radius: 8px;">
+                <p><strong>Hierarquia de Repasse:</strong></p>
+                <ul>
+                    <li><strong>Venda Direta:</strong> Cadastro em <code>transactions</code> vinculado ao
+                        <code>seller_id</code>.
+                    </li>
+                    <li><strong>1ª Geração (Indireta):</strong> 4% para quem indicou o vendedor.</li>
+                    <li><strong>2ª Geração (Indireta):</strong> 2% para quem indicou a 1ª geração.</li>
+                    <li><strong>3ª Geração (Indireta):</strong> 1% para quem indicou a 2ª geração.</li>
+                </ul>
+            </div>
+
+            <p style="margin-top: 15px;"><em>Implementação:</em> Recomenda-se o uso de <strong>Edge Functions</strong>
+                do Supabase para processar o pagamento do Asaas/Stripe e desencadear os inserts de crédito nas carteiras
+                virtuais.</p>
+        </section>
+
+        <section class="page-break">
+            <h2>4. Roadmap de Execução</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <span class="phase-badge">Fase 1</span>
+                    <h4>Fundação</h4>
+                    <ul>
+                        <li>Setup Next.js & Supabase</li>
+                        <li>RLS Policies (Segurança)</li>
+                        <li>Auth Flow (Login/Register)</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <span class="phase-badge">Fase 2</span>
+                    <h4>Core MMN</h4>
+                    <ul>
+                        <li>Dashboard de Métricas</li>
+                        <li>Visualização de Árvore</li>
+                        <li>Links de Indicação</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <span class="phase-badge">Fase 3</span>
+                    <h4>Listings & CRM</h4>
+                    <ul>
+                        <li>Upload de Imóveis</li>
+                        <li>Páginas de Anúncio</li>
+                        <li>Gestor de Leads Kanban</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <span class="phase-badge">Fase 4</span>
+                    <h4>Integrações</h4>
+                    <ul>
+                        <li>Gateway Asaas (Split)</li>
+                        <li>WhatsApp API</li>
+                        <li>Deploy em Produção</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>5. Topologia de Arquitetura</h2>
+            <pre>
+/app
+  /api                  # Webhooks e Server-side logic
+  /imoveis
+    /[slug]             # Listings públicos
+  /painel               # Dashboard e CRM
+    /rede               # Gestão Multinível
+  /auth                 # Login, Cadastro, Recuperação
+            </pre>
+        </section>
+
+        <section class="page-break">
+            <h2>6. Acessos e Ambientes (Mock)</h2>
+            <p>Urls e credenciais base para o desenvolvimento e testes do sistema.</p>
+            <div class="grid">
+                <div class="card">
+                    <h4>Ambiente de Homologação / Dev</h4>
+                    <ul>
+                        <li><strong>Frontend URL:</strong> <code>http://localhost:3000</code></li>
+                        <li><strong>Supabase Studio:</strong> <code>https://app.supabase.com</code></li>
+                        <li><strong>Página de Autenticação:</strong> <code>/auth</code></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Credenciais de Teste</h4>
+                    <ul>
+                        <li><strong>Admin Geral:</strong> admin@imobmultinivel.com / <code>senha123</code></li>
+                        <li><strong>Corretor Master:</strong> corretor@imobmultinivel.com / <code>senha123</code></li>
+                        <li><strong>Usuário Comum:</strong> usuario@teste.com / <code>senha123</code></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>APIs de Terceiros</h4>
+                    <ul>
+                        <li><strong>Asaas (Financeiro):</strong> Ambiente Sandbox Asaas</li>
+                        <li><strong>Evolution API:</strong> Painel de Controle via Docker local</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer
+            style="margin-top: 50px; text-align: center; border-top: 1px solid var(--border); padding-top: 20px; color: var(--text-light); font-size: 0.8rem;">
+            Documento Técnico Confidencial - Imob - Multinivel - 2026
+        </footer>
+    </div>
+
+</body>
+
+</html>
