@@ -143,29 +143,7 @@ export default async function BrokerPage({
             <main className="flex-1 w-full">
 
                 {/* ═══════════════════════════════════════════════════ */}
-                {/* IMÓVEIS EM DESTAQUE */}
-                {/* ═══════════════════════════════════════════════════ */}
-                {featured.length > 0 && (
-                    <section className="max-w-7xl mx-auto px-4 md:px-8 py-12">
-                        <div className="text-center mb-10">
-                            <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white">
-                                Imóveis em <span className="text-blue-600">Destaque</span>
-                            </h2>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm mt-2">
-                                Confira os imóveis selecionados desta semana
-                            </p>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {featured.map((prop: any) => (
-                                <FeaturedPropertyCard key={prop.id} property={prop} brokerName={broker.full_name} featured />
-                            ))}
-                        </div>
-                    </section>
-                )}
-
-                {/* ═══════════════════════════════════════════════════ */}
-                {/* FILTROS RÁPIDOS */}
+                {/* FILTROS RÁPIDOS (movido para antes dos destaques) */}
                 {/* ═══════════════════════════════════════════════════ */}
                 <section className="bg-slate-50 dark:bg-[#111827] border-y border-slate-200 dark:border-slate-800">
                     <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
@@ -230,6 +208,28 @@ export default async function BrokerPage({
                         </div>
                     </div>
                 </section>
+
+                {/* ═══════════════════════════════════════════════════ */}
+                {/* IMÓVEIS EM DESTAQUE */}
+                {/* ═══════════════════════════════════════════════════ */}
+                {featured.length > 0 && (
+                    <section className="max-w-7xl mx-auto px-4 md:px-8 py-12">
+                        <div className="text-center mb-10">
+                            <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white">
+                                Imóveis em <span className="text-blue-600">Destaque</span>
+                            </h2>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm mt-2">
+                                Confira os imóveis selecionados desta semana
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {featured.map((prop: any) => (
+                                <FeaturedPropertyCard key={prop.id} property={prop} brokerName={broker.full_name} featured />
+                            ))}
+                        </div>
+                    </section>
+                )}
 
                 {/* ═══════════════════════════════════════════════════ */}
                 {/* LISTAGEM — IMÓVEIS DISPONÍVEIS */}
