@@ -23,7 +23,7 @@ export default async function BrokerPage({
         .or(`referral_code.eq.${slug},id.eq.${slug}`)
         .maybeSingle();
 
-    const broker = brokerAny as any; if (!broker) {
+    const broker = brokerAny as any; const broker = brokerAny as any; const broker = brokerAny as any; if (!broker) {
         notFound();
     }
 
@@ -59,7 +59,7 @@ export default async function BrokerPage({
 
                 <div className="max-w-6xl mx-auto relative z-10 text-center">
                     <Avatar className="w-32 h-32 mx-auto mb-6 border-4 border-slate-800 shadow-xl bg-white">
-                        <AvatarImage src={broker.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${broker.full_name}`} alt={broker.full_name} />
+                        <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${broker.full_name}`} alt={broker.full_name} />
                         <AvatarFallback className="text-3xl font-bold">{broker.full_name?.charAt(0)}</AvatarFallback>
                     </Avatar>
 
@@ -72,7 +72,7 @@ export default async function BrokerPage({
 
                     <div className="flex flex-wrap items-center justify-center gap-4">
                         <a
-                            href={`https://wa.me/${broker.phone_whatsapp || '5511999999999'}?text=Olá ${broker.full_name}, estava vendo seu portfólio de imóveis.`}
+                            href={`https://wa.me/5511999999999?text=Olá ${broker.full_name}, estava vendo seu portfólio de imóveis.`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white px-6 py-3 rounded-full font-bold shadow-lg shadow-[#25D366]/20 transition-transform hover:scale-105"
