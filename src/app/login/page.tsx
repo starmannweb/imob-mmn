@@ -35,6 +35,11 @@ export default async function Login({
             </Link>
 
             <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
+                <img
+                    src="https://panoramalocadora.com.br/wp-content/uploads/2025/12/Panorama-Locadora-Logo-sem-fundo.avif"
+                    alt="Logo"
+                    className="w-48 mx-auto mb-6 object-contain"
+                />
                 <h1 className="text-2xl font-bold mb-6 text-center">Entrar no Painel</h1>
 
                 <Label htmlFor="email">Email</Label>
