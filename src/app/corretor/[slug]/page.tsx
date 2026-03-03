@@ -4,6 +4,7 @@ import { createAdminClient } from "@/utils/supabase/admin";
 import { notFound } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BedDouble, Bath, Car, Maximize, MapPin, Star, Moon, Sun, Search, Home, Building, LandPlot, Filter, ChevronRight, Phone, Mail, Facebook, Instagram, Globe } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 
 export default async function BrokerPage({
@@ -74,13 +75,9 @@ export default async function BrokerPage({
                 <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="flex items-center gap-2">
-                            <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center text-white font-black text-sm italic tracking-tighter shadow-md">
-                                A
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="font-extrabold text-[13px] leading-tight text-white">ADigital <span className="text-blue-400 font-bold">Multinível</span></span>
-                                <span className="text-[9px] text-slate-400 font-medium tracking-wider">Sistema <span className="text-blue-400">4%</span> • <span className="text-emerald-400">2%</span> • <span className="text-amber-400">1%</span></span>
-                            </div>
+                            <Link href="/" className="text-2xl font-bold tracking-tight text-white shrink-0">
+                                Imob<span className="text-blue-500 text-sm align-top ml-1">Afiliação</span>
+                            </Link>
                         </div>
                     </div>
 
@@ -88,12 +85,7 @@ export default async function BrokerPage({
                         <Link href="/registrar" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 py-2 text-xs font-bold shadow-md transition-all flex items-center gap-1.5">
                             <Globe className="w-3.5 h-3.5" /> Virar gestor multinível
                         </Link>
-                        <button className="w-9 h-9 rounded-full border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-slate-800 transition-colors">
-                            <Sun className="w-4 h-4" />
-                        </button>
-                        <button className="w-9 h-9 rounded-full border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-slate-800 transition-colors">
-                            <Moon className="w-4 h-4" />
-                        </button>
+                        <ThemeToggle />
                     </div>
                 </div>
             </header>
@@ -101,30 +93,42 @@ export default async function BrokerPage({
             {/* ═══════════════════════════════════════════════════ */}
             {/* HERO DO CORRETOR */}
             {/* ═══════════════════════════════════════════════════ */}
-            <section className="relative overflow-hidden">
-                {/* Background gradient */}
-                <div className="absolute inset-0 bg-gradient-to-b from-blue-600 via-blue-500 to-blue-400"></div>
-                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImEiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+PHBhdGggZD0iTTAgMGg2MHY2MEgweiIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMzAiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNhKSIvPjwvc3ZnPg==')] opacity-30"></div>
+            <section className="relative w-full bg-[#0f172a] border-b border-slate-800">
+                <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-16 flex flex-col items-center text-center">
 
-                <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
-                    <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                        {/* Avatar grande */}
-                        <div className="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-white shadow-xl flex items-center justify-center text-4xl md:text-5xl font-black text-blue-600 shrink-0">
-                            {initials}
-                        </div>
-
-                        <div className="text-center md:text-left">
-                            <h1 className="text-2xl md:text-3xl font-extrabold text-white leading-tight mb-1 tracking-tight uppercase">
-                                {broker.full_name}
-                            </h1>
-                            {handle && (
-                                <p className="text-blue-100 text-sm font-medium mb-2">{handle}</p>
-                            )}
-                            <p className="text-blue-50/70 text-sm max-w-lg">
-                                {broker.full_name} - Corretor Imobiliário. Encontre os melhores imóveis com atendimento personalizado.
-                            </p>
-                        </div>
+                    {/* Avatar do Corretor */}
+                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-red-500 shadow-xl flex items-center justify-center text-4xl md:text-5xl font-black text-white shrink-0 mb-6 border-4 border-[#0f172a]">
+                        {initials}
                     </div>
+
+                    {/* Nome e Título */}
+                    <h1 className="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-2 tracking-tight">
+                        {broker.full_name}
+                    </h1>
+                    <p className="text-blue-200 text-sm md:text-base font-medium max-w-lg mb-8">
+                        Consultor Imobiliário Oficial • Especialista em realizar o seu sonho.
+                    </p>
+
+                    {/* Botões de Contato */}
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <a
+                            href={`https://wa.me/5511999999999?text=Olá ${broker.full_name}, estava vendo seus imóveis no site.`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-[#2ecc71] hover:bg-[#27ae60] text-white px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg transition-all min-w-[180px] justify-center"
+                        >
+                            <Phone className="w-4 h-4" />
+                            Contato Direto
+                        </a>
+                        <a
+                            href={`mailto:contato@exemplo.com`}
+                            className="bg-[#1e293b] hover:bg-[#334155] text-white border border-slate-700 px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg transition-all min-w-[180px] justify-center"
+                        >
+                            <Mail className="w-4 h-4" />
+                            Enviar E-mail
+                        </a>
+                    </div>
+
                 </div>
             </section>
 
