@@ -22,11 +22,11 @@ export default async function BrokerPage({
     // Buscar dados do corretor. Primeiro pelo referral_code, depois pelo ID (se UUID).
     let broker: any = null;
 
-    // Tentar pelo referral_code primeiro
+    // Tentar pelo referral_code primeiro (case-insensitive)
     const { data: byCode, error: codeError } = await supabase
         .from("users")
         .select("id, full_name, referral_code")
-        .eq("referral_code", slug)
+        .ilike("referral_code", slug)
         .maybeSingle();
 
     if (byCode) {
