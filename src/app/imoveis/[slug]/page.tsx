@@ -4,6 +4,8 @@ import { createAdminClient } from "@/utils/supabase/admin";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Home, Bath, BedDouble, Car, MapPin, Tag, CheckCircle2, Calculator, Share2, Menu, Moon, Heart, ChevronLeft, ChevronRight, Maximize, Ruler, Users, Building, AlertCircle, Phone } from "lucide-react";
+import { ImageGallery } from "./ImageGallery";
+import { PropertyCard } from "@/components/PropertyCard";
 
 interface Property {
     id: string;
@@ -58,6 +60,29 @@ export default async function PropertyPage({
         p = propertyData;
     }
 
+    let similares: any[] = [];
+    if (slug === 'exemplo') {
+        similares = Array(4).fill({
+            slug: 'exemplo',
+            title: "Casa de Alto Padrão em Bairro Nobre",
+            price_sale: 1800000,
+            area: 180,
+            bedrooms: 4,
+            bathrooms: 4,
+            parking_spaces: 3,
+            city: "Santos",
+            state: "SP",
+            image_url: "https://images.unsplash.com/photo-1600607687930-ceaf5a8c51de?auto=format&fit=crop&w=800&q=80"
+        });
+    } else {
+        const { data: simData } = await supabase
+            .from("properties")
+            .select(`*, owner:users!owner_id(id, full_name)`)
+            .neq("id", p.id)
+            .limit(4);
+        similares = simData || [];
+    }
+
     return (
         <div className="min-h-screen bg-white flex flex-col font-sans">
 
@@ -91,9 +116,9 @@ export default async function PropertyPage({
             <main className="flex-1 w-full pt-20">
 
                 {/* Broker Mini Banner */}
-                <div className="w-full bg-gradient-to-r from-blue-900 to-blue-700 border-b border-blue-800">
+                <div className="w-full bg-gradient-to-b from-blue-600 via-blue-500 to-blue-400 border-b border-blue-600">
                     <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-blue-900 font-bold text-lg shadow-sm">
+                        <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-blue-600 font-bold text-lg shadow-sm">
                             {p.owner?.full_name ? p.owner.full_name.split(' ').map((n: string) => n[0]).slice(0, 2).join('').toUpperCase() : 'RD'}
                         </div>
                         <h2 className="font-extrabold text-white text-base md:text-lg">{p.owner?.full_name || 'Ricieri de Moraes'}</h2>
@@ -114,50 +139,7 @@ export default async function PropertyPage({
                         <div className="lg:col-span-8 flex flex-col gap-8">
 
                             {/* Image Gallery Section */}
-                            <div>
-                                <div className="relative w-full h-[400px] md:h-[500px] bg-slate-200 rounded-xl overflow-hidden mb-3 group cursor-pointer">
-                                    {/* Main Image */}
-                                    <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${p.image_url || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'})` }}></div>
-
-                                    {/* Gradient */}
-                                    <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent"></div>
-
-                                    {/* Overlay Heart */}
-                                    <button className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm flex items-center justify-center text-white transition-all">
-                                        <Heart className="w-5 h-5" />
-                                    </button>
-
-                                    {/* Overlay Info Image Counter */}
-                                    <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-md rounded-full px-3 py-1 flex items-center gap-3 text-white text-xs font-bold">
-                                        <ChevronLeft className="w-4 h-4 cursor-pointer hover:text-blue-300" />
-                                        0 / 6
-                                        <ChevronRight className="w-4 h-4 cursor-pointer hover:text-blue-300" />
-                                    </div>
-
-                                    {/* Fake Instagram icon from print */}
-                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center opacity-80 cursor-pointer hover:opacity-100 transition-opacity">
-                                        {/* Ig icon approx */}
-                                        <div className="w-10 h-10 border-2 border-white rounded-lg flex items-center justify-center relative">
-                                            <div className="w-4 h-4 border-2 border-white rounded-full"></div>
-                                            <div className="w-1 h-1 bg-white rounded-full absolute top-1 right-1"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Thumbnails */}
-                                <div className="flex gap-2 overflow-x-auto pb-2">
-                                    {[
-                                        'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=200&q=80',
-                                        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=200&q=80',
-                                        'https://images.unsplash.com/photo-1600607687930-ceaf5a8c51de?auto=format&fit=crop&w=200&q=80',
-                                        'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=200&q=80',
-                                        'https://images.unsplash.com/photo-1600585154526-990dced4ea0d?auto=format&fit=crop&w=200&q=80',
-                                        'https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?auto=format&fit=crop&w=200&q=80'
-                                    ].map((img, i) => (
-                                        <div key={i} className="w-24 h-16 bg-cover bg-center rounded-lg shrink-0 cursor-pointer border-2 border-transparent hover:border-blue-500 transition-colors" style={{ backgroundImage: `url(${img})` }}></div>
-                                    ))}
-                                </div>
-                            </div>
+                            <ImageGallery images={p.image_url ? [p.image_url] : []} />
 
                             {/* Title Header for mobile (desktop has it on right too, but let's follow print 4 layout) */}
                             <div className="border-b border-slate-200 pb-6 hidden md:block">
@@ -345,6 +327,22 @@ export default async function PropertyPage({
 
                     </div>
                 </div>
+
+                {/* Imóveis Similares */}
+                {similares.length > 0 && (
+                    <div className="max-w-7xl mx-auto px-4 md:px-8 mt-16 pb-8 border-t border-slate-200 pt-16">
+                        <h2 className="text-2xl font-black text-slate-900 mb-8">Imóveis Similares</h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {similares.map((sim, i) => (
+                                <PropertyCard
+                                    key={sim.id || i}
+                                    property={sim}
+                                    brokerName={sim.owner?.full_name || p.owner?.full_name || 'Ricieri de Moraes'}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
             </main>
 
             {/* Footer */}
