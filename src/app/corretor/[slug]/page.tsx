@@ -16,14 +16,32 @@ export default async function BrokerPage({
     const { slug } = await params;
     const supabase = createAdminClient();
 
-    // Buscar dados do corretor. Primeiro pelo referral_code (slug), se não achar tenta pelo ID.
-    const { data: brokerAny, error: brokerError } = await supabase
+    // Verificar se o slug é um UUID válido
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug);
+
+    // Buscar dados do corretor. Primeiro pelo referral_code, depois pelo ID (se UUID).
+    let broker: any = null;
+
+    // Tentar pelo referral_code primeiro
+    const { data: byCode, error: codeError } = await supabase
         .from("users")
         .select("id, full_name, referral_code")
-        .or(`referral_code.eq.${slug},id.eq.${slug}`)
+        .eq("referral_code", slug)
         .maybeSingle();
 
-    const broker = brokerAny as any; if (!broker) {
+    if (byCode) {
+        broker = byCode;
+    } else if (isUUID) {
+        // Só tenta pelo ID se o slug for um UUID válido
+        const { data: byId } = await supabase
+            .from("users")
+            .select("id, full_name, referral_code")
+            .eq("id", slug)
+            .maybeSingle();
+        broker = byId;
+    }
+
+    if (!broker) {
         notFound();
     }
 
