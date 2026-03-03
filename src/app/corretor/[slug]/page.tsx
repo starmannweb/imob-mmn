@@ -23,7 +23,7 @@ export default async function BrokerPage({
         .or(`referral_code.eq.${slug},id.eq.${slug}`)
         .maybeSingle();
 
-    const broker = brokerAny as any; const broker = brokerAny as any; const broker = brokerAny as any; if (!broker) {
+    const broker = brokerAny as any; const broker = brokerAny as any; const broker = brokerAny as any; const broker = brokerAny as any; if (!broker) {
         notFound();
     }
 

@@ -40,7 +40,7 @@ export default async function PropertyPage({
             bathrooms: 5,
             parking_spaces: 2,
             description: "Casa sobreposta alta nova com excelente padrão de acabamento, possuindo 3 dormitórios sendo as 3 suítes, sala ampla para 2 ambientes com lavabo e sacada envidraçada. Escada em granito, cozinha ampla e arejada, área de serviço enorme com acesso livre...\n\nLocalização ótima!\n\nEntre em contato para agendar uma visita!",
-            owner: { full_name: "ZKF INTERMEDIACAO IMOBILIARIA LTDA", phone_whatsapp: "5513991396602" }
+            owner: { full_name: "ZKF INTERMEDIACAO IMOBILIARIA LTDA" }
         };
     } else {
         const { data: propertyData, error } = await supabase
@@ -317,7 +317,7 @@ export default async function PropertyPage({
                                                 Enviar Mensagem
                                             </button>
 
-                                            <a href={`https://wa.me/${p.owner?.phone_whatsapp || '55'}`} target="_blank" rel="noopener noreferrer" className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-lg py-3 text-sm flex items-center justify-center gap-2 transition-all mt-1">
+                                            <a href={`https://wa.me/5511999999999`} target="_blank" rel="noopener noreferrer" className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-lg py-3 text-sm flex items-center justify-center gap-2 transition-all mt-1">
                                                 <Phone className="w-4 h-4" /> Conversar no WhatsApp
                                             </a>
                                         </form>
