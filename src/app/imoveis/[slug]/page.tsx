@@ -3,7 +3,8 @@ export const dynamic = 'force-dynamic';
 import { createAdminClient } from "@/utils/supabase/admin";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Home, Bath, BedDouble, Car, MapPin, Tag, CheckCircle2, Calculator, Share2, Menu, Moon, Heart, ChevronLeft, ChevronRight, Maximize, Ruler, Users, Building, AlertCircle, Phone } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { Home, Bath, BedDouble, Car, MapPin, Tag, CheckCircle2, Calculator, Share2, Menu, Moon, Heart, ChevronLeft, ChevronRight, Maximize, Ruler, Users, Building, AlertCircle, Phone, Globe } from "lucide-react";
 import { ImageGallery } from "./ImageGallery";
 import { PropertyCard } from "@/components/PropertyCard";
 
@@ -84,32 +85,25 @@ export default async function PropertyPage({
     }
 
     return (
-        <div className="min-h-screen bg-white flex flex-col font-sans">
+        <div className="min-h-screen bg-white dark:bg-[#0b1120] flex flex-col font-sans">
 
             {/* Header Público */}
-            <header className="fixed top-0 w-full bg-white border-b border-slate-200 shadow-sm z-50">
-                <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
+            <header className="fixed top-0 w-full bg-[#0f172a] dark:bg-[#0b1120] border-b border-slate-800 shadow-sm z-50">
+                <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <Link href="/" className="text-2xl font-black tracking-tight text-slate-900 group flex items-center gap-1">
-                            Imob<span className="text-blue-600 text-[12px] align-top ml-1 uppercase group-hover:text-blue-500 transition-colors">Afiliação</span>
-                        </Link>
-                    </div>
-
-                    <div className="hidden md:flex items-center gap-8">
-                        <Link href="/login" className="text-sm font-semibold text-slate-600 hover:text-blue-600">Entrar</Link>
-                        <Link href="/registrar" className="text-sm font-semibold text-slate-600 hover:text-blue-600">Cadastrar-se</Link>
-                        <div className="flex gap-2 items-center">
-                            <Link href="/registrar">
-                                <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-2.5 text-sm font-bold shadow-md transition-all">
-                                    Virar gestor afiliado
-                                </button>
+                        <div className="flex items-center gap-2">
+                            <Link href="/" className="text-2xl font-bold tracking-tight text-white shrink-0">
+                                Imob<span className="text-blue-500 text-sm align-top ml-1">Afiliação</span>
                             </Link>
-                            <button className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-50">
-                                <Moon className="w-4 h-4" />
-                            </button>
                         </div>
                     </div>
-                    <button className="md:hidden p-2 text-slate-600"><Menu className="w-6 h-6" /></button>
+
+                    <div className="flex items-center gap-3">
+                        <Link href="/registrar" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 py-2 text-xs font-bold shadow-md transition-all flex items-center gap-1.5">
+                            <Globe className="w-3.5 h-3.5" /> Virar gestor Imob
+                        </Link>
+                        <ThemeToggle />
+                    </div>
                 </div>
             </header>
 
@@ -130,7 +124,7 @@ export default async function PropertyPage({
                     <div className="text-xs text-slate-500 font-semibold mb-6 flex items-center gap-2 overflow-x-auto whitespace-nowrap">
                         <Link href="/" className="hover:text-blue-600">Imóveis Santos</Link> <ChevronRight className="w-3 h-3" />
                         <Link href="/" className="hover:text-blue-600">Embaré</Link> <ChevronRight className="w-3 h-3" />
-                        <span className="text-slate-800 truncate">{p.title}</span>
+                        <span className="text-slate-800 dark:text-slate-200 truncate">{p.title}</span>
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -142,8 +136,8 @@ export default async function PropertyPage({
                             <ImageGallery images={p.image_url ? [p.image_url] : []} />
 
                             {/* Title Header for mobile (desktop has it on right too, but let's follow print 4 layout) */}
-                            <div className="border-b border-slate-200 pb-6 hidden md:block">
-                                <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight mb-2">
+                            <div className="border-b border-slate-200 dark:border-slate-800 pb-6 hidden md:block">
+                                <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white leading-tight mb-2">
                                     {p.title}
                                 </h1>
                                 <p className="text-slate-500 text-sm flex items-center">
@@ -153,51 +147,51 @@ export default async function PropertyPage({
 
                             {/* Description */}
                             <div>
-                                <h2 className="text-xl font-bold text-slate-800 mb-4">Sobre o imóvel</h2>
-                                <div className="text-sm font-medium text-slate-600 leading-relaxed whitespace-pre-wrap">
+                                <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">Sobre o imóvel</h2>
+                                <div className="text-sm font-medium text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
                                     {p.description}
                                 </div>
-                                <button className="text-blue-600 text-sm font-bold mt-2 hover:underline">Ler mais</button>
+                                <button className="text-blue-600 dark:text-blue-400 text-sm font-bold mt-2 hover:underline">Ler mais</button>
                             </div>
 
                             {/* Technical details */}
                             <div>
-                                <h2 className="text-xl font-bold text-slate-800 mb-4">Detalhes do Imóvel</h2>
+                                <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">Detalhes do Imóvel</h2>
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
+                                        <div className="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center border border-slate-100 dark:border-slate-800">
                                             <Maximize className="w-5 h-5 text-slate-400" />
                                         </div>
                                         <div>
                                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Área Útil</p>
-                                            <p className="font-bold text-slate-800">{p.area || '-'} m²</p>
+                                            <p className="font-bold text-slate-800 dark:text-slate-200">{p.area || '-'} m²</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
+                                        <div className="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center border border-slate-100 dark:border-slate-800">
                                             <BedDouble className="w-5 h-5 text-slate-400" />
                                         </div>
                                         <div>
                                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Quartos</p>
-                                            <p className="font-bold text-slate-800">{p.bedrooms || '-'}</p>
+                                            <p className="font-bold text-slate-800 dark:text-slate-200">{p.bedrooms || '-'}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
+                                        <div className="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center border border-slate-100 dark:border-slate-800">
                                             <Bath className="w-5 h-5 text-slate-400" />
                                         </div>
                                         <div>
                                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Banheiros</p>
-                                            <p className="font-bold text-slate-800">{p.bathrooms || '-'}</p>
+                                            <p className="font-bold text-slate-800 dark:text-slate-200">{p.bathrooms || '-'}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
+                                        <div className="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center border border-slate-100 dark:border-slate-800">
                                             <Car className="w-5 h-5 text-slate-400" />
                                         </div>
                                         <div>
                                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Vagas</p>
-                                            <p className="font-bold text-slate-800">{p.parking_spaces || '-'}</p>
+                                            <p className="font-bold text-slate-800 dark:text-slate-200">{p.parking_spaces || '-'}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -205,24 +199,24 @@ export default async function PropertyPage({
 
                             {/* Characteristics Grid */}
                             <div>
-                                <h2 className="text-xl font-bold text-slate-800 mb-4">Características</h2>
+                                <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">Características</h2>
                                 <div className="grid grid-cols-2 gap-y-3">
-                                    <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
+                                    <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300 font-medium">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Cozinha
                                     </div>
-                                    <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
+                                    <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300 font-medium">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Garagem
                                     </div>
-                                    <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
+                                    <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300 font-medium">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Piscina
                                     </div>
-                                    <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
+                                    <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300 font-medium">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Varanda
                                     </div>
-                                    <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
+                                    <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300 font-medium">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Churrasqueira
                                     </div>
-                                    <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
+                                    <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300 font-medium">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Lavanderia
                                     </div>
                                 </div>
@@ -231,15 +225,15 @@ export default async function PropertyPage({
                             {/* Map Section */}
                             <div>
                                 <div className="flex items-center justify-between mb-4">
-                                    <h2 className="text-xl font-bold text-slate-800">Endereço</h2>
-                                    <button className="text-xs font-bold text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors border border-blue-200">
+                                    <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Endereço</h2>
+                                    <button className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 px-3 py-1.5 rounded-lg transition-colors border border-blue-200 dark:border-blue-800">
                                         Ver no mapa
                                     </button>
                                 </div>
-                                <p className="text-sm font-medium text-slate-500 mb-4 flex items-center gap-2">
+                                <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
                                     <MapPin className="w-4 h-4" /> Rua Endereço Não Divulgado, Embaré, Santos - SP
                                 </p>
-                                <div className="w-full h-[300px] bg-slate-200 rounded-xl overflow-hidden relative border border-slate-200">
+                                <div className="w-full h-[300px] bg-slate-200 dark:bg-slate-700 rounded-xl overflow-hidden relative border border-slate-200 dark:border-slate-700">
                                     <iframe width="100%" height="100%" frameBorder="0" scrolling="no" src="https://www.openstreetmap.org/export/embed.html?bbox=-46.3359%2C-23.9782%2C-46.3159%2C-23.9582&amp;layer=mapnik&amp;marker=-23.9682%2C-46.3259"></iframe>
                                 </div>
                             </div>
@@ -251,48 +245,48 @@ export default async function PropertyPage({
                             <div className="sticky top-28 flex flex-col gap-6">
 
                                 {/* Hero Action Box */}
-                                <div className="bg-white border text-left border-slate-200 rounded-2xl shadow-sm overflow-hidden border-t-4 border-t-blue-600">
+                                <div className="bg-white dark:bg-[#1e293b] border text-left border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden border-t-4 border-t-blue-600">
                                     <div className="p-6">
 
                                         <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
-                                            <span className="bg-slate-100 px-2 py-0.5 rounded">Venda</span>
+                                            <span className="bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">Venda</span>
                                             <span>Código: 14782</span>
                                         </div>
 
                                         <div>
-                                            <p className="text-sm font-bold text-slate-500 mb-1">Valor do Imóvel</p>
-                                            <h2 className="text-3xl font-black text-blue-700 tracking-tight leading-none mb-6">
+                                            <p className="text-sm font-bold text-slate-500 dark:text-slate-400 mb-1">Valor do Imóvel</p>
+                                            <h2 className="text-3xl font-black text-blue-700 dark:text-blue-400 tracking-tight leading-none mb-6">
                                                 R$ {p.price_sale ? p.price_sale.toLocaleString('pt-BR') : '1.625.000,00'}
                                             </h2>
                                         </div>
 
-                                        <div className="space-y-3 pt-6 border-t border-slate-100">
+                                        <div className="space-y-3 pt-6 border-t border-slate-100 dark:border-slate-800">
                                             <div className="flex justify-between text-sm">
-                                                <span className="text-slate-500 font-medium">Condomínio</span>
-                                                <span className="text-slate-900 font-bold">R$ {p.condominium || '-'}</span>
+                                                <span className="text-slate-500 dark:text-slate-400 font-medium">Condomínio</span>
+                                                <span className="text-slate-900 dark:text-slate-100 font-bold">R$ {p.condominium || '-'}</span>
                                             </div>
                                             <div className="flex justify-between text-sm">
-                                                <span className="text-slate-500 font-medium">IPTU</span>
-                                                <span className="text-slate-900 font-bold">R$ {p.iptu || '-'}</span>
+                                                <span className="text-slate-500 dark:text-slate-400 font-medium">IPTU</span>
+                                                <span className="text-slate-900 dark:text-slate-100 font-bold">R$ {p.iptu || '-'}</span>
                                             </div>
                                         </div>
 
                                         <div className="flex items-center gap-2 mt-8 mb-6">
-                                            <button className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-300 transition-colors">
+                                            <button className="w-10 h-10 rounded-full border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-300 transition-colors">
                                                 <Share2 className="w-4 h-4" />
                                             </button>
-                                            <button className="flex-1 bg-white border border-slate-200 hover:border-blue-400 hover:text-blue-600 rounded-full py-2.5 text-xs font-bold transition-colors">
+                                            <button className="flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-full py-2.5 text-xs font-bold transition-colors">
                                                 Simular Financiamento
                                             </button>
                                         </div>
 
                                         {/* Contact Form */}
                                         <form className="flex flex-col gap-3">
-                                            <h3 className="text-sm font-bold text-slate-800 mb-1">Falar com o Corretor</h3>
-                                            <input type="text" placeholder="Nome" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-700 font-medium outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
-                                            <input type="email" placeholder="E-mail" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-700 font-medium outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
-                                            <input type="tel" placeholder="Telefone" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-700 font-medium outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
-                                            <textarea placeholder={`Olá, ${p.owner?.full_name?.split(' ')[0] || 'RD'}. Tenho interesse no imóvel...`} className="w-full h-24 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-700 font-medium outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none"></textarea>
+                                            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-1">Falar com o Corretor</h3>
+                                            <input type="text" placeholder="Nome" className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-700 dark:text-slate-200 font-medium outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
+                                            <input type="email" placeholder="E-mail" className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-700 dark:text-slate-200 font-medium outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
+                                            <input type="tel" placeholder="Telefone" className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-700 dark:text-slate-200 font-medium outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
+                                            <textarea placeholder={`Olá, ${p.owner?.full_name?.split(' ')[0] || 'RD'}. Tenho interesse no imóvel...`} className="w-full h-24 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-700 dark:text-slate-200 font-medium outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none"></textarea>
 
                                             <button type="button" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg py-3 text-sm flex items-center justify-center gap-2 transition-all mt-2">
                                                 Enviar Mensagem
@@ -310,13 +304,13 @@ export default async function PropertyPage({
                                 </div>
 
                                 {/* Broker Card Info */}
-                                <div className="bg-white border text-left border-slate-200 rounded-2xl shadow-sm p-6 flex items-start gap-4">
+                                <div className="bg-white dark:bg-[#1e293b] border text-left border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6 flex items-start gap-4">
                                     <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center text-white font-black text-xl shrink-0">
                                         {p.owner?.full_name ? p.owner.full_name.split(' ').map((n: string) => n[0]).slice(0, 2).join('').toUpperCase() : 'RD'}
                                     </div>
                                     <div>
                                         <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-1">Anunciante Oficial</span>
-                                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">{p.owner?.full_name || 'Ricieri de Moraes'}</h4>
+                                        <h4 className="font-extrabold text-slate-900 dark:text-white text-sm mb-1">{p.owner?.full_name || 'Ricieri de Moraes'}</h4>
                                         <Link href="#" className="text-xs font-bold text-blue-600 hover:underline inline-flex items-center gap-1">
                                             Ver todos os imóveis <ChevronRight className="w-3 h-3" />
                                         </Link>
@@ -330,8 +324,8 @@ export default async function PropertyPage({
 
                 {/* Imóveis Similares */}
                 {similares.length > 0 && (
-                    <div className="max-w-7xl mx-auto px-4 md:px-8 mt-16 pb-8 border-t border-slate-200 pt-16">
-                        <h2 className="text-2xl font-black text-slate-900 mb-8">Imóveis Similares</h2>
+                    <div className="max-w-7xl mx-auto px-4 md:px-8 mt-16 pb-8 border-t border-slate-200 dark:border-slate-800 pt-16">
+                        <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-8">Imóveis Similares</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             {similares.map((sim, i) => (
                                 <PropertyCard
@@ -346,9 +340,9 @@ export default async function PropertyPage({
             </main>
 
             {/* Footer */}
-            <footer className="bg-slate-50 border-t border-slate-200 mt-20">
+            <footer className="bg-slate-50 dark:bg-[#0b1120] border-t border-slate-200 dark:border-slate-800 mt-20">
                 <div className="max-w-7xl mx-auto px-4 md:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <span className="font-extrabold text-xl leading-tight text-slate-900">
+                    <span className="font-extrabold text-xl leading-tight text-slate-900 dark:text-white">
                         Imob<span className="text-blue-600 text-[12px] uppercase align-top ml-1">Afiliação</span>
                     </span>
                     <p className="text-[11px] font-semibold text-slate-400">
