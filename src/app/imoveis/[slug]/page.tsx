@@ -107,20 +107,27 @@ export default async function PropertyPage({
                 </div>
             </header>
 
-            <main className="flex-1 w-full pt-20">
+            <main className="flex-1 w-full pt-16">
 
-                {/* Broker Mini Banner */}
-                <div className="w-full bg-gradient-to-b from-blue-600 via-blue-500 to-blue-400 border-b border-blue-600">
-                    <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-blue-600 font-bold text-lg shadow-sm">
+                {/* Cover Banner — estilo ZKF */}
+                <div className="w-full h-40 md:h-48 bg-gradient-to-br from-blue-200 via-blue-100 to-blue-50 dark:from-slate-800 dark:via-slate-900 dark:to-[#0b1120] relative">
+                </div>
+
+                {/* Avatar + Name — overlapping style */}
+                <div className="max-w-7xl mx-auto px-4 md:px-8 relative">
+                    <div className="flex items-end gap-5 -mt-14">
+                        <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-white dark:bg-[#1e293b] border-4 border-white dark:border-[#0b1120] shadow-xl flex items-center justify-center text-blue-600 dark:text-blue-400 font-black text-3xl md:text-4xl shrink-0">
                             {p.owner?.full_name ? p.owner.full_name.split(' ').map((n: string) => n[0]).slice(0, 2).join('').toUpperCase() : 'RD'}
                         </div>
-                        <h2 className="font-extrabold text-white text-base md:text-lg">{p.owner?.full_name || 'Ricieri de Moraes'}</h2>
+                        <div className="pb-2">
+                            <h2 className="font-black text-slate-900 dark:text-white text-xl md:text-2xl leading-tight">{p.owner?.full_name || 'Ricieri de Moraes'}</h2>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">Corretor ImobAfiliado</p>
+                        </div>
                     </div>
                 </div>
 
                 <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
-                    {/* Breadcrumb da Imobiliária (Print 3) */}
+                    {/* Breadcrumb */}
                     <div className="text-xs text-slate-500 font-semibold mb-6 flex items-center gap-2 overflow-x-auto whitespace-nowrap">
                         <Link href="/" className="hover:text-blue-600">Imóveis Santos</Link> <ChevronRight className="w-3 h-3" />
                         <Link href="/" className="hover:text-blue-600">Embaré</Link> <ChevronRight className="w-3 h-3" />
