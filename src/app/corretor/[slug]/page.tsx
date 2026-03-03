@@ -83,7 +83,7 @@ export default async function BrokerPage({
 
                     <div className="flex items-center gap-3">
                         <Link href="/registrar" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 py-2 text-xs font-bold shadow-md transition-all flex items-center gap-1.5">
-                            <Globe className="w-3.5 h-3.5" /> Virar gestor multinível
+                            <Globe className="w-3.5 h-3.5" /> Virar gestor Imob
                         </Link>
                         <ThemeToggle />
                     </div>
@@ -320,15 +320,16 @@ export default async function BrokerPage({
                 <div className="border-t border-slate-200 dark:border-slate-800">
                     <div className="max-w-7xl mx-auto px-4 md:px-8 py-5 flex flex-col md:flex-row justify-between items-center gap-4">
                         <div className="flex items-center gap-2">
-                            <div className="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-800 rounded-md flex items-center justify-center text-white font-black text-[10px] italic">A</div>
-                            <span className="text-xs font-bold text-slate-400">ADigital <span className="text-blue-500">Afiliação</span></span>
+                            <span className="text-sm font-bold tracking-tight text-slate-400">
+                                Imob<span className="text-blue-500 text-[10px] align-top ml-1 uppercase group-hover:text-blue-400">Afiliação</span>
+                            </span>
                         </div>
                         <div className="flex items-center gap-4">
                             <Link href="#" className="text-slate-400 hover:text-blue-500 transition-colors"><Facebook className="w-4 h-4" /></Link>
                             <Link href="#" className="text-slate-400 hover:text-pink-500 transition-colors"><Instagram className="w-4 h-4" /></Link>
                         </div>
                         <p className="text-[11px] font-medium text-slate-400">
-                            © 2026 Imobiliária ADigital. Todos direitos reservados.
+                            © 2026 Imob Afiliação. Todos direitos reservados.
                         </p>
                     </div>
                 </div>
