@@ -86,7 +86,7 @@ export function PropertyCard({ property, brokerName, featured = false }: { prope
                 <div className="border-t border-slate-100 dark:border-slate-700 px-4 py-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-xs">
-                            {brokerName?.split(' ').map((n: string) => n[0]).slice(0, 2).join('').toUpperCase()}
+                            {(brokerName || 'RD').split(' ').map((n: string) => n[0]).slice(0, 2).join('').toUpperCase()}
                         </div>
                         <div className="flex flex-col">
                             <span className="text-xs font-bold text-slate-700 dark:text-slate-200 truncate max-w-[140px]">{brokerName}</span>
