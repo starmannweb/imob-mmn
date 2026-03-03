@@ -4,7 +4,7 @@ import { createAdminClient } from "@/utils/supabase/admin";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Home, Bath, BedDouble, Car, MapPin, Tag, CheckCircle2, Calculator, Share2, Menu, Moon, Heart, ChevronLeft, ChevronRight, Maximize, Ruler, Users, Building, AlertCircle, Phone, Globe } from "lucide-react";
+import { Home, Bath, BedDouble, Car, MapPin, Tag, CheckCircle2, Calculator, Share2, Menu, Moon, Heart, ChevronLeft, ChevronRight, Maximize, Ruler, Users, Building, AlertCircle, Phone, Globe, Mail } from "lucide-react";
 import { ImageGallery } from "./ImageGallery";
 import { PropertyCard } from "@/components/PropertyCard";
 
@@ -346,15 +346,80 @@ export default async function PropertyPage({
                 )}
             </main>
 
-            {/* Footer */}
-            <footer className="bg-slate-50 dark:bg-[#0b1120] border-t border-slate-200 dark:border-slate-800 mt-20">
-                <div className="max-w-7xl mx-auto px-4 md:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <span className="font-extrabold text-xl leading-tight text-slate-900 dark:text-white">
-                        Imob<span className="text-blue-600 text-[12px] uppercase align-top ml-1">Afiliação</span>
-                    </span>
-                    <p className="text-[11px] font-semibold text-slate-400">
-                        &copy; 2026 Imob Afiliação. Todos direitos reservados.
-                    </p>
+            {/* Footer — Info do Corretor */}
+            <footer className="bg-white dark:bg-[#0f172a] border-t border-slate-200 dark:border-slate-800 mt-20">
+                <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+
+                        {/* Col 1 — Corretor */}
+                        <div>
+                            <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center text-white font-black text-xl mb-4">
+                                {p.owner?.full_name ? p.owner.full_name.split(' ').map((n: string) => n[0]).slice(0, 2).join('').toUpperCase() : 'RD'}
+                            </div>
+                            <h4 className="font-black text-slate-900 dark:text-white text-sm uppercase tracking-wide mb-2">{p.owner?.full_name || 'Ricieri de Moraes'}</h4>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                                {p.owner?.full_name || 'Ricieri de Moraes'} — Corretor ImobAfiliado. Encontre os melhores imóveis com atendimento personalizado.
+                            </p>
+                        </div>
+
+                        {/* Col 2 — Links Rápidos */}
+                        <div>
+                            <h5 className="font-bold text-slate-900 dark:text-white text-sm mb-4">Links Rápidos</h5>
+                            <ul className="space-y-2.5">
+                                <li><Link href="/" className="text-xs text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Sobre Nós</Link></li>
+                                <li><Link href="/" className="text-xs text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Como Funciona</Link></li>
+                                <li><Link href="/registrar" className="text-xs text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Anunciar Imóvel</Link></li>
+                            </ul>
+                        </div>
+
+                        {/* Col 3 — Suporte */}
+                        <div>
+                            <h5 className="font-bold text-slate-900 dark:text-white text-sm mb-4">Suporte</h5>
+                            <ul className="space-y-2.5">
+                                <li><Link href="/" className="text-xs text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Perguntas Frequentes</Link></li>
+                                <li><Link href="/" className="text-xs text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Fale Conosco</Link></li>
+                                <li><Link href="/" className="text-xs text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Termos de uso e política de privacidade</Link></li>
+                            </ul>
+                        </div>
+
+                        {/* Col 4 — Contato */}
+                        <div>
+                            <h5 className="font-bold text-slate-900 dark:text-white text-sm mb-4">Contato</h5>
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center">
+                                        <Phone className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                    </div>
+                                    <div>
+                                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Telefone</span>
+                                        <span className="text-xs text-slate-700 dark:text-slate-200 font-semibold">13 99139-6802</span>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center">
+                                        <Mail className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                    </div>
+                                    <div>
+                                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">E-mail</span>
+                                        <span className="text-xs text-slate-700 dark:text-slate-200 font-semibold">contato@imobafiliacao.com.br</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                {/* Copyright bar */}
+                <div className="border-t border-slate-200 dark:border-slate-800">
+                    <div className="max-w-7xl mx-auto px-4 md:px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                        <span className="font-extrabold text-xl leading-tight text-slate-900 dark:text-white">
+                            Imob<span className="text-blue-600 text-[12px] uppercase align-top ml-1">Afiliação</span>
+                        </span>
+                        <p className="text-[11px] font-semibold text-slate-400">
+                            &copy; 2026 Imob Afiliação. Todos direitos reservados.
+                        </p>
+                    </div>
                 </div>
             </footer>
         </div>
