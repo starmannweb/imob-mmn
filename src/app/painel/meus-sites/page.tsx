@@ -89,7 +89,7 @@ export default async function MeusSitesPage() {
                         </div>
                         <div className="flex gap-2">
                             <a
-                                href={`${baseUrl}/corretor/${siteSlug}`}
+                                href={`/corretor/${siteSlug}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors"
@@ -128,7 +128,7 @@ export default async function MeusSitesPage() {
                         <div className="flex items-center gap-2">
                             <input
                                 readOnly
-                                value={`${baseUrl}/corretor/${siteSlug}`}
+                                value={`/corretor/${siteSlug}`}
                                 className="flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 px-4 py-2.5 rounded-lg text-sm font-medium text-blue-600 dark:text-blue-400"
                             />
                             <button className="bg-slate-900 dark:bg-blue-600 text-white px-4 py-2.5 rounded-lg text-sm font-bold hover:bg-slate-800 dark:hover:bg-blue-700 transition-colors">

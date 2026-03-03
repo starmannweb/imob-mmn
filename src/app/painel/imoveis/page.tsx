@@ -37,25 +37,24 @@ export default async function ImoveisPage({ searchParams }: { searchParams: Prom
 
             {/* Admin Toggle */}
             <div className="flex items-center gap-3 mb-6">
-                {/* Fake Toggle Switch Dark */}
-                <div className="w-10 h-5 bg-slate-700 rounded-full relative cursor-pointer border border-slate-600">
-                    <div className="w-4 h-4 bg-slate-400 rounded-full absolute top-[1px] left-[1px]"></div>
+                <div className="w-10 h-5 bg-slate-200 dark:bg-slate-700 rounded-full relative cursor-pointer border border-slate-300 dark:border-slate-600">
+                    <div className="w-4 h-4 bg-white dark:bg-slate-400 rounded-full absolute top-[1px] left-[1px] shadow-sm"></div>
                 </div>
-                <span className="text-sm font-bold text-slate-300">Visualizar todos os imóveis (Admin/Dono)</span>
+                <span className="text-sm font-bold text-slate-700 dark:text-slate-300">Visão Modo Dono (Rede)</span>
             </div>
 
             {/* Action Bar (Search, Count, Filters, Add Button) */}
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
                 <div className="flex items-center gap-4 w-full md:w-auto">
                     <div className="relative w-full md:w-80">
-                        <Search className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                        <Search className="w-5 h-5 text-slate-400 dark:text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
                         <input
                             type="text"
                             placeholder="Busque por alguma informação..."
-                            className="w-full bg-[#8A95A5] text-white placeholder-slate-200 text-sm font-medium rounded-lg pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#1E293B] shadow-sm border-none"
+                            className="w-full bg-slate-100 dark:bg-[#0f172a] text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm font-medium rounded-lg pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all shadow-sm border border-slate-200 dark:border-slate-700"
                         />
                     </div>
-                    <span className="text-sm font-bold text-white whitespace-nowrap bg-[#161e2e] px-4 py-2.5 rounded-lg hidden md:inline-block shadow-sm">
+                    <span className="text-sm font-bold text-slate-600 dark:text-slate-300 whitespace-nowrap bg-slate-100 dark:bg-[#161e2e] px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm hidden md:inline-block">
                         {properties?.length || 0} resultado{properties?.length === 1 ? '' : 's'}
                     </span>
                 </div>
@@ -90,7 +89,7 @@ export default async function ImoveisPage({ searchParams }: { searchParams: Prom
                                     {properties.map((prop) => (
                                         <tr key={prop.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                                             <td className="px-6 py-4 font-medium text-slate-900 max-w-xs truncate hover:text-blue-600 transition-colors cursor-pointer">
-                                                <Link href={`/painel/imoveis/${prop.id}`}>
+                                                <Link href={`/imoveis/${prop.slug}`}>
                                                     {prop.title}
                                                 </Link>
                                                 <p className="text-xs text-slate-400 mt-1 font-normal truncate">/{prop.slug}</p>
@@ -110,7 +109,7 @@ export default async function ImoveisPage({ searchParams }: { searchParams: Prom
                                             </td>
                                             <td className="px-6 py-4 text-right">
                                                 <div className="flex justify-end gap-2">
-                                                    <Link href={`/painel/imoveis/${prop.id}`} target="_blank">
+                                                    <Link href={`/imoveis/${prop.slug}`} target="_blank">
                                                         <Button variant="outline" size="sm" className="text-blue-600 border-blue-200 hover:bg-blue-50">
                                                             Ver Landing Page
                                                         </Button>

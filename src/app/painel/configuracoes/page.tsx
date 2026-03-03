@@ -28,7 +28,7 @@ export default async function ConfiguracoesPage({ searchParams }: { searchParams
 
             {/* Cabecalho Simples da Página Baseado no Print */}
             <div className="mb-6 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-                <span className="font-semibold text-slate-700 dark:text-slate-300">ADigital Afiliação</span>
+                <Link href="/painel" className="font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">Home</Link>
                 <span>›</span>
                 <span className="text-slate-400 dark:text-slate-500">Perfil</span>
             </div>

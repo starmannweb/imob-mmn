@@ -41,7 +41,7 @@ export default async function PainelPropertyDetails({
 
             {/* Breadcrumb */}
             <div className="text-xs text-slate-500 font-medium flex flex-wrap items-center gap-2">
-                <span className="text-slate-400">ADigital Multinivel</span> <ChevronRight className="w-3 h-3 text-slate-400" />
+                <Link href="/painel" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">Home</Link> <ChevronRight className="w-3 h-3 text-slate-400" />
                 <Link href="/painel/imoveis" className="text-slate-500 hover:text-blue-600">Meus Imóveis</Link> <ChevronRight className="w-3 h-3 text-slate-400" />
                 <span className="text-slate-800 font-semibold truncate max-w-xs">{property.slug}</span>
             </div>
