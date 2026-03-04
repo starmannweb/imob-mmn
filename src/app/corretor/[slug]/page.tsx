@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic';
 import { createAdminClient } from "@/utils/supabase/admin";
 import { notFound } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { BedDouble, Bath, Car, Maximize, MapPin, Star, Moon, Sun, Search, Home, Building, LandPlot, Filter, ChevronRight, Phone, Mail, Facebook, Instagram, Globe } from "lucide-react";
+import { Search, MapPin, Building, Bed, BedDouble, Bath, Car, Maximize2, Maximize, X, AlertCircle, Share2, Filter, Home, LandPlot, CheckCircle2, ChevronRight, Mic, Globe, Mail, Phone, Facebook, Instagram, Star, Sun, Moon } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 
@@ -149,9 +149,16 @@ export default async function BrokerPage({
                 {/* ═══════════════════════════════════════════════════ */}
                 <section className="bg-slate-50 dark:bg-[#111827] border-y border-slate-200 dark:border-slate-800">
                     <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
-                        <div className="flex items-center gap-2 mb-6">
-                            <Filter className="w-5 h-5 text-blue-600" />
-                            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Filtros Rápidos</h3>
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                            <div className="flex items-center gap-2">
+                                <Filter className="w-5 h-5 text-blue-600" />
+                                <h3 className="text-lg font-bold text-slate-900 dark:text-white">Filtros Rápidos</h3>
+                            </div>
+                            <div className="flex items-center gap-3 w-full sm:w-auto">
+                                <button className="flex items-center gap-2 bg-blue-100/50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-blue-200 dark:border-blue-800 px-4 py-2 rounded-full text-xs font-bold transition-colors w-full sm:w-auto justify-center">
+                                    <Mic className="w-4 h-4" /> Busca por Voz com IA
+                                </button>
+                            </div>
                         </div>
 
                         {/* Dropdowns de filtro */}
@@ -241,8 +248,8 @@ export default async function BrokerPage({
                         <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                             Imóveis disponíveis
                         </h3>
-                        <button className="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1">
-                            <Filter className="w-4 h-4" /> Ocultar Filtros
+                        <button className="text-sm font-semibold text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 flex items-center gap-1">
+                            <X className="w-4 h-4" /> Ocultar Filtros
                         </button>
                     </div>
 

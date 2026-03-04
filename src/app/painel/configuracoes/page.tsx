@@ -34,23 +34,48 @@ export default async function ConfiguracoesPage({ searchParams }: { searchParams
             </div>
 
             {/* Banner Header */}
-            <div className="w-full bg-slate-200 dark:bg-[#1b253b] rounded-t-xl h-48 md:h-64 relative overflow-hidden border border-slate-200 dark:border-slate-700">
+            <div className="w-full bg-[#0f1522] rounded-t-xl h-48 md:h-64 relative overflow-hidden border border-slate-200 dark:border-slate-800">
+                <div className="absolute inset-0 overflow-hidden">
+                    <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-blue-600/20 rounded-full blur-3xl" />
+                    <div className="absolute bottom-0 left-1/4 w-[300px] h-[300px] bg-blue-500/10 rounded-full blur-3xl" />
+                </div>
             </div>
 
             {/* Profile Content */}
             <div className="relative px-4 sm:px-8 mt-4 md:-mt-16 z-10">
 
                 <div className="flex flex-col md:flex-row items-center md:items-end gap-6 mb-12">
-                    <div className="w-32 h-32 rounded-full bg-white dark:bg-[#2a303c] border-[6px] border-slate-50 dark:border-[#0f1522] flex items-center justify-center text-4xl font-normal text-slate-600 dark:text-slate-300 shrink-0 shadow-lg">
-                        {(profile?.full_name || 'ZK').substring(0, 2).toUpperCase()}
+                    <div className="relative shrink-0">
+                        <div className="w-32 h-32 rounded-full bg-white dark:bg-[#1e293b] border-[6px] border-white dark:border-[#0f1522] flex items-center justify-center text-4xl font-normal text-slate-600 dark:text-slate-300 shadow-lg">
+                            {(profile?.full_name || 'ZK').substring(0, 2).toUpperCase()}
+                        </div>
+                        <div className="absolute bottom-3 right-3 w-5 h-5 bg-green-500 border-4 border-white dark:border-[#0f1522] rounded-full"></div>
                     </div>
                     <div className="flex-1 text-center md:text-left mb-2">
                         <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">{profile?.full_name || 'ZKF INTERMEDIACAO IMOBILIARIA LTDA'}</h1>
                         <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">@{profile?.full_name?.split(' ')[0].toLowerCase() || 'Zanzini'}</p>
-                        <p className="text-sm text-slate-400 dark:text-slate-500 mt-2 italic font-light">Não há descrição disponível.</p>
+
+                        <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-3">
+                            {user.email && (
+                                <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
+                                    <Mail className="w-3.5 h-3.5" />
+                                    {user.email}
+                                </div>
+                            )}
+                            {profile?.phone && (
+                                <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
+                                    <Phone className="w-3.5 h-3.5" />
+                                    {profile.phone}
+                                </div>
+                            )}
+                            <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
+                                <Globe className="w-3.5 h-3.5" />
+                                imobpainel.com/corretor/{profile?.referral_code || profile?.id || user.id}
+                            </div>
+                        </div>
                     </div>
-                    <div className="flex gap-3 mb-2 flex-col sm:flex-row">
-                        <Link href="/painel/configuracoes?edit=true" className="bg-blue-600 hover:bg-blue-700 shadow-sm rounded-full px-5 py-2 text-sm font-semibold flex items-center gap-2 text-white justify-center transition-colors">
+                    <div className="flex gap-3 mb-4 flex-col sm:flex-row">
+                        <Link href="/painel/configuracoes?edit=true" className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 shadow-sm rounded-full px-5 py-2 text-sm font-semibold flex items-center gap-2 text-slate-700 dark:text-slate-200 justify-center transition-colors">
                             <Edit3 className="w-4 h-4" /> Editar perfil
                         </Link>
                         <Link href={`/corretor/${profile?.referral_code || profile?.id || user.id}`} target="_blank" className="bg-blue-600 hover:bg-blue-700 shadow-sm rounded-full px-5 py-2 text-sm font-semibold flex items-center gap-2 text-white justify-center transition-colors">
