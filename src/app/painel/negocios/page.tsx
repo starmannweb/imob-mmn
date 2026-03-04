@@ -78,6 +78,9 @@ export default async function NegociosPage({ searchParams }: { searchParams: Pro
                 <Link href="/painel/negocios?tab=lista" className={`flex items-center gap-2 px-5 py-2 rounded-md text-sm font-bold transition-all ${currentTab === 'lista' ? 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'}`}>
                     <List className="w-4 h-4" /> Lista
                 </Link>
+                <Link href="/painel/cartas-contempladas" className="flex items-center gap-2 px-5 py-2 rounded-md text-sm font-bold transition-all text-slate-500 hover:text-slate-700 dark:text-slate-400">
+                    <span className="w-4 h-4 text-green-500 flex items-center justify-center">📄</span> Cartas Contempladas
+                </Link>
             </div>
 
             {/* Kanban Board */}

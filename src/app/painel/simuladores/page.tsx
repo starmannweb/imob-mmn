@@ -52,6 +52,10 @@ export default async function SimuladoresPage({ searchParams }: { searchParams: 
                     <Shield className={`w-4 h-4 ${currentTab === 'caucao' ? 'text-orange-500' : ''}`} />
                     Caução / Seguro Fiança
                 </Link>
+                <Link href="/painel/cartas-contempladas" className="flex-1 flex justify-center items-center gap-2 py-3 rounded-lg text-sm font-bold transition-all text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 group">
+                    <span className="w-4 h-4 text-green-500 group-hover:scale-110 transition-transform flex items-center justify-center">📄</span>
+                    Cartas Contempladas
+                </Link>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative items-start">

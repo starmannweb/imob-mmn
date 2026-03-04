@@ -4,6 +4,7 @@ export const dynamic = 'force-dynamic';
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { ChevronRight, UserCheck, ArrowRight, Search, Users, Inbox } from "lucide-react";
+import { ForwardLeadCard } from "./ForwardLeadCard";
 
 export default async function SeletorPage() {
     const supabase = await createClient();
@@ -27,6 +28,13 @@ export default async function SeletorPage() {
         .select("*")
         .eq("referred_by", user.id)
         .order("full_name", { ascending: true });
+
+    // Fetch user's properties to assign
+    const { data: properties } = await supabase
+        .from("properties")
+        .select("id, title")
+        .eq("owner_id", user.id)
+        .order("title", { ascending: true });
 
     return (
         <div className="flex-1 flex flex-col w-full max-w-6xl pb-12">
@@ -78,35 +86,12 @@ export default async function SeletorPage() {
                             </div>
                         ) : (
                             leads.map((lead) => (
-                                <div key={lead.id} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 hover:shadow-md transition-shadow group">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <h3 className="font-bold text-slate-800 dark:text-slate-200 text-sm">{lead.name}</h3>
-                                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                                                {lead.phone_whatsapp} {lead.email && `• ${lead.email}`}
-                                            </p>
-                                            {lead.property?.title && (
-                                                <p className="text-xs text-blue-600 dark:text-blue-400 italic mt-1">⌂ {lead.property.title}</p>
-                                            )}
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <select
-                                                className="bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-xs text-slate-700 dark:text-slate-200 rounded-lg px-3 py-2 font-medium focus:ring-2 focus:ring-blue-500/30"
-                                                defaultValue=""
-                                            >
-                                                <option value="" disabled>Selecionar afiliado...</option>
-                                                {affiliates?.map(aff => (
-                                                    <option key={aff.id} value={aff.id}>
-                                                        {aff.full_name || aff.id.substring(0, 8)}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <button className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors">
-                                                <ArrowRight className="w-4 h-4" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <ForwardLeadCard
+                                    key={lead.id}
+                                    lead={lead}
+                                    affiliates={affiliates}
+                                    properties={properties}
+                                />
                             ))
                         )}
                     </div>

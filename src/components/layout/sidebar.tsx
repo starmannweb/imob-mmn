@@ -46,7 +46,7 @@ export default async function Sidebar() {
                             <span className="inline-flex justify-center items-center">
                                 <Building className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
                             </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Imóveis</span>
+                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Meus Imóveis</span>
                         </Link>
                     </li>
                     <li>
@@ -54,7 +54,7 @@ export default async function Sidebar() {
                             <span className="inline-flex justify-center items-center">
                                 <Calculator className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
                             </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Simuladores</span>
+                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Simulador de Custo</span>
                         </Link>
                     </li>
 
