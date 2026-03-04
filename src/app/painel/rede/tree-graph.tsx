@@ -92,7 +92,7 @@ export default function TreeGraph({ currentUser, network }: TreeGraphProps) {
     const [edges, , onEdgesChange] = useEdgesState(initialEdges);
 
     return (
-        <div style={{ width: '100%', height: '500px' }} className="mt-8 bg-slate-50 border border-slate-200 rounded-xl shadow-inner relative overflow-hidden">
+        <div style={{ width: '100%', height: '500px' }} className="mt-2 bg-slate-50 border border-slate-200 rounded-xl shadow-inner relative overflow-hidden">
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
@@ -106,11 +106,6 @@ export default function TreeGraph({ currentUser, network }: TreeGraphProps) {
                 <MiniMap nodeStrokeWidth={3} zoomable pannable />
                 <Background variant={BackgroundVariant.Dots} gap={24} size={2} color="#cbd5e1" />
             </ReactFlow>
-
-            <div className="absolute top-4 left-4 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-200 shadow-sm z-10">
-                <h3 className="text-sm font-bold text-slate-800">Mapa de Afiliados</h3>
-                <p className="text-xs text-slate-500">Arraste para mover, use o scroll para zoom.</p>
-            </div>
         </div>
     );
 }

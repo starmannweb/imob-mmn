@@ -49,8 +49,6 @@ export default async function MinhaRedePage({ searchParams }: { searchParams: Pr
                 </div>
                 <div className="flex items-center gap-2">
                     <CreateOpportunityModal />
-                    <Button variant="outline" className="font-bold text-slate-600 gap-2 bg-white"><Search className="w-4 h-4" /> Buscar</Button>
-                    <Button variant="outline" className="font-bold text-slate-600 gap-2 bg-white"><Settings2 className="w-4 h-4" /> Config</Button>
                 </div>
             </div>
 
@@ -81,16 +79,16 @@ export default async function MinhaRedePage({ searchParams }: { searchParams: Pr
                 </div>
             </div>
 
-            {/* Abas - Árvore de Afiliados / Oportunidades / Parcerias */}
+            {/* Abas - Árvore de Afiliados / Parceiros / Oportunidades */}
             <div className="flex bg-slate-100 dark:bg-slate-800 p-1 mb-6 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-x-auto w-full">
                 <Link href="/painel/rede?tab=rede" className={`flex-1 min-w-max text-center flex items-center justify-center gap-2 px-6 py-2 rounded-md text-sm font-bold transition-all ${currentTab === 'rede' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm border border-blue-100 dark:border-slate-600' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-700/50'}`}>
                     Árvore de Afiliados
                 </Link>
+                <Link href="/painel/rede?tab=parcerias" className={`flex-1 min-w-max text-center flex items-center justify-center gap-2 px-6 py-2 rounded-md text-sm font-bold transition-all border-l border-slate-200 dark:border-slate-700 ${currentTab === 'parcerias' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm border border-blue-100 dark:border-slate-600' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-700/50'}`}>
+                    Parceiros
+                </Link>
                 <Link href="/painel/rede?tab=oportunidades" className={`flex-1 min-w-max text-center flex items-center justify-center gap-2 px-6 py-2 rounded-md text-sm font-bold transition-all border-l border-slate-200 dark:border-slate-700 ${currentTab === 'oportunidades' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm border border-blue-100 dark:border-slate-600' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-700/50'}`}>
                     Oportunidades
-                </Link>
-                <Link href="/painel/rede?tab=parcerias" className={`flex-1 min-w-max text-center flex items-center justify-center gap-2 px-6 py-2 rounded-md text-sm font-bold transition-all border-l border-slate-200 dark:border-slate-700 ${currentTab === 'parcerias' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm border border-blue-100 dark:border-slate-600' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-700/50'}`}>
-                    Parcerias
                 </Link>
             </div>
 
