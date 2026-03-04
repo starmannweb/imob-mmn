@@ -143,7 +143,7 @@ export default async function PainelPage() {
                 </div>
             </div>
 
-            {/* Row 2: Status Progress Bars */
+            {/* Row 2: Status Progress Bars */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                 {/* Imoveis por Status */}
                 <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 rounded-xl shadow-sm">
@@ -317,48 +317,6 @@ export default async function PainelPage() {
                 </div>
             </div>
 
-            {/* Nova Seção: Analytics e Relatórios - Skeletons */}
-            <div className="mt-8 border-t border-slate-200 dark:border-slate-800 pt-8 mb-8">
-                <div className="mb-4">
-                    <span className="text-xs font-bold text-blue-500 animate-pulse flex items-center gap-2">
-                        <span className="w-2 h-2 bg-blue-500 rounded-full inline-block"></span> Carregando...
-                    </span>
-                </div>
-
-                <div className="space-y-4 opacity-50 pointer-events-none">
-                    {/* Skeletons Top Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        {[1, 2, 3, 4].map((i) => (
-                            <div key={i} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-xl flex flex-col items-center justify-center min-h-[120px]">
-                                <div className="w-16 h-4 bg-slate-200 dark:bg-slate-700 rounded-full mb-3"></div>
-                                <div className="w-24 h-6 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Skeletons Medium Cards Grid 2x2 */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {[1, 2, 3, 4].map((i) => (
-                            <div key={i} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-xl min-h-[220px]">
-                                <div className="w-32 h-5 bg-slate-200 dark:bg-slate-700 rounded-lg mb-4"></div>
-                                <div className="w-full h-full bg-slate-100 dark:bg-slate-900 rounded-lg"></div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* ListView Skeleton */}
-                    <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-xl space-y-4">
-                        <div className="w-24 h-6 bg-slate-200 dark:bg-slate-700 rounded-lg mb-6"></div>
-                        {[1, 2, 3].map((i) => (
-                            <div key={i} className="flex flex-col gap-2 pb-4 border-b border-slate-100 dark:border-slate-700 last:border-0">
-                                <div className="w-48 h-5 bg-slate-200 dark:bg-slate-700 rounded-md"></div>
-                                <div className="w-full h-4 bg-slate-100 dark:bg-slate-900 rounded-md"></div>
-                                <div className="w-24 h-6 bg-slate-200 dark:bg-slate-700 rounded-md mt-1"></div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
         </div>
     );
 }
