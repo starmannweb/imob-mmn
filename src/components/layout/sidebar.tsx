@@ -55,20 +55,21 @@ export default function Sidebar() {
                         </Link>
                     </li>
                     <li>
-                        <Link href="/painel/cartas-contempladas" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group bg-blue-600/10 border-blue-500 text-blue-400">
-                            <span className="inline-flex justify-center items-center">
-                                <FileText className="w-5 h-5 text-blue-400" />
-                            </span>
-                            <span className="ml-3 text-sm font-bold tracking-wide truncate">Cartas Contempladas</span>
-                        </Link>
-                    </li>
-                    <li>
                         <Link href="/painel/crm" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
                             <span className="inline-flex justify-center items-center">
                                 <Kanban className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
                             </span>
                             <span className="ml-3 text-sm font-medium tracking-wide truncate">CRM</span>
                         </Link>
+                    </li>
+                    <li>
+                        <div className="relative flex flex-row items-center h-12 px-6 text-slate-500 border-l-4 border-transparent cursor-not-allowed opacity-60">
+                            <span className="inline-flex justify-center items-center">
+                                <WhatsappIcon className="w-5 h-5 text-slate-500" />
+                            </span>
+                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Disparador WhatsApp</span>
+                            <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded">Em breve</span>
+                        </div>
                     </li>
                     <li>
                         <Link href="/painel/negocios" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
@@ -95,11 +96,11 @@ export default function Sidebar() {
                         </Link>
                     </li>
                     <li>
-                        <Link href="/painel/disparador" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
+                        <Link href="/painel/cartas-contempladas" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
                             <span className="inline-flex justify-center items-center">
-                                <WhatsappIcon className="w-5 h-5 text-slate-400 group-hover:text-green-500 transition-colors" />
+                                <FileText className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
                             </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Disparador WhatsApp</span>
+                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Cartas Contempladas</span>
                         </Link>
                     </li>
 
