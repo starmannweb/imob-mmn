@@ -114,7 +114,36 @@ export default async function PainelPage() {
                 </div>
             </div>
 
-            {/* Row 2: Status Progress Bars */}
+            {/* Analytics & Relatórios Header */}
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6" id="analytics">
+                <div>
+                    <h2 className="text-2xl font-extrabold text-blue-600 dark:text-blue-500 flex items-center gap-2">
+                        Analytics & Relatórios <BarChart2 className="w-6 h-6 fill-current text-blue-500/20" />
+                    </h2>
+                    <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm font-medium">
+                        Análise completa de desempenho e métricas
+                    </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                    <select className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-bold rounded-lg px-3 py-2 outline-none hover:bg-slate-50">
+                        <option>Últimos 30 dias</option>
+                        <option>Hoje</option>
+                        <option>Este Ano</option>
+                    </select>
+                    <button className="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg font-bold text-slate-600 dark:text-slate-300 gap-2 h-9 px-3 text-sm">
+                        <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 dark:border-slate-500 border-t-transparent animate-spin"></span> Atualizar
+                    </button>
+                    <button className="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg font-bold text-slate-600 dark:text-slate-300 gap-2 h-9 px-3 text-sm">
+                        <span className="w-4 h-4 border-b-2 border-slate-400 dark:border-slate-500 flex items-center justify-center"><span className="border-x-2 border-t-2 border-slate-400 dark:border-slate-500 w-2 h-2 -translate-y-1 block"></span></span> Exportar
+                    </button>
+                    <button className="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg font-bold text-slate-600 dark:text-slate-300 gap-2 h-9 px-3 text-sm">
+                        <Settings className="w-4 h-4" /> Config
+                    </button>
+                </div>
+            </div>
+
+            {/* Row 2: Status Progress Bars */
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                 {/* Imoveis por Status */}
                 <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 rounded-xl shadow-sm">
@@ -288,36 +317,8 @@ export default async function PainelPage() {
                 </div>
             </div>
 
-            {/* Nova Seção: Analytics e Relatórios (Print 4) */}
-            <div className="mt-8 border-t border-slate-200 dark:border-slate-800 pt-8 mb-8" id="analytics">
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
-                    <div>
-                        <h2 className="text-2xl font-extrabold text-blue-600 dark:text-blue-500 flex items-center gap-2">
-                            Analytics & Relatórios <BarChart2 className="w-6 h-6 fill-current text-blue-500/20" />
-                        </h2>
-                        <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm font-medium">
-                            Análise completa de desempenho e métricas
-                        </p>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-2">
-                        <select className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-bold rounded-lg px-3 py-2 outline-none hover:bg-slate-50">
-                            <option>Últimos 30 dias</option>
-                            <option>Hoje</option>
-                            <option>Este Ano</option>
-                        </select>
-                        <button className="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg font-bold text-slate-600 dark:text-slate-300 gap-2 h-9 px-3 text-sm">
-                            <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 dark:border-slate-500 border-t-transparent animate-spin"></span> Atualizar
-                        </button>
-                        <button className="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg font-bold text-slate-600 dark:text-slate-300 gap-2 h-9 px-3 text-sm">
-                            <span className="w-4 h-4 border-b-2 border-slate-400 dark:border-slate-500 flex items-center justify-center"><span className="border-x-2 border-t-2 border-slate-400 dark:border-slate-500 w-2 h-2 -translate-y-1 block"></span></span> Exportar
-                        </button>
-                        <button className="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg font-bold text-slate-600 dark:text-slate-300 gap-2 h-9 px-3 text-sm">
-                            <Settings className="w-4 h-4" /> Config
-                        </button>
-                    </div>
-                </div>
-
+            {/* Nova Seção: Analytics e Relatórios - Skeletons */}
+            <div className="mt-8 border-t border-slate-200 dark:border-slate-800 pt-8 mb-8">
                 <div className="mb-4">
                     <span className="text-xs font-bold text-blue-500 animate-pulse flex items-center gap-2">
                         <span className="w-2 h-2 bg-blue-500 rounded-full inline-block"></span> Carregando...
