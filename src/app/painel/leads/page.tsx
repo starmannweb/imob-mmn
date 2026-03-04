@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic';
 import { createClient } from "@/utils/supabase/server";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { MapPin, Phone, Mail, Clock, CheckCircle2, Inbox, Plus, Users, Target, AlertCircle, BarChart2, LineChart, PieChart, Info } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, CheckCircle2, Inbox, Plus, Users, Target, AlertCircle, BarChart2, LineChart, PieChart, Info, DollarSign, Search, DownloadCloud, MoreHorizontal, Filter } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -29,280 +29,241 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
         .order("created_at", { ascending: false });
 
     const statusMap: Record<string, { label: string, color: string, bg: string }> = {
-        'new': { label: 'Novo Lead', color: 'text-blue-700', bg: 'bg-blue-100' },
-        'contacted': { label: 'Contatado', color: 'text-amber-700', bg: 'bg-amber-100' },
-        'negotiating': { label: 'Em Negociação', color: 'text-purple-700', bg: 'bg-purple-100' },
-        'won': { label: 'Convertido', color: 'text-green-700', bg: 'bg-green-100' },
-        'lost': { label: 'Perdido', color: 'text-red-700', bg: 'bg-red-100' },
+        'new': { label: 'Novo Lead', color: 'text-blue-700 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30' },
+        'contacted': { label: 'Em Atendimento', color: 'text-amber-700 dark:text-amber-400', bg: 'bg-amber-100 dark:bg-amber-900/30' },
+        'negotiating': { label: 'Em Negociação', color: 'text-purple-700 dark:text-purple-400', bg: 'bg-purple-100 dark:bg-purple-900/30' },
+        'won': { label: 'Convertido', color: 'text-emerald-700 dark:text-emerald-400', bg: 'bg-emerald-100 dark:bg-emerald-900/30' },
+        'lost': { label: 'Perdido', color: 'text-red-700 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-900/30' },
     };
 
+    const stats = [
+        { label: 'TOTAL', value: leads?.length || 0, color: 'text-blue-500', bg: 'bg-blue-50', icon: Users },
+        { label: 'NOVOS', value: leads?.filter(l => l.status === 'new').length || 0, color: 'text-cyan-500', bg: 'bg-cyan-50', icon: Target },
+        { label: 'QUALIFICADOS', value: leads?.filter(l => l.status === 'contacted').length || 0, color: 'text-emerald-500', bg: 'bg-emerald-50', icon: CheckCircle2 },
+        { label: 'NEGOCIANDO', value: leads?.filter(l => l.status === 'negotiating').length || 0, color: 'text-orange-500', bg: 'bg-orange-50', icon: LineChart },
+        { label: 'CONVERTIDOS', value: leads?.filter(l => l.status === 'won').length || 0, color: 'text-emerald-500', bg: 'bg-emerald-50', icon: CheckCircle2 },
+    ];
+
     return (
-        <div className="flex-1 flex flex-col w-full max-w-6xl pb-12">
+        <div className="flex-1 flex flex-col w-full max-w-7xl mx-auto pb-12 px-2 sm:px-0">
 
-            {/* Cabecalho Principal */}
-            <div className="mb-6 flex flex-col md:flex-row md:items-start justify-between gap-4">
+            {/* Cabelho Principal */}
+            <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 mt-2">
                 <div>
-                    <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Leads</h1>
-                    <p className="text-slate-500 mt-1 text-sm">Gerencie seus leads e acompanhe métricas de conversão.</p>
+                    <div className="flex items-center gap-2 text-xs text-slate-500 font-medium mb-1">
+                        <Link href="/painel" className="hover:text-blue-600 transition-colors">Home</Link>
+                        <span>/</span>
+                        <span className="text-slate-700 dark:text-slate-300">Gestão de Leads</span>
+                    </div>
+                    <h1 className="text-3xl font-extrabold text-blue-500 dark:text-blue-400 flex items-center gap-2 tracking-tight">
+                        Gestão de Leads 👥
+                    </h1>
+                    <p className="text-slate-500 dark:text-slate-400 mt-1.5 text-sm">
+                        Gerencie e converta seus leads
+                    </p>
                 </div>
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full text-sm font-semibold shadow-sm flex items-center gap-2 transition-colors">
-                    <Plus className="w-4 h-4" /> Adicionar Lead
-                </button>
+                <div className="flex items-center gap-3">
+                    <button className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-md text-sm font-semibold shadow-sm transition-colors flex items-center gap-2">
+                        <DownloadCloud className="w-4 h-4 rotate-180" /> Importar
+                    </button>
+                    <button className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-md text-sm font-semibold shadow-sm transition-colors flex items-center gap-2">
+                        <DownloadCloud className="w-4 h-4" /> Exportar
+                    </button>
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm font-bold shadow-sm flex items-center gap-2 transition-all">
+                        <Plus className="w-4 h-4" /> Novo Lead
+                    </button>
+                </div>
             </div>
 
-            {/* Tabs minimalistas tipo "pill" */}
-            <div className="flex gap-2 mb-6 bg-slate-50 p-1.5 rounded-xl w-full border border-slate-200/60 max-w-sm">
-                <Link href="/painel/leads?tab=leads" className={`flex-1 flex justify-center items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all ${currentTab === 'leads' ? 'bg-white text-slate-800 shadow-sm border border-slate-200/50' : 'text-slate-500 hover:text-slate-700'}`}>
-                    <Users className="w-4 h-4" />
-                    Meus Leads
+            {/* Tabs */}
+            <div className="flex flex-wrap gap-2 mb-8 bg-slate-100/50 dark:bg-slate-800/50 p-1.5 rounded-xl w-full border border-slate-100 dark:border-slate-800 max-w-lg">
+                <Link href="/painel/leads?tab=leads" className={`flex-1 flex justify-center items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${currentTab === 'leads' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>
+                    <Users className="w-4 h-4" /> Meus Leads
                 </Link>
-                <Link href="/painel/leads?tab=analises" className={`flex-1 flex justify-center items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all ${currentTab === 'analises' ? 'bg-white text-slate-800 shadow-sm border border-slate-200/50' : 'text-slate-500 hover:text-slate-700'}`}>
-                    <BarChart2 className="w-4 h-4" />
-                    Análises
+                <Link href="/painel/leads?tab=importar" className={`flex-1 flex justify-center items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${currentTab === 'importar' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>
+                    <DownloadCloud className="w-4 h-4 rotate-180" /> Importar CSV
                 </Link>
-            </div>
-
-            {/* Toggle de Admin */}
-            <div className="bg-slate-900 rounded-xl p-5 md:px-6 mb-6 flex items-center justify-between text-white shadow-xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/30 rounded-full blur-3xl opacity-40 -mr-10 -mt-10 pointer-events-none"></div>
-                <div className="relative z-10">
-                    <h3 className="font-bold text-slate-100 text-sm">Visão Modo Dono (Rede)</h3>
-                    <p className="text-xs text-slate-400 mt-0.5 font-light">Ative para ver os leads captados por todos os corretores afiliados abaixo da sua rede.</p>
-                </div>
-                {/* Fake Toggle */}
-                <div className="w-11 h-6 bg-slate-700 rounded-full relative cursor-pointer border border-slate-600 z-10">
-                    <div className="w-5 h-5 bg-slate-400 rounded-full absolute top-px left-px transition-all shadow border border-slate-500"></div>
-                </div>
+                <Link href="/painel/leads?tab=novos" className={`flex-1 flex justify-center items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${currentTab === 'novos' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>
+                    <Inbox className="w-4 h-4" /> Obter Novos Leads
+                </Link>
             </div>
 
             {currentTab === 'leads' ? (
                 <>
-                    {/* Metricas Rapidas Leads View */}
-                    <div className="mb-8">
-                        <h3 className="font-bold text-slate-800 text-base flex items-center gap-2 mb-4">
-                            <Target className="w-5 h-5 text-blue-500" /> Resumo Rápido
-                        </h3>
+                    {/* Stats Row (5 Cards) */}
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4 mb-8">
+                        {stats.map((stat, i) => {
+                            const Icon = stat.icon;
+                            return (
+                                <div key={i} className="bg-white dark:bg-[#1a1f2c] border-none rounded-xl p-4 sm:p-5 shadow-sm shadow-slate-200/50 dark:shadow-none flex flex-col items-center text-center justify-center hover:shadow-md transition-shadow relative overflow-hidden">
+                                    <div className={`p-4 rounded-full mb-3 ${stat.bg}`}>
+                                        <Icon className={`w-5 h-5 ${stat.color}`} />
+                                    </div>
+                                    <span className="text-2xl font-black text-slate-700 dark:text-slate-200 leading-none mb-2 font-mono">
+                                        {stat.value}
+                                    </span>
+                                    <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                                        {stat.label}
+                                    </span>
+                                </div>
+                            )
+                        })}
+                    </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start justify-between">
-                                <div>
-                                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total de Leads</p>
-                                    <span className="text-3xl font-extrabold text-slate-800 leading-none">{leads?.length || 0}</span>
-                                </div>
-                                <div className="bg-blue-50/50 p-2.5 rounded-full ring-2 ring-white border border-blue-100">
-                                    <Users className="w-4 h-4 text-blue-600" />
-                                </div>
+                    {/* Toolbar / Filtros */}
+                    <div className="flex flex-col mb-6 bg-white dark:bg-[#1a1f2c] rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden">
+                        <div className="flex flex-col xl:flex-row items-center border-b border-slate-100 dark:border-slate-800">
+                            <div className="flex items-center gap-3 p-2 xl:w-96 flex-shrink-0">
+                                <span className="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg">
+                                    <Filter className="w-4 h-4 text-blue-500" />
+                                </span>
+                                <span className="text-sm font-bold text-slate-700 dark:text-slate-200">Filtros</span>
                             </div>
-                            <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start justify-between">
-                                <div>
-                                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Taxa de Conversão</p>
-                                    <span className="text-3xl font-extrabold text-slate-800 leading-none">0%</span>
-                                </div>
-                                <div className="bg-emerald-50/50 p-2.5 rounded-full ring-2 ring-white border border-emerald-100">
-                                    <Target className="w-4 h-4 text-emerald-600" />
-                                </div>
+                        </div>
+                        <div className="p-4 flex flex-col xl:flex-row gap-4">
+                            <div className="relative flex-1">
+                                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                                <input
+                                    type="text"
+                                    placeholder="Buscar leads..."
+                                    className="w-full bg-white dark:bg-[#0f1522] border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-300 text-sm rounded-lg pl-10 pr-4 py-2.5 outline-none transition-shadow"
+                                />
                             </div>
-                            <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start justify-between">
-                                <div>
-                                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Não Atendidos</p>
-                                    <span className="text-3xl font-extrabold text-slate-800 leading-none">0</span>
+
+                            <div className="flex flex-wrap md:flex-nowrap items-center gap-4 w-full xl:w-auto">
+                                <div className="flex-1 min-w-[150px] relative">
+                                    <select className="w-full bg-white dark:bg-[#0f1522] border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm rounded-lg px-3 py-2.5 appearance-none outline-none cursor-pointer">
+                                        <option>Todos os Status</option>
+                                        <option>Novos</option>
+                                        <option>Em Atendimento</option>
+                                        <option>Convertidos</option>
+                                    </select>
                                 </div>
-                                <div className="bg-amber-50/50 p-2.5 rounded-full ring-2 ring-white border border-amber-100">
-                                    <AlertCircle className="w-4 h-4 text-amber-600" />
+                                <div className="flex-1 min-w-[150px] relative">
+                                    <select className="w-full bg-white dark:bg-[#0f1522] border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm rounded-lg px-3 py-2.5 appearance-none outline-none cursor-pointer">
+                                        <option>Todas as Origens</option>
+                                        <option>Facebook Ads</option>
+                                        <option>Orgânico</option>
+                                        <option>Portal</option>
+                                    </select>
+                                </div>
+                                <div className="flex-1 min-w-[150px] relative">
+                                    <select className="w-full bg-white dark:bg-[#0f1522] border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm rounded-lg px-3 py-2.5 appearance-none outline-none cursor-pointer">
+                                        <option>Todas as Prioridades</option>
+                                        <option>Alta</option>
+                                        <option>Média</option>
+                                        <option>Baixa</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    {/* Lista de Leads */}
                     {leads && leads.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <div className="flex flex-col gap-3">
                             {leads.map((lead) => {
                                 const s = statusMap[lead.status] || statusMap['new'];
+                                const initial = (lead.name || '?').charAt(0).toUpperCase();
+
                                 return (
-                                    <div key={lead.id} className="bg-white border text-left border-slate-200 rounded-xl p-6 shadow-sm flex flex-col hover:shadow-md transition-shadow">
-                                        <div className="flex justify-between items-start mb-4">
-                                            <div className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded border ${s.bg.replace('bg-', 'border-')} ${s.color}`}>
-                                                {s.label}
+                                    <div key={lead.id} className="bg-white dark:bg-[#1a1f2c] rounded-xl p-4 md:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all group">
+                                        <div className="flex items-center gap-4 w-full md:w-auto">
+                                            <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-black flex items-center justify-center text-lg flex-shrink-0 shadow-sm border border-blue-200 dark:border-blue-800">
+                                                {initial}
                                             </div>
-                                            <span className="text-xs text-slate-400 font-medium flex items-center">
-                                                <Clock className="w-3 h-3 mr-1" />
-                                                {formatDistanceToNow(new Date(lead.created_at), { addSuffix: true, locale: ptBR })}
-                                            </span>
-                                        </div>
-                                        <h3 className="text-lg font-extrabold text-slate-900 mb-1">{lead.name}</h3>
-                                        {lead.property?.title ? (
-                                            <Link href={`/imoveis/${lead.property.slug}`} className="text-sm font-medium text-blue-600 hover:underline mb-4 line-clamp-1 italic">
-                                                Interesse: {lead.property.title}
-                                            </Link>
-                                        ) : (
-                                            <p className="text-sm font-medium text-slate-400 mb-4 italic">Sem imóvel vinculado</p>
-                                        )}
-
-                                        <div className="space-y-2 mb-6 flex-1">
-                                            {lead.phone_whatsapp && (
-                                                <div className="flex items-center text-sm font-medium text-slate-600">
-                                                    <Phone className="w-4 h-4 mr-2 text-slate-400" />
-                                                    {lead.phone_whatsapp}
+                                            <div className="flex-1 min-w-0">
+                                                <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-base truncate pr-4">{lead.name}</h3>
+                                                <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-slate-500 dark:text-slate-400 mt-1.5">
+                                                    <span className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-100 dark:border-slate-700">
+                                                        <Phone className="w-3.5 h-3.5 text-slate-400" /> {lead.phone_whatsapp || 'Sem telefone'}
+                                                    </span>
+                                                    <span className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-100 dark:border-slate-700 hidden sm:flex truncate max-w-[200px]">
+                                                        <Mail className="w-3.5 h-3.5 text-slate-400" /> {lead.email || 'Sem email'}
+                                                    </span>
+                                                    <span className="flex items-center gap-1 text-slate-400 sm:hidden">
+                                                        <Clock className="w-3 h-3" /> {formatDistanceToNow(new Date(lead.created_at), { addSuffix: true, locale: ptBR })}
+                                                    </span>
                                                 </div>
-                                            )}
-                                            {lead.email && (
-                                                <div className="flex items-center text-sm font-medium text-slate-600">
-                                                    <Mail className="w-4 h-4 mr-2 text-slate-400" />
-                                                    <span className="truncate">{lead.email}</span>
-                                                </div>
-                                            )}
+                                            </div>
                                         </div>
 
-                                        <div className="mt-auto pt-4 border-t border-slate-100 flex gap-3">
-                                            <a
-                                                href={`https://wa.me/${lead.phone_whatsapp?.replace(/\D/g, '')}?text=Olá ${lead.name?.split(' ')[0]}! Tudo bem?`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white py-2 rounded-lg text-sm font-bold flex items-center justify-center transition-colors shadow-sm"
-                                            >
-                                                <Phone className="w-4 h-4 mr-2" /> WhatsApp
-                                            </a>
+                                        <div className="flex items-center gap-4 lg:gap-8 w-full md:w-auto mt-2 md:mt-0 pt-3 md:pt-0 border-t md:border-none border-slate-100 dark:border-slate-800">
+                                            <div className="hidden lg:block min-w-[140px]">
+                                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Data</p>
+                                                <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                                    {formatDistanceToNow(new Date(lead.created_at), { addSuffix: true, locale: ptBR })}
+                                                </p>
+                                            </div>
+                                            <div className="hidden md:block w-48">
+                                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Interesse</p>
+                                                <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 truncate">
+                                                    {lead.property?.title || <span className="text-slate-400 italic">Genérico / Sem imóvel</span>}
+                                                </p>
+                                            </div>
+                                            <div className="min-w-[120px]">
+                                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 hidden md:block">Status</p>
+                                                <div className={`inline-flex items-center px-2.5 py-1 text-xs font-bold rounded border ${s.bg} ${s.color} border-current border-opacity-20`}>
+                                                    {s.label}
+                                                </div>
+                                            </div>
+                                            <div className="flex gap-2 ml-auto">
+                                                <a
+                                                    href={`https://wa.me/${lead.phone_whatsapp?.replace(/\D/g, '')}?text=Olá ${lead.name?.split(' ')[0]}! Tudo bem?`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="w-10 h-10 rounded-lg bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white flex items-center justify-center transition-colors tooltip-trigger"
+                                                    title="Conversar no WhatsApp"
+                                                >
+                                                    <Phone className="w-4 h-4" />
+                                                </a>
+                                                <button className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 border border-slate-200 dark:border-slate-700 dark:hover:text-slate-200 flex items-center justify-center transition-colors">
+                                                    <MoreHorizontal className="w-5 h-5" />
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 )
                             })}
                         </div>
                     ) : (
-                        <div className="bg-white border border-slate-200 border-dashed flex flex-col items-center justify-center py-20 px-4 rounded-xl shadow-sm text-center">
-                            <div className="bg-slate-50 p-4 rounded-full mb-4 ring-8 ring-slate-50/50">
-                                <Inbox className="w-8 h-8 text-slate-300" />
+                        <div className="bg-white dark:bg-[#1a1f2c] border-2 border-slate-200 dark:border-slate-700 border-dashed flex flex-col items-center justify-center py-20 px-4 rounded-xl shadow-sm text-center">
+                            <div className="bg-slate-50 dark:bg-slate-800/50 p-5 rounded-full mb-4.5 ring-8 ring-slate-50/50 dark:ring-slate-800/20">
+                                <Inbox className="w-10 h-10 text-slate-300 dark:text-slate-600" />
                             </div>
-                            <h2 className="text-lg font-extrabold mb-1 text-slate-800">Nenhum lead encontrado</h2>
-                            <p className="text-slate-500 text-sm max-w-xs mb-6 font-light">Compartilhe links ou aguarde novos contatos no CRM.</p>
-                            <button className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm py-2 px-6 rounded-full transition-colors shadow-sm">
-                                Recarregar
+                            <h2 className="text-xl font-extrabold mb-2 text-slate-800 dark:text-slate-100">Nenhum lead encontrado</h2>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm max-w-sm mb-8 font-medium">Compartilhe links ou integre seus anúncios para receber novos leads direto no CRM.</p>
+                            <button className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-sm py-2.5 px-8 rounded-lg transition-colors shadow-sm">
+                                Importar Leads
                             </button>
                         </div>
                     )}
                 </>
-            ) : (
-                /* Analytics View */
-                <div className="flex flex-col gap-6">
-                    <div>
-                        <h2 className="text-lg font-extrabold text-slate-800 flex items-center gap-2">
-                            <BarChart2 className="w-5 h-5 text-blue-500" /> Métricas e Análise
-                        </h2>
-                        <p className="text-xs text-slate-400 font-medium mt-1">
-                            Visualize e acompanhe sua taxa de conversão de leads.
-                        </p>
+            ) : currentTab === 'importar' ? (
+                <div className="bg-white dark:bg-[#1a1f2c] rounded-xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm text-center flex flex-col items-center min-h-[400px] justify-center">
+                    <DownloadCloud className="w-16 h-16 text-blue-500 mb-6 opacity-80" />
+                    <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">Importar planilha de Leads</h2>
+                    <p className="text-slate-500 dark:text-slate-400 max-w-md mb-8">Faça upload de um arquivo CSV ou Excel com seus contatos. O sistema criará leads automaticamente e associará ao seu funil.</p>
+
+                    <div className="border-2 border-dashed border-blue-200 dark:border-blue-800/50 rounded-xl p-10 w-full max-w-xl bg-blue-50/50 dark:bg-blue-900/10 mb-6 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
+                        <p className="text-sm font-bold text-blue-600 dark:text-blue-400">Clique para selecionar ou arraste o arquivo aqui</p>
+                        <p className="text-xs text-slate-400 mt-2">Formato aceito: .CSV, .XLSX (Max 10MB)</p>
                     </div>
 
-                    {/* Row 1: KPI Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-                        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-                            <div>
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="font-bold text-slate-700 text-sm">Funil de Vendas</h3>
-                                    <div className="p-2 bg-blue-50/50 rounded flex items-center justify-center border border-blue-100">
-                                        <LineChart className="w-4 h-4 text-blue-500" />
-                                    </div>
-                                </div>
-                                <div className="flex items-baseline gap-2">
-                                    <span className="text-3xl font-black text-slate-900 leading-none">0</span>
-                                    <span className="text-xs text-slate-500 font-medium">Vendas feitas</span>
-                                </div>
-                            </div>
-                            <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
-                                <span className="text-emerald-500 text-xs font-bold px-2 py-0.5 bg-emerald-50 rounded flex items-center gap-1">↑ 10%</span>
-                                <span className="text-xs text-slate-400 font-medium italic">em relação ao último mês</span>
-                            </div>
-                        </div>
-
-                        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-                            <div>
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="font-bold text-slate-700 text-sm">Taxa de Conversão</h3>
-                                    <div className="p-2 bg-emerald-50/50 rounded flex items-center justify-center border border-emerald-100">
-                                        <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                                    </div>
-                                </div>
-                                <div className="flex items-baseline gap-2">
-                                    <span className="text-3xl font-black text-slate-900 leading-none">0%</span>
-                                    <span className="text-xs text-slate-500 font-medium">Leads fechados</span>
-                                </div>
-                            </div>
-                            <div className="mt-4 pt-4 border-t border-slate-100">
-                                <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
-                                    <div className="bg-emerald-500 w-0 h-full rounded-full"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-                            <div>
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="font-bold text-slate-700 text-sm">Lembretes do sistema</h3>
-                                    <div className="p-2 bg-amber-50/50 rounded flex items-center justify-center border border-amber-100">
-                                        <AlertCircle className="w-4 h-4 text-amber-500" />
-                                    </div>
-                                </div>
-                                <div className="flex items-baseline gap-2">
-                                    <span className="text-3xl font-black text-slate-900 leading-none">0</span>
-                                    <span className="text-xs text-slate-500 font-medium">Têm avisos expirados</span>
-                                </div>
-                            </div>
-                            <div className="mt-4 pt-4 border-t border-slate-100">
-                                <span className="text-xs text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded">Requer atenção</span>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    {/* Row 2: Charts Area (Empty State based on Print) */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col h-[300px]">
-                            <div>
-                                <h3 className="font-bold text-slate-800 text-sm">Desempenho de Vendas</h3>
-                                <p className="text-xs text-slate-400 font-medium mt-0.5">Acompanhe a escala da sua representatividade de vendas</p>
-                            </div>
-                            <div className="flex-1 flex flex-col items-center justify-center gap-3">
-                                <div className="bg-slate-50 p-3 rounded-full border border-slate-100">
-                                    <BarChart2 className="w-6 h-6 text-slate-300" />
-                                </div>
-                                <p className="text-xs text-slate-400 font-medium italic">Ainda não há dados suficientes...</p>
-                            </div>
-                        </div>
-
-                        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col h-[300px]">
-                            <div>
-                                <h3 className="font-bold text-slate-800 text-sm">Taxa de Conversão</h3>
-                                <p className="text-xs text-slate-400 font-medium mt-0.5">Acompanhe os estágios dos seus leads em cada momento</p>
-                            </div>
-                            <div className="flex-1 flex flex-col items-center justify-center gap-3">
-                                <div className="bg-slate-50 p-3 rounded-full border border-slate-100">
-                                    <PieChart className="w-6 h-6 text-slate-300" />
-                                </div>
-                                <p className="text-xs text-slate-400 font-medium italic">Ainda não há dados suficientes...</p>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    {/* Row 3: Lembretes */}
-                    <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm mb-4">
-                        <div className="flex items-start justify-between">
-                            <div>
-                                <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
-                                    Lembretes em atraso
-                                    <div className="w-4 h-4 rounded-full bg-slate-100 flex items-center justify-center cursor-help" title="Detalhes"><Info className="w-2.5 h-2.5 text-slate-400" /></div>
-                                </h3>
-                                <p className="text-xs text-slate-400 font-medium mt-1">Lembretes aos associados com data de aviso já expiradas ou não os contataram...</p>
-                            </div>
-                            <div className="w-8 h-8 rounded bg-slate-50 border border-slate-200 flex items-center justify-center mt-1">
-                                <span className="font-black text-slate-800 border-b-2 border-slate-800 leading-none">0</span>
-                            </div>
-                        </div>
-                    </div>
-
+                    <button className="text-sm font-semibold text-slate-500 hover:text-slate-700 underline underline-offset-4">Baixar planilha de exemplo</button>
                 </div>
-            )}
+            ) : currentTab === 'novos' ? (
+                <div className="bg-white dark:bg-[#1a1f2c] rounded-xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm text-center flex flex-col items-center min-h-[400px] justify-center">
+                    <Target className="w-16 h-16 text-emerald-500 mb-6 opacity-80" />
+                    <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">Obter Novos Leads</h2>
+                    <p className="text-slate-500 dark:text-slate-400 max-w-md mb-8">
+                        Conecte suas campanhas de marketing ou ative a captação automática para receber leads qualificados direto no seu CRM.
+                    </p>
+                    <button className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-6 py-3 rounded-lg flex items-center gap-2 shadow-sm transition-colors">
+                        <Plus className="w-5 h-5" /> Configurar Captação
+                    </button>
+                </div>
+            ) : null}
         </div>
     );
 }

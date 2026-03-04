@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Home, Users, DollarSign, LineChart, AppWindow, BarChart2, Calculator, Building2, Building, Flame, UserCheck, Settings, Layers, Coins, Globe, Inbox, Kanban } from 'lucide-react';
+import { Home, Users, DollarSign, LineChart, AppWindow, BarChart2, Calculator, Building2, Building, Flame, UserCheck, Settings, Layers, Coins, Globe, Inbox, Kanban, FileText } from 'lucide-react';
 
 const WhatsappIcon = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -52,6 +52,14 @@ export default function Sidebar() {
                                 <Inbox className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
                             </span>
                             <span className="ml-3 text-sm font-medium tracking-wide truncate">Leads</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="/painel/cartas-contempladas" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group bg-blue-600/10 border-blue-500 text-blue-400">
+                            <span className="inline-flex justify-center items-center">
+                                <FileText className="w-5 h-5 text-blue-400" />
+                            </span>
+                            <span className="ml-3 text-sm font-bold tracking-wide truncate">Cartas Contempladas</span>
                         </Link>
                     </li>
                     <li>
