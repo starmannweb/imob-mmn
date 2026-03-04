@@ -6,10 +6,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 const KANBAN_COLUMNS = [
-    { id: 'novo', title: 'Novos Leads', color: 'bg-blue-500', bgColor: 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400' },
-    { id: 'atendimento', title: 'Contatados', color: 'bg-amber-500', bgColor: 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400' },
-    { id: 'negociacao', title: 'Qualificados', color: 'bg-purple-500', bgColor: 'bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400' },
-    { id: 'fechado', title: 'Proposta', color: 'bg-cyan-500', bgColor: 'bg-cyan-50 text-cyan-700 dark:bg-cyan-900/20 dark:text-cyan-400' }
+    { id: 'novo', title: 'Novas Locações/Vendas', color: 'bg-blue-500', bgColor: 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400' },
+    { id: 'atendimento', title: 'Visita Agendada', color: 'bg-amber-500', bgColor: 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400' },
+    { id: 'negociacao', title: 'Em Proposta', color: 'bg-purple-500', bgColor: 'bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400' },
+    { id: 'fechado', title: 'Contrato/Fechado', color: 'bg-cyan-500', bgColor: 'bg-cyan-50 text-cyan-700 dark:bg-cyan-900/20 dark:text-cyan-400' }
 ];
 
 const DUMMY_DEALS = [
@@ -36,13 +36,13 @@ export default async function NegociosPage({ searchParams }: { searchParams: Pro
             {/* Header / Titulo */}
             <div className="mb-6">
                 <div className="flex items-center gap-2 text-xs text-slate-500 font-medium mb-1">
-                    <Link href="/painel" className="hover:text-blue-600 transition-colors">CRM</Link>
+                    <Link href="/painel" className="hover:text-blue-600 transition-colors">Vendas e Locações</Link>
                 </div>
                 <h1 className="text-2xl font-extrabold text-blue-500 flex items-center gap-2">
-                    CRM Inteligente 👥
+                    Vendas e Locações 🤝
                 </h1>
                 <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm font-medium">
-                    Gerencie seus leads e oportunidades
+                    Acompanhe o andamento das suas negociações
                 </p>
             </div>
 
@@ -61,7 +61,7 @@ export default async function NegociosPage({ searchParams }: { searchParams: Pro
                 <div className="bg-white dark:bg-[#1a1f2c] rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-800 flex justify-between items-center group relative overflow-hidden">
                     <div className="absolute top-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-0 group-hover:opacity-20 transition-opacity"></div>
                     <div>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Leads Qualificados</p>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Em Negociação</p>
                         <h2 className="text-3xl font-black text-emerald-500 dark:text-emerald-400 leading-none">{DUMMY_DEALS.filter(d => d.column === 'negociacao' || d.column === 'fechado').length}</h2>
                     </div>
                     <div className="bg-emerald-50 dark:bg-emerald-900/30 p-4 rounded-xl text-emerald-500 border border-emerald-100 dark:border-emerald-800/50">

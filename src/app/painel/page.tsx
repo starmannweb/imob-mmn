@@ -2,7 +2,7 @@ import Link from "next/link";
 export const dynamic = 'force-dynamic';
 
 import { createClient } from "@/utils/supabase/server";
-import { Building2, Users, MessageSquare, TrendingUp, Home, DollarSign, ListTodo, Activity, ChevronRight, Zap, Folder, FileText, Target, LineChart, Calendar, BarChart2, Settings } from "lucide-react";
+import { Building2, Users, MessageSquare, TrendingUp, Home, DollarSign, ListTodo, Activity, ChevronRight, Zap, Folder, FileText, Target, LineChart, Calendar, BarChart2, Settings, RefreshCw, Download } from "lucide-react";
 export default async function PainelPage() {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -131,13 +131,13 @@ export default async function PainelPage() {
                         <option>Hoje</option>
                         <option>Este Ano</option>
                     </select>
-                    <button className="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg font-bold text-slate-600 dark:text-slate-300 gap-2 h-9 px-3 text-sm">
-                        <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 dark:border-slate-500 border-t-transparent animate-spin"></span> Atualizar
+                    <button className="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg font-bold text-slate-600 dark:text-slate-300 gap-2 h-9 px-3 text-sm flex-shrink-0">
+                        <RefreshCw className="w-4 h-4" /> Atualizar
                     </button>
-                    <button className="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg font-bold text-slate-600 dark:text-slate-300 gap-2 h-9 px-3 text-sm">
-                        <span className="w-4 h-4 border-b-2 border-slate-400 dark:border-slate-500 flex items-center justify-center"><span className="border-x-2 border-t-2 border-slate-400 dark:border-slate-500 w-2 h-2 -translate-y-1 block"></span></span> Exportar
+                    <button className="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg font-bold text-slate-600 dark:text-slate-300 gap-2 h-9 px-3 text-sm flex-shrink-0">
+                        <Download className="w-4 h-4" /> Exportar CSV
                     </button>
-                    <button className="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg font-bold text-slate-600 dark:text-slate-300 gap-2 h-9 px-3 text-sm">
+                    <button className="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg font-bold text-slate-600 dark:text-slate-300 gap-2 h-9 px-3 text-sm flex-shrink-0">
                         <Settings className="w-4 h-4" /> Config
                     </button>
                 </div>

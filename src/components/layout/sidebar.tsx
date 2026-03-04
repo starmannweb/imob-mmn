@@ -49,6 +49,14 @@ export default async function Sidebar() {
                             <span className="ml-3 text-sm font-medium tracking-wide truncate">Imóveis</span>
                         </Link>
                     </li>
+                    <li>
+                        <Link href="/painel/simuladores" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
+                            <span className="inline-flex justify-center items-center">
+                                <Calculator className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                            </span>
+                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Simuladores</span>
+                        </Link>
+                    </li>
 
                     <li className="px-6 mt-6 mb-2">
                         <div className="font-semibold tracking-wide text-slate-500 uppercase text-[11px]">Comercial</div>
@@ -83,16 +91,8 @@ export default async function Sidebar() {
                                 <WhatsappIcon className="w-5 h-5 text-slate-500" />
                             </span>
                             <span className="ml-3 text-sm font-medium tracking-wide truncate">Atendimento de Whatsapp</span>
-                            <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded-full">Em breve</span>
+                            <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded-full whitespace-nowrap flex-shrink-0">Em breve</span>
                         </div>
-                    </li>
-                    <li>
-                        <Link href="/painel/simuladores" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <Calculator className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Simuladores</span>
-                        </Link>
                     </li>
 
                     <li className="px-6 mt-6 mb-2">
@@ -112,7 +112,7 @@ export default async function Sidebar() {
                                 <Megaphone className="w-5 h-5 text-slate-500" />
                             </span>
                             <span className="ml-3 text-sm font-medium tracking-wide truncate">Anúncios</span>
-                            <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded-full">Em breve</span>
+                            <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded-full whitespace-nowrap flex-shrink-0">Em breve</span>
                         </div>
                     </li>
                     <li>
@@ -121,7 +121,7 @@ export default async function Sidebar() {
                                 <Instagram className="w-5 h-5 text-slate-500" />
                             </span>
                             <span className="ml-3 text-sm font-medium tracking-wide truncate">Mídias Sociais</span>
-                            <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded-full">Em breve</span>
+                            <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded-full whitespace-nowrap flex-shrink-0">Em breve</span>
                         </div>
                     </li>
                     <li>

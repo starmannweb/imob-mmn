@@ -6,6 +6,7 @@ import { ptBR } from "date-fns/locale";
 import { MapPin, Phone, Mail, Clock, CheckCircle2, Inbox, Plus, Users, Target, AlertCircle, BarChart2, LineChart, PieChart, Info, DollarSign, Search, DownloadCloud, MoreHorizontal, Filter } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { NewLeadModal } from "./NewLeadModal";
 
 export default async function LeadsPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
     const supabase = await createClient();
@@ -63,27 +64,19 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                     </p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-md text-sm font-semibold shadow-sm transition-colors flex items-center gap-2">
-                        <DownloadCloud className="w-4 h-4 rotate-180" /> Importar
-                    </button>
-                    <button className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-md text-sm font-semibold shadow-sm transition-colors flex items-center gap-2">
-                        <DownloadCloud className="w-4 h-4" /> Exportar
-                    </button>
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm font-bold shadow-sm flex items-center gap-2 transition-all">
-                        <Plus className="w-4 h-4" /> Novo Lead
-                    </button>
+                    <NewLeadModal />
                 </div>
             </div>
 
             {/* Tabs */}
-            <div className="flex flex-wrap gap-2 mb-8 bg-slate-100/50 dark:bg-slate-800/50 p-1.5 rounded-xl w-full border border-slate-100 dark:border-slate-800 max-w-lg">
-                <Link href="/painel/leads?tab=leads" className={`flex-1 flex justify-center items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${currentTab === 'leads' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>
+            <div className="flex flex-wrap gap-2 mb-8 bg-slate-100/50 dark:bg-slate-800/50 p-1.5 rounded-xl border border-slate-100 dark:border-slate-800 w-fit">
+                <Link href="/painel/leads?tab=leads" className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${currentTab === 'leads' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>
                     <Users className="w-4 h-4" /> Meus Leads
                 </Link>
-                <Link href="/painel/leads?tab=importar" className={`flex-1 flex justify-center items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${currentTab === 'importar' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>
+                <Link href="/painel/leads?tab=importar" className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${currentTab === 'importar' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>
                     <DownloadCloud className="w-4 h-4 rotate-180" /> Importar CSV
                 </Link>
-                <Link href="/painel/leads?tab=novos" className={`flex-1 flex justify-center items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${currentTab === 'novos' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>
+                <Link href="/painel/leads?tab=novos" className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${currentTab === 'novos' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>
                     <Inbox className="w-4 h-4" /> Obter Novos Leads
                 </Link>
             </div>
