@@ -114,11 +114,11 @@ export default async function PainelPage() {
                 </div>
             </div>
 
-            {/* Analytics & Relatórios Header */}
-            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6" id="analytics">
+            {/* Relatórios Header */}
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6" id="relatorios">
                 <div>
                     <h2 className="text-2xl font-extrabold text-blue-600 dark:text-blue-500 flex items-center gap-2">
-                        Analytics & Relatórios <BarChart2 className="w-6 h-6 fill-current text-blue-500/20" />
+                        Relatórios <BarChart2 className="w-6 h-6 text-blue-500/20" />
                     </h2>
                     <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm font-medium">
                         Análise completa de desempenho e métricas

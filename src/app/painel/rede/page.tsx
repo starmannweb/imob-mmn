@@ -10,7 +10,7 @@ import CreateOpportunityModal from "./create-opportunity-modal";
 export default async function MinhaRedePage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
     const supabase = await createClient();
     const sp = await searchParams;
-    const currentTab = sp.tab || 'oportunidades';
+    const currentTab = sp.tab || 'rede';
     const { data: { user } } = await supabase.auth.getUser();
 
     // Fetch broker data
@@ -81,22 +81,16 @@ export default async function MinhaRedePage({ searchParams }: { searchParams: Pr
                 </div>
             </div>
 
-            {/* Abas - Oportunidades / Analytics / Parcerias / Perfil / Rede */}
+            {/* Abas - Árvore de Afiliados / Oportunidades / Parcerias */}
             <div className="flex bg-slate-100 dark:bg-slate-800 p-1 mb-6 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-x-auto w-full">
-                <Link href="/painel/rede?tab=oportunidades" className={`flex-1 min-w-max text-center flex items-center justify-center gap-2 px-6 py-2 rounded-md text-sm font-bold transition-all ${currentTab === 'oportunidades' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm border border-blue-100 dark:border-slate-600' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-700/50'}`}>
-                    Oportunidades
+                <Link href="/painel/rede?tab=rede" className={`flex-1 min-w-max text-center flex items-center justify-center gap-2 px-6 py-2 rounded-md text-sm font-bold transition-all ${currentTab === 'rede' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm border border-blue-100 dark:border-slate-600' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-700/50'}`}>
+                    Árvore de Afiliados
                 </Link>
-                <Link href="/painel/rede?tab=analytics" className={`flex-1 min-w-max text-center flex items-center justify-center gap-2 px-6 py-2 rounded-md text-sm font-bold transition-all border-l border-slate-200 dark:border-slate-700 ${currentTab === 'analytics' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm border border-blue-100 dark:border-slate-600' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-700/50'}`}>
-                    Analytics
+                <Link href="/painel/rede?tab=oportunidades" className={`flex-1 min-w-max text-center flex items-center justify-center gap-2 px-6 py-2 rounded-md text-sm font-bold transition-all border-l border-slate-200 dark:border-slate-700 ${currentTab === 'oportunidades' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm border border-blue-100 dark:border-slate-600' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-700/50'}`}>
+                    Oportunidades
                 </Link>
                 <Link href="/painel/rede?tab=parcerias" className={`flex-1 min-w-max text-center flex items-center justify-center gap-2 px-6 py-2 rounded-md text-sm font-bold transition-all border-l border-slate-200 dark:border-slate-700 ${currentTab === 'parcerias' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm border border-blue-100 dark:border-slate-600' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-700/50'}`}>
                     Parcerias
-                </Link>
-                <Link href="/painel/rede?tab=perfil" className={`flex-1 min-w-max text-center flex items-center justify-center gap-2 px-6 py-2 rounded-md text-sm font-bold transition-all border-x border-slate-200 dark:border-slate-700 ${currentTab === 'perfil' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm border border-blue-100 dark:border-slate-600' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-700/50'}`}>
-                    Perfil
-                </Link>
-                <Link href="/painel/rede?tab=rede" className={`flex-1 min-w-max text-center flex items-center justify-center gap-2 px-6 py-2 rounded-md text-sm font-bold transition-all ${currentTab === 'rede' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm border border-blue-100 dark:border-slate-600' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-700/50'}`}>
-                    Minha Rede
                 </Link>
             </div>
 
@@ -134,156 +128,8 @@ export default async function MinhaRedePage({ searchParams }: { searchParams: Pr
                         </div>
                     </div>
                 )}
-                {currentTab === 'analytics' && (
-                    <div className="w-full space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-xl flex flex-col">
-                                <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300">Total de Usuários</h4>
-                                <div className="flex items-end justify-between mt-2">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-2xl font-extrabold text-slate-800 dark:text-white">0</span>
-                                        <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold px-1.5 py-0.5 rounded flex items-center gap-1">
-                                            <TrendingUp className="w-3 h-3" /> 12.5%
-                                        </span>
-                                    </div>
-                                    <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white shadow-md shadow-blue-500/20"><Users className="w-5 h-5" /></div>
-                                </div>
-                                <p className="text-xs text-slate-400 mt-2 font-medium">Corretores ativos na plataforma</p>
-                            </div>
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-xl flex flex-col">
-                                <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300">Oportunidades Ativas</h4>
-                                <div className="flex items-end justify-between mt-2">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-2xl font-extrabold text-slate-800 dark:text-white">0</span>
-                                        <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold px-1.5 py-0.5 rounded flex items-center gap-1">
-                                            <TrendingUp className="w-3 h-3" /> 8.3%
-                                        </span>
-                                    </div>
-                                    <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center text-white shadow-md shadow-emerald-500/20"><LayoutGrid className="w-5 h-5" /></div>
-                                </div>
-                                <p className="text-xs text-slate-400 mt-2 font-medium">Oportunidades disponíveis</p>
-                            </div>
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-xl flex flex-col">
-                                <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300">Total de Aplicações</h4>
-                                <div className="flex items-end justify-between mt-2">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-2xl font-extrabold text-slate-800 dark:text-white">0</span>
-                                        <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold px-1.5 py-0.5 rounded flex items-center gap-1">
-                                            <TrendingUp className="w-3 h-3" /> 15.7%
-                                        </span>
-                                    </div>
-                                    <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white shadow-md shadow-purple-500/20"><MessageSquare className="w-5 h-5" /></div>
-                                </div>
-                                <p className="text-xs text-slate-400 mt-2 font-medium">Demonstrações de interesse</p>
-                            </div>
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-xl flex flex-col">
-                                <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300">Total de Oportunidades</h4>
-                                <div className="flex items-end justify-between mt-2">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-2xl font-extrabold text-slate-800 dark:text-white">0</span>
-                                        <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold px-1.5 py-0.5 rounded flex items-center gap-1">
-                                            <TrendingUp className="w-3 h-3" /> 6.2%
-                                        </span>
-                                    </div>
-                                    <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center text-white shadow-md shadow-orange-500/20"><Target className="w-5 h-5" /></div>
-                                </div>
-                                <p className="text-xs text-slate-400 mt-2 font-medium">Todas as oportunidades criadas</p>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-xl flex flex-col">
-                                <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300">Taxa de Conversão</h4>
-                                <div className="flex items-end justify-between mt-2">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-2xl font-extrabold text-slate-800 dark:text-white">0%</span>
-                                        <span className="text-xs bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold px-1.5 py-0.5 rounded flex items-center gap-1">
-                                            <TrendingUp className="w-3 h-3" /> 0.0%
-                                        </span>
-                                    </div>
-                                    <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center text-white shadow-md shadow-emerald-500/20"><TrendingUp className="w-5 h-5" /></div>
-                                </div>
-                                <p className="text-xs text-slate-400 mt-2 font-medium">Aplicações que viraram parcerias</p>
-                            </div>
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-xl flex flex-col">
-                                <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300">Tempo Médio de Resposta</h4>
-                                <div className="flex items-end justify-between mt-2">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-2xl font-extrabold text-slate-800 dark:text-white">0h</span>
-                                        <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold px-1.5 py-0.5 rounded flex items-center gap-1">
-                                            <TrendingUp className="w-3 h-3" /> 0.0%
-                                        </span>
-                                    </div>
-                                    <div className="w-10 h-10 bg-cyan-500 rounded-lg flex items-center justify-center text-white shadow-md shadow-cyan-500/20"><Clock className="w-5 h-5" /></div>
-                                </div>
-                                <p className="text-xs text-slate-400 mt-2 font-medium">Tempo para primeira resposta</p>
-                            </div>
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-xl flex flex-col">
-                                <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300">Avaliação Média</h4>
-                                <div className="flex items-end justify-between mt-2">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-2xl font-extrabold text-slate-800 dark:text-white">0.0</span>
-                                        <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold px-1.5 py-0.5 rounded flex items-center gap-1">
-                                            <TrendingUp className="w-3 h-3" /> 0.0%
-                                        </span>
-                                    </div>
-                                    <div className="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center text-white shadow-md shadow-amber-500/20"><ShieldCheck className="w-5 h-5" /></div>
-                                </div>
-                                <p className="text-xs text-slate-400 mt-2 font-medium">Avaliação dos corretores</p>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 rounded-xl min-h-[300px] flex flex-col items-center justify-center text-center">
-                                <div className="absolute top-6 left-6 text-slate-800 dark:text-white font-extrabold flex items-center gap-2">
-                                    <TrendingUp className="w-5 h-5" /> Atividade Recente
-                                </div>
-                                <TrendingUp className="w-10 h-10 text-slate-300 dark:text-slate-600 mb-4" />
-                                <p className="font-bold text-slate-500">Nenhuma atividade recente</p>
-                            </div>
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 rounded-xl min-h-[300px] flex flex-col items-center justify-center text-center">
-                                <div className="absolute top-6 left-6 text-slate-800 dark:text-white font-extrabold flex items-center gap-2">
-                                    <Target className="w-5 h-5" /> Categorias Mais Populares
-                                </div>
-                                <Target className="w-10 h-10 text-slate-300 dark:text-slate-600 mb-4" />
-                                <p className="font-bold text-slate-500">Nenhuma categoria disponível</p>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
                 {currentTab === 'parcerias' && (
                     <div className="w-full space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-4 mb-2">
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl flex flex-col items-center justify-center text-center shadow-sm">
-                                <h2 className="text-xl font-extrabold text-blue-600 dark:text-blue-400">0</h2>
-                                <p className="text-[11px] font-bold text-slate-500 uppercase mt-1">Total</p>
-                            </div>
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl flex flex-col items-center justify-center text-center shadow-sm">
-                                <h2 className="text-xl font-extrabold text-amber-500 dark:text-amber-400">0</h2>
-                                <p className="text-[11px] font-bold text-slate-500 uppercase mt-1">Pendentes</p>
-                            </div>
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl flex flex-col items-center justify-center text-center shadow-sm">
-                                <h2 className="text-xl font-extrabold text-emerald-500 dark:text-emerald-400">0</h2>
-                                <p className="text-[11px] font-bold text-slate-500 uppercase mt-1">Ativas</p>
-                            </div>
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl flex flex-col items-center justify-center text-center shadow-sm">
-                                <h2 className="text-xl font-extrabold text-blue-500 dark:text-blue-400">0</h2>
-                                <p className="text-[11px] font-bold text-slate-500 uppercase mt-1">Concluídas</p>
-                            </div>
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl flex flex-col items-center justify-center text-center shadow-sm">
-                                <h2 className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">R$ 0</h2>
-                                <p className="text-[11px] font-bold text-slate-500 uppercase mt-1">Comissões</p>
-                            </div>
-                        </div>
-
-                        <div className="flex bg-slate-100 dark:bg-slate-800 p-1 mb-4 rounded-lg border border-slate-200 dark:border-slate-700 w-full overflow-x-auto shadow-sm">
-                            <button className="flex-1 py-1.5 px-4 text-xs font-bold text-slate-500 hover:text-slate-800 dark:text-slate-400">Pendentes (0)</button>
-                            <button className="flex-1 py-1.5 px-4 text-xs font-bold bg-white dark:bg-slate-700 text-slate-800 dark:text-white rounded shadow-sm border border-slate-200 dark:border-slate-600">Ativas (0)</button>
-                            <button className="flex-1 py-1.5 px-4 text-xs font-bold text-slate-500 hover:text-slate-800 dark:text-slate-400">Concluídas (0)</button>
-                            <button className="flex-1 py-1.5 px-4 text-xs font-bold text-slate-500 hover:text-slate-800 dark:text-slate-400">Todas (0)</button>
-                        </div>
-
                         {/* Corretores Afiliados */}
                         <div className="mb-6 flex flex-col md:flex-row md:items-start justify-between gap-4 mt-6">
                             <div>
@@ -299,10 +145,12 @@ export default async function MinhaRedePage({ searchParams }: { searchParams: Pr
                                         <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                                         <input type="text" placeholder="Busque por alguma informação..." className="w-full bg-white border border-slate-200 text-slate-700 text-sm rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                                     </div>
-                                    <select className="bg-white border border-slate-200 text-slate-700 text-sm rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-32">
+                                    <select className="bg-white border border-slate-200 text-slate-700 text-sm rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-36">
                                         <option>Todos</option>
-                                        <option>Ativos</option>
+                                        <option>Pendentes</option>
+                                        <option>Ativas</option>
                                         <option>Inativos</option>
+                                        <option>Concluídos</option>
                                     </select>
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -383,14 +231,6 @@ export default async function MinhaRedePage({ searchParams }: { searchParams: Pr
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                )}
-
-                {currentTab === 'perfil' && (
-                    <div className="w-full">
-                        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-8 rounded-xl flex flex-col items-center justify-center text-center shadow-sm min-h-[300px]">
-                            <p className="text-slate-500 dark:text-slate-400 font-bold">Carregando perfil...</p>
                         </div>
                     </div>
                 )}
