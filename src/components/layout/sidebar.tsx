@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Home, Users, DollarSign, LineChart, AppWindow, BarChart2, Calculator, Building2, Building, Flame, UserCheck, Settings, Layers, Coins, Globe, Inbox, Kanban, FileText, Megaphone, Instagram } from 'lucide-react';
+import { createClient } from '@/utils/supabase/server';
 
 const WhatsappIcon = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -7,7 +8,11 @@ const WhatsappIcon = ({ className }: { className?: string }) => (
     </svg>
 );
 
-export default function Sidebar() {
+export default async function Sidebar() {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    const isAdmin = user?.email === 'ricieri@starmannweb.com.br';
+
     return (
         <aside className="w-64 bg-[#111827] text-slate-300 hidden md:flex flex-col h-full overflow-hidden border-r border-slate-800 transition-colors duration-200">
 
@@ -19,9 +24,7 @@ export default function Sidebar() {
 
             <div className="overflow-y-auto overflow-x-hidden flex-1 py-4 custom-scrollbar">
                 <ul className="flex flex-col space-y-1">
-                    <li className="px-6 mb-2 mt-2 font-semibold tracking-wide text-slate-500 uppercase text-[11px]">
-                        Menu
-                    </li>
+                    {/* Sem cabeçalho "Menu" */}
                     <li>
                         <Link href="/painel" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
                             <span className="inline-flex justify-center items-center">
@@ -46,6 +49,10 @@ export default function Sidebar() {
                             <span className="ml-3 text-sm font-medium tracking-wide truncate">Imóveis</span>
                         </Link>
                     </li>
+
+                    <li className="px-6 mt-6 mb-2">
+                        <div className="font-semibold tracking-wide text-slate-500 uppercase text-[11px]">Comercial</div>
+                    </li>
                     <li>
                         <Link href="/painel/leads" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
                             <span className="inline-flex justify-center items-center">
@@ -63,13 +70,41 @@ export default function Sidebar() {
                         </Link>
                     </li>
                     <li>
+                        <Link href="/painel/negocios" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
+                            <span className="inline-flex justify-center items-center">
+                                <DollarSign className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                            </span>
+                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Vendas e Locações</span>
+                        </Link>
+                    </li>
+                    <li>
                         <div className="relative flex flex-row items-center h-12 px-6 text-slate-500 border-l-4 border-transparent cursor-not-allowed opacity-60">
                             <span className="inline-flex justify-center items-center">
                                 <WhatsappIcon className="w-5 h-5 text-slate-500" />
                             </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Automação WhatsApp</span>
+                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Atendimento de Whatsapp</span>
                             <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded-full">Em breve</span>
                         </div>
+                    </li>
+                    <li>
+                        <Link href="/painel/simuladores" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
+                            <span className="inline-flex justify-center items-center">
+                                <Calculator className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                            </span>
+                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Simuladores</span>
+                        </Link>
+                    </li>
+
+                    <li className="px-6 mt-6 mb-2">
+                        <div className="font-semibold tracking-wide text-slate-500 uppercase text-[11px]">Marketing</div>
+                    </li>
+                    <li>
+                        <Link href="/painel/seletor" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
+                            <span className="inline-flex justify-center items-center">
+                                <UserCheck className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                            </span>
+                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Encaminhar Leads</span>
+                        </Link>
                     </li>
                     <li>
                         <div className="relative flex flex-row items-center h-12 px-6 text-slate-500 border-l-4 border-transparent cursor-not-allowed opacity-60">
@@ -90,78 +125,30 @@ export default function Sidebar() {
                         </div>
                     </li>
                     <li>
-                        <Link href="/painel/negocios" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <DollarSign className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Vendas e Locações</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/painel/financeiro" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <Coins className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Financeiro / Saques</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/painel/simuladores" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <Calculator className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Simuladores</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/painel/cartas-contempladas" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <FileText className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Cartas Contempladas</span>
-                        </Link>
-                    </li>
-
-                    <li className="px-6 mt-6 mb-2">
-                        <div className="font-semibold tracking-wide text-slate-500 uppercase text-[11px]">Gerenciamento</div>
-                    </li>
-                    <li>
-                        <Link href="/painel/seletor" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <UserCheck className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Encaminhar Leads</span>
-                        </Link>
-                    </li>
-                    <li>
                         <Link href="/painel/meus-sites" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
                             <span className="inline-flex justify-center items-center">
                                 <Globe className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
                             </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Meus Sites</span>
+                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Meu Site</span>
                         </Link>
                     </li>
 
-                    <li className="px-6 mt-6 mb-2">
-                        <div className="font-semibold tracking-wide text-slate-500 uppercase text-[11px]">Configurações</div>
-                    </li>
-                    <li>
-                        <Link href="/painel/configuracoes" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <Settings className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Minha Conta</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/painel/dev" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-orange-400 border-l-4 border-transparent hover:border-orange-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <Flame className="w-5 h-5 text-slate-400 group-hover:text-orange-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Dev / Testes</span>
-                        </Link>
-                    </li>
-
+                    {/* Mostrar Dev/Testes SOMENTE se for admin */}
+                    {isAdmin && (
+                        <>
+                            <li className="px-6 mt-6 mb-2">
+                                <div className="font-semibold tracking-wide text-slate-500 uppercase text-[11px]">Administrador</div>
+                            </li>
+                            <li>
+                                <Link href="/painel/dev" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-orange-400 border-l-4 border-transparent hover:border-orange-500 transition-colors group">
+                                    <span className="inline-flex justify-center items-center">
+                                        <Flame className="w-5 h-5 text-slate-400 group-hover:text-orange-500 transition-colors" />
+                                    </span>
+                                    <span className="ml-3 text-sm font-medium tracking-wide truncate">Dev / Testes</span>
+                                </Link>
+                            </li>
+                        </>
+                    )}
                 </ul>
             </div>
 

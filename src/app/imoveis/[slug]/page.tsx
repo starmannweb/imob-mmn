@@ -112,24 +112,50 @@ export default async function PropertyPage({
 
             <main className="flex-1 w-full">
 
-                {/* Cover Banner — azul igual da principal */}
-                <div className="w-full h-40 md:h-48 relative overflow-hidden">
+                <section className="relative overflow-hidden border-b border-slate-200 dark:border-slate-800">
+                    {/* Background gradient */}
                     <div className="absolute inset-0 bg-gradient-to-b from-blue-600 via-blue-500 to-blue-400"></div>
                     <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImEiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+PHBhdGggZD0iTTAgMGg2MHY2MEgweiIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMzAiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNhKSIvPjwvc3ZnPg==')] opacity-30"></div>
-                </div>
 
-                {/* Avatar + Name — overlapping style */}
-                <div className="max-w-7xl mx-auto px-4 md:px-8 relative">
-                    <div className="flex items-end gap-5 -mt-14">
-                        <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-white dark:bg-[#1e293b] border-4 border-white dark:border-[#0b1120] shadow-xl flex items-center justify-center text-blue-600 dark:text-blue-400 font-black text-3xl md:text-4xl shrink-0">
-                            {p.owner?.full_name ? p.owner.full_name.split(' ').map((n: string) => n[0]).slice(0, 2).join('').toUpperCase() : 'RD'}
-                        </div>
-                        <div className="pb-2">
-                            <h2 className="font-black text-slate-900 dark:text-white text-xl md:text-2xl leading-tight">{p.owner?.full_name || 'Ricieri de Moraes'}</h2>
-                            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">Corretor ImobAfiliado</p>
+                    <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+                        <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+                            {/* Avatar grande */}
+                            <div className="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-white shadow-xl flex items-center justify-center text-4xl md:text-5xl font-black text-blue-600 shrink-0">
+                                {p.owner?.full_name ? p.owner.full_name.split(' ').map((n: string) => n[0]).slice(0, 2).join('').toUpperCase() : 'RD'}
+                            </div>
+
+                            <div className="text-center md:text-left">
+                                <h1 className="text-2xl md:text-3xl font-extrabold text-white leading-tight mb-1 tracking-tight uppercase">
+                                    {p.owner?.full_name || 'Ricieri de Moraes'}
+                                </h1>
+                                <p className="text-blue-100 text-sm font-medium mb-2">@imobafiliado</p>
+                                <p className="text-blue-50/70 text-sm max-w-lg mb-6">
+                                    {p.owner?.full_name || 'Ricieri de Moraes'} - Corretor Imobiliário. Encontre os melhores imóveis com atendimento personalizado.
+                                </p>
+
+                                {/* Botões de Contato */}
+                                <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
+                                    <a
+                                        href={`https://wa.me/5511999999999?text=Olá ${p.owner?.full_name || 'Corretor'}, estava vendo o imóvel no site.`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="bg-[#2ecc71] hover:bg-[#27ae60] text-white px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg transition-all min-w-[180px] justify-center"
+                                    >
+                                        <Phone className="w-4 h-4" />
+                                        Contato Direto
+                                    </a>
+                                    <a
+                                        href={`mailto:${p.owner?.email || 'contato@exemplo.com'}`}
+                                        className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg transition-all min-w-[180px] justify-center backdrop-blur-sm"
+                                    >
+                                        <Mail className="w-4 h-4" />
+                                        Enviar E-mail
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
 
                 <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
                     {/* Breadcrumb */}
