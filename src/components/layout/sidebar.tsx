@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Home, Users, DollarSign, LineChart, AppWindow, BarChart2, Calculator, Building2, Building, Flame, UserCheck, Settings, Layers, Coins, Globe, Inbox, Kanban, FileText } from 'lucide-react';
+import { Home, Users, DollarSign, LineChart, AppWindow, BarChart2, Calculator, Building2, Building, Flame, UserCheck, Settings, Layers, Coins, Globe, Inbox, Kanban, FileText, Megaphone, Instagram } from 'lucide-react';
 
 const WhatsappIcon = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -67,8 +67,26 @@ export default function Sidebar() {
                             <span className="inline-flex justify-center items-center">
                                 <WhatsappIcon className="w-5 h-5 text-slate-500" />
                             </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Disparador WhatsApp</span>
-                            <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded">Em breve</span>
+                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Automação WhatsApp</span>
+                            <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded-full">Em breve</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div className="relative flex flex-row items-center h-12 px-6 text-slate-500 border-l-4 border-transparent cursor-not-allowed opacity-60">
+                            <span className="inline-flex justify-center items-center">
+                                <Megaphone className="w-5 h-5 text-slate-500" />
+                            </span>
+                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Anúncios</span>
+                            <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded-full">Em breve</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div className="relative flex flex-row items-center h-12 px-6 text-slate-500 border-l-4 border-transparent cursor-not-allowed opacity-60">
+                            <span className="inline-flex justify-center items-center">
+                                <Instagram className="w-5 h-5 text-slate-500" />
+                            </span>
+                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Mídias Sociais</span>
+                            <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded-full">Em breve</span>
                         </div>
                     </li>
                     <li>

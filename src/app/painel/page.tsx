@@ -108,9 +108,9 @@ export default async function PainelPage() {
                         <p className="text-[13px] font-medium text-slate-400">Sem agendamentos para hoje</p>
                     </div>
 
-                    <button className="mt-auto w-full flex items-center justify-center gap-2 px-4 py-3.5 bg-white dark:bg-[#0f1522] border border-slate-200 dark:border-slate-700 hover:border-purple-600 hover:text-purple-600 text-slate-700 dark:text-slate-200 font-bold rounded-xl transition-colors text-sm shadow-sm">
+                    <Link href="/painel/agenda" className="mt-auto w-full flex items-center justify-center gap-2 px-4 py-3.5 bg-white dark:bg-[#0f1522] border border-slate-200 dark:border-slate-700 hover:border-purple-600 hover:text-purple-600 text-slate-700 dark:text-slate-200 font-bold rounded-xl transition-colors text-sm shadow-sm">
                         <Calendar className="w-4 h-4" /> Ver Agenda Completa
-                    </button>
+                    </Link>
                 </div>
             </div>
 
