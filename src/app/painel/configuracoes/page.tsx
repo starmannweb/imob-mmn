@@ -161,8 +161,27 @@ export default async function ConfiguracoesPage({ searchParams }: { searchParams
                             {currentTab === 'info' ? (
                                 <div className="flex flex-col gap-5">
 
-                                    {/* Cover Placeholder in Modal */}
-                                    <div className="w-full h-32 bg-slate-100 dark:bg-[#2a354d] border border-slate-200 dark:border-slate-700 rounded-xl mb-2"></div>
+                                    {/* Cover and Avatar Uploads Areas */}
+                                    <div className="relative mb-6">
+                                        {/* Cover Header Upload */}
+                                        <div className="w-full h-32 bg-[#0f1522] border-2 border-dashed border-slate-200 dark:border-slate-700/70 rounded-xl relative overflow-hidden group cursor-pointer hover:border-blue-500 dark:hover:border-blue-500 transition-colors">
+                                            <div className="absolute inset-0 bg-slate-50/50 dark:bg-black/20 flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">
+                                                <Edit3 className="w-5 h-5 mb-1.5 opacity-60 group-hover:opacity-100" />
+                                                <span className="text-xs font-bold bg-white dark:bg-[#1b253b] px-3 py-1 rounded-full shadow-sm">Alterar Capa / Header</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Avatar Upload */}
+                                        <div className="absolute -bottom-5 left-6 z-10">
+                                            <div className="w-20 h-20 rounded-full bg-slate-100 dark:bg-[#2a303c] border-[4px] border-white dark:border-[#1b253b] relative group cursor-pointer shadow-md overflow-hidden flex items-center justify-center text-2xl font-bold text-slate-400 dark:text-slate-500">
+                                                {(profile?.full_name || 'ZK').substring(0, 2).toUpperCase()}
+                                                <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-[1px]">
+                                                    <Edit3 className="w-4 h-4 text-white mb-0.5" />
+                                                    <span className="text-[9px] font-bold text-white uppercase tracking-wider">Logo</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <UrlEditForm initialValue={profile?.referral_code || profile?.id || user.id} />
 
