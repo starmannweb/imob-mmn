@@ -130,7 +130,7 @@ export default async function PropertyPage({
                                 <h1 className="text-2xl md:text-3xl font-extrabold text-white leading-tight mb-1 tracking-tight uppercase">
                                     {p.owner?.full_name || 'Ricieri de Moraes'}
                                 </h1>
-                                <p className="text-blue-100 text-sm font-medium mb-2">@imobafiliado</p>
+                                <p className="text-blue-100 text-sm font-medium mb-2">@{p.owner?.referral_code || 'imobafiliado'}</p>
                                 <p className="text-blue-50/70 text-sm max-w-lg mb-6">
                                     {p.owner?.full_name || 'Ricieri de Moraes'} - Corretor Imobiliário. Encontre os melhores imóveis com atendimento personalizado.
                                 </p>

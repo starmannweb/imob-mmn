@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { ChevronRight, Globe, Plus, ExternalLink, Eye, Settings, Palette, Sparkles } from "lucide-react";
 import Link from "next/link";
+import { GenerateSiteModal } from "./GenerateSiteModal";
 
 export default async function MeusSitesPage() {
     const supabase = await createClient();
@@ -52,9 +53,11 @@ export default async function MeusSitesPage() {
                         </div>
                     </div>
                 </div>
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm flex items-center gap-2 transition-colors">
-                    <Sparkles className="w-4 h-4" /> Criar Site com IA
-                </button>
+                <GenerateSiteModal>
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm flex items-center gap-2 transition-colors">
+                        <Sparkles className="w-4 h-4" /> Criar Site com IA
+                    </button>
+                </GenerateSiteModal>
             </div>
 
             {/* Lead Page Card Principal */}
@@ -190,9 +193,11 @@ export default async function MeusSitesPage() {
                         Descreva como quer seu site e nossa IA cria automaticamente uma lead page personalizada para você.
                         Escolha cores, layout e estilo com apenas uma descrição.
                     </p>
-                    <button className="bg-white text-slate-900 px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-slate-100 transition-colors flex items-center gap-2">
-                        <Sparkles className="w-4 h-4" /> Gerar com IA (em breve)
-                    </button>
+                    <GenerateSiteModal>
+                        <button className="bg-white text-slate-900 px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-slate-100 transition-colors flex items-center gap-2">
+                            <Sparkles className="w-4 h-4 text-blue-600" /> Testar Gerador IA Premium
+                        </button>
+                    </GenerateSiteModal>
                 </div>
             </div>
         </div>

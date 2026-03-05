@@ -238,6 +238,10 @@ export default async function BrokerPage({
                                         {item.label}
                                     </button>
                                 ))}
+                                {/* Botão de Ocultar Filtros */}
+                                <button className="ml-auto inline-flex items-center gap-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 px-4 py-2.5 rounded-lg text-sm font-bold transition-colors shadow-sm mt-2 sm:mt-0">
+                                    <X className="w-4 h-4" /> Ocultar Filtros
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -268,28 +272,32 @@ export default async function BrokerPage({
                 {/* ═══════════════════════════════════════════════════ */}
                 {/* LISTAGEM — IMÓVEIS DISPONÍVEIS */}
                 {/* ═══════════════════════════════════════════════════ */}
-                <section className="max-w-7xl mx-auto px-4 md:px-8 py-10">
-                    <div className="flex items-center justify-between mb-8">
-                        <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                            Imóveis disponíveis
-                        </h3>
-                        <button className="text-sm font-semibold text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 flex items-center gap-1">
-                            <X className="w-4 h-4" /> Ocultar Filtros
-                        </button>
-                    </div>
+                <section className="bg-slate-50 border-t border-slate-200 dark:bg-[#0f172a] dark:border-slate-800">
+                    <div className="max-w-7xl mx-auto px-4 md:px-8 py-10">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                            <div className="flex items-center gap-4">
+                                <div className="w-2 h-8 bg-blue-600 rounded-full"></div>
+                                <h3 className="text-xl md:text-2xl font-extrabold text-slate-900 dark:text-white uppercase tracking-tight">
+                                    Imóveis <span className="text-blue-600">Disponíveis</span>
+                                </h3>
+                            </div>
+                            <div className="h-[1px] flex-1 bg-gradient-to-r from-slate-200 dark:from-slate-800 to-transparent mx-4 hidden md:block"></div>
+                        </div>
 
-                    {allProperties.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {allProperties.map((prop: any) => (
-                                <FeaturedPropertyCard key={prop.id} property={prop} brokerName={broker.full_name} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="text-center py-12 text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-[#111827] rounded-xl border border-dashed border-slate-300 dark:border-slate-700">
-                            <Search className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-                            <p className="font-medium">Nenhum imóvel disponível.</p>
-                        </div>
-                    )}
+
+                        {allProperties.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {allProperties.map((prop: any) => (
+                                    <FeaturedPropertyCard key={prop.id} property={prop} brokerName={broker.full_name} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-12 text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-[#111827] rounded-xl border border-dashed border-slate-300 dark:border-slate-700">
+                                <Search className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+                                <p className="font-medium">Nenhum imóvel disponível.</p>
+                            </div>
+                        )}
+                    </div>
                 </section>
             </main>
 
