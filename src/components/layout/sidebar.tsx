@@ -58,9 +58,6 @@ export default async function Sidebar() {
                         </Link>
                     </li>
 
-                    <li className="px-6 mt-6 mb-2">
-                        <div className="font-semibold tracking-wide text-slate-500 uppercase text-[11px]">Comercial</div>
-                    </li>
                     <li>
                         <Link href="/painel/leads" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
                             <span className="inline-flex justify-center items-center">
@@ -95,9 +92,6 @@ export default async function Sidebar() {
                         </div>
                     </li>
 
-                    <li className="px-6 mt-6 mb-2">
-                        <div className="font-semibold tracking-wide text-slate-500 uppercase text-[11px]">Marketing</div>
-                    </li>
                     <li>
                         <Link href="/painel/seletor" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
                             <span className="inline-flex justify-center items-center">
@@ -136,9 +130,6 @@ export default async function Sidebar() {
                     {/* Mostrar Dev/Testes SOMENTE se for admin */}
                     {isAdmin && (
                         <>
-                            <li className="px-6 mt-6 mb-2">
-                                <div className="font-semibold tracking-wide text-slate-500 uppercase text-[11px]">Administrador</div>
-                            </li>
                             <li>
                                 <Link href="/painel/dev" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-orange-400 border-l-4 border-transparent hover:border-orange-500 transition-colors group">
                                     <span className="inline-flex justify-center items-center">

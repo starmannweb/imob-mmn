@@ -101,7 +101,7 @@ export default async function BrokerPage({
                 <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
                     <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
                         {/* Avatar grande */}
-                        <div className="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-white shadow-xl flex items-center justify-center text-4xl md:text-5xl font-black text-blue-600 shrink-0">
+                        <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-white shadow-xl flex items-center justify-center text-4xl md:text-5xl font-black text-blue-600 shrink-0">
                             {initials}
                         </div>
 
@@ -130,8 +130,15 @@ export default async function BrokerPage({
                                     Entrar em Contato
                                 </a>
                                 <a
+                                    href={`tel:5511999999999`}
+                                    className="bg-slate-900 hover:bg-slate-800 text-white border border-slate-700 px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg transition-all min-w-[150px] justify-center"
+                                >
+                                    <Phone className="w-4 h-4" />
+                                    Ligar
+                                </a>
+                                <a
                                     href={`mailto:contato@exemplo.com`}
-                                    className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg transition-all min-w-[180px] justify-center backdrop-blur-sm"
+                                    className="bg-white hover:bg-slate-50 text-blue-600 px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg transition-all min-w-[150px] justify-center"
                                 >
                                     <Mail className="w-4 h-4" />
                                     Enviar E-mail

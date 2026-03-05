@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { createClient } from "@/utils/supabase/server";
 import { X, User, FileText, Globe, Award, Share2, Mail, Phone, MapPin, Clock, Edit3, Link as LinkIcon, Facebook, Instagram, Youtube, Plus } from "lucide-react";
+import { UrlEditForm } from "./UrlEditForm";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -162,6 +163,8 @@ export default async function ConfiguracoesPage({ searchParams }: { searchParams
 
                                     {/* Cover Placeholder in Modal */}
                                     <div className="w-full h-32 bg-slate-100 dark:bg-[#2a354d] border border-slate-200 dark:border-slate-700 rounded-xl mb-2"></div>
+
+                                    <UrlEditForm initialValue={profile?.referral_code || profile?.id || user.id} />
 
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="flex flex-col gap-1.5">
