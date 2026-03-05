@@ -100,22 +100,20 @@ export default async function Sidebar() {
                         </Link>
                     </li>
                     <li>
-                        <div className="relative flex flex-row items-center h-12 px-6 text-slate-500 border-l-4 border-transparent cursor-not-allowed opacity-60">
+                        <Link href="/painel/anuncios" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
                             <span className="inline-flex justify-center items-center">
-                                <Megaphone className="w-5 h-5 text-slate-500" />
+                                <Megaphone className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
                             </span>
                             <span className="ml-3 text-sm font-medium tracking-wide truncate">Anúncios</span>
-                            <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded-full whitespace-nowrap flex-shrink-0">Em breve</span>
-                        </div>
+                        </Link>
                     </li>
                     <li>
-                        <div className="relative flex flex-row items-center h-12 px-6 text-slate-500 border-l-4 border-transparent cursor-not-allowed opacity-60">
+                        <Link href="/painel/midias-sociais" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
                             <span className="inline-flex justify-center items-center">
-                                <Instagram className="w-5 h-5 text-slate-500" />
+                                <Instagram className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
                             </span>
                             <span className="ml-3 text-sm font-medium tracking-wide truncate">Mídias Sociais</span>
-                            <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded-full whitespace-nowrap flex-shrink-0">Em breve</span>
-                        </div>
+                        </Link>
                     </li>
                     <li>
                         <Link href="/painel/meus-sites" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
