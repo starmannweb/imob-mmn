@@ -1,9 +1,10 @@
 export const dynamic = 'force-dynamic';
 
 import { createAdminClient } from "@/utils/supabase/admin";
+import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, MapPin, Building, Bed, BedDouble, Bath, Car, Maximize2, Maximize, X, AlertCircle, Share2, Filter, Home, LandPlot, CheckCircle2, ChevronRight, Mic, Globe, Mail, Phone, Facebook, Instagram, Star, Sun, Moon } from "lucide-react";
+import { Search, MapPin, Building, Bed, BedDouble, Bath, Car, Maximize2, Maximize, X, AlertCircle, Share2, Filter, Home, LandPlot, CheckCircle2, ChevronRight, Mic, Globe, Mail, Phone, Facebook, Instagram, Star, Sun, Moon, Edit3 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 
@@ -65,6 +66,11 @@ export default async function BrokerPage({
     // Handle do corretor (primeira parte do nome ou referral_code)
     const handle = broker.referral_code ? `@${broker.referral_code}` : '';
 
+    // Verificar current user para edição
+    const authClient = await createClient();
+    const { data: { user } } = await authClient.auth.getUser();
+    const isOwner = user?.id === broker.id;
+
     return (
         <div className="min-h-screen bg-white dark:bg-[#0b1120] flex flex-col">
 
@@ -93,16 +99,28 @@ export default async function BrokerPage({
             {/* ═══════════════════════════════════════════════════ */}
             {/* HERO DO CORRETOR */}
             {/* ═══════════════════════════════════════════════════ */}
-            <section className="relative overflow-hidden">
+            <section className="relative overflow-hidden group">
                 {/* Background gradient */}
                 <div className="absolute inset-0 bg-gradient-to-b from-blue-600 via-blue-500 to-blue-400"></div>
                 <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImEiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+PHBhdGggZD0iTTAgMGg2MHY2MEgweiIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMzAiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNhKSIvPjwvc3ZnPg==')] opacity-30"></div>
 
+                {isOwner && (
+                    <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Link href="/painel/configuracoes?edit=true&tab=info" className="bg-white/20 hover:bg-white/30 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 transition-colors border border-white/30 shadow-sm">
+                            <Edit3 className="w-3.5 h-3.5" /> Alterar Capa
+                        </Link>
+                    </div>
+                )}
+
                 <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
                     <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                        {/* Avatar grande */}
-                        <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-white shadow-xl flex items-center justify-center text-4xl md:text-5xl font-black text-blue-600 shrink-0">
+                        <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-white shadow-xl flex items-center justify-center text-4xl md:text-5xl font-black text-blue-600 shrink-0 relative group/avatar overflow-hidden">
                             {initials}
+                            {isOwner && (
+                                <Link title="Alterar Logo" href="/painel/configuracoes?edit=true&tab=info" className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover/avatar:opacity-100 transition-opacity backdrop-blur-[1px]">
+                                    <Edit3 className="w-5 h-5 text-white mb-0.5" />
+                                </Link>
+                            )}
                         </div>
 
                         <div className="text-center md:text-left">
