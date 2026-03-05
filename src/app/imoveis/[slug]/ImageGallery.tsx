@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
 
-export function ImageGallery({ images }: { images: string[] }) {
+export function ImageGallery({ images, instagramUrl }: { images: string[], instagramUrl?: string }) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const prevImage = (e: React.MouseEvent) => {
@@ -58,12 +58,14 @@ export function ImageGallery({ images }: { images: string[] }) {
                 </div>
 
                 {/* Fake Instagram icon from print */}
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center opacity-80 cursor-pointer hover:opacity-100 transition-opacity">
-                    <div className="w-10 h-10 border-2 border-white rounded-lg flex items-center justify-center relative">
-                        <div className="w-4 h-4 border-2 border-white rounded-full"></div>
-                        <div className="w-1 h-1 bg-white rounded-full absolute top-1 right-1"></div>
-                    </div>
-                </div>
+                {instagramUrl && (
+                    <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity shadow-xl hover:scale-105 transform duration-300">
+                        <div className="w-10 h-10 border-2 border-white rounded-lg flex items-center justify-center relative">
+                            <div className="w-4 h-4 border-2 border-white rounded-full"></div>
+                            <div className="w-1 h-1 bg-white rounded-full absolute top-1 right-1"></div>
+                        </div>
+                    </a>
+                )}
             </div>
 
             {/* Thumbnails */}

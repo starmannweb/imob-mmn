@@ -222,7 +222,7 @@ export default async function BrokerPage({
                         {/* Acesso Rápido — Botões de tipo */}
                         <div>
                             <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-3 uppercase tracking-wider">Acesso Rápido</label>
-                            <div className="flex flex-wrap gap-3">
+                            <div className="flex flex-wrap items-center gap-3">
                                 {[
                                     { icon: Home, label: 'Casa' },
                                     { icon: Building, label: 'Casa de Condomínio' },
@@ -239,9 +239,11 @@ export default async function BrokerPage({
                                     </button>
                                 ))}
                                 {/* Botão de Ocultar Filtros */}
-                                <button className="ml-auto inline-flex items-center gap-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 px-4 py-2.5 rounded-lg text-sm font-bold transition-colors shadow-sm mt-2 sm:mt-0">
-                                    <X className="w-4 h-4" /> Ocultar Filtros
-                                </button>
+                                <div className="sm:ml-auto w-full sm:w-auto mt-2 sm:mt-0">
+                                    <button className="flex w-full sm:w-auto items-center justify-center gap-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 px-4 py-2.5 rounded-lg text-sm font-bold transition-colors shadow-sm">
+                                        <X className="w-4 h-4" /> Ocultar Filtros
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

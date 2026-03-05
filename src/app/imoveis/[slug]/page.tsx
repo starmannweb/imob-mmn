@@ -190,7 +190,7 @@ export default async function PropertyPage({
                         <div className="lg:col-span-8 flex flex-col gap-8">
 
                             {/* Image Gallery Section */}
-                            <ImageGallery images={p.image_url ? [p.image_url] : []} />
+                            <ImageGallery images={p.image_url ? [p.image_url] : []} instagramUrl={p.video_url || 'https://instagram.com'} />
 
                             {/* Title Header for mobile (desktop has it on right too, but let's follow print 4 layout) */}
                             <div className="border-b border-slate-200 dark:border-slate-800 pb-6 hidden md:block">
