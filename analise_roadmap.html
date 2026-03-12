@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise Roadmap - Tecimob vs Imob Multinível</title>
+    <!-- Tailwind CSS Integrado via CDN para facilitar estilos modernos sem dependências -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .print-only {
+            display: none;
+        }
+
+        /* Regras esecíficas para o momento de impressão / Geração PDF via Browser */
+        @media print {
+            body { 
+                background-color: white; 
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .no-print { 
+                display: none !important; 
+            }
+            .print-only {
+                display: block;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+            .container {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .shadow-lg {
+                box-shadow: none !important;
+            }
+            .rounded-2xl {
+                border-radius: 0 !important;
+            }
+            h1, h2, h3 { 
+                page-break-after: avoid; 
+            }
+            ul, p { 
+                page-break-inside: avoid; 
+            }
+        }
+    </style>
+</head>
+<body class="antialiased py-10 px-4 sm:px-8">
+
+    <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-8 sm:p-12 border border-slate-100 container">
+        
+        <!-- HEADER DO DOCUMENTO -->
+        <header class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-200 pb-8 mb-8">
+            <div>
+                <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase mb-3 inline-block">Documento de Engenharia & Roadmap</span>
+                <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight">Análise de Concorrência: <br class="hidden sm:block"> Sistema Tecimob</h1>
+                <p class="text-slate-500 mt-2 text-sm">Preparado para: <strong>Imob - Multinível</strong> | Data: 10 de Março de 2026</p>
+            </div>
+            
+            <div class="mt-6 sm:mt-0 no-print flex flex-col gap-3">
+                <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors shadow-sm flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6.728 12.5H17.272M8 17.5h8M7 21h10a2 2 0 002-2V9a2 2 0 00-.586-1.414l-4-4A2 2 0 0013.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                    Gerar PDF / Imprimir
+                </button>
+                <div class="text-xs text-slate-400 text-right">No painel de impressão,<br>escolha "Salvar como PDF".</div>
+            </div>
+        </header>
+
+        <!-- INTRODUÇÃO -->
+        <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed mb-10">
+            <p class="text-lg">Esta análise estratégica foi realizada através da navegação detalhada dentro do ambiente logado (Dashboard) da plataforma Tecimob. O objetivo é elencar todas as principais facilidades de interface (UX) e arquiteturas de módulos que servirão de inspiração direta para o **Roadmap Oficial** do projeto <span class="text-indigo-600 font-semibold">Imob - Multinível</span>.</p>
+        </div>
+
+        <div class="space-y-12">
+            
+            <!-- SEÇÃO 1 -->
+            <section class="border border-slate-100 rounded-xl p-6 bg-slate-50/50">
+                <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="bg-slate-200 text-slate-700 w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span> 
+                    Dashboard e UX Inicial
+                </h2>
+                <ul class="list-disc pl-5 space-y-2 text-slate-600">
+                    <li><strong>Interface e Foco:</strong> Navegação limpa fixada no topo. Painel principal centrado num grid de *'Calls to Action'* para as rotinas diárias.</li>
+                    <li><strong>Atalhos Produtivos:</strong> Inclusão em 1-clique para: Buscar Imóveis, Novo Imóvel, Novo Cliente, Enviar para Portais, Radar e Aniversariantes.</li>
+                    <li><strong>Painel de Desempenho Institucional:</strong> Exibição transparente das métricas do site público como *Visitas Únicas*, *Tempo na Página* e *Acessos Mensais*.</li>
+                </ul>
+            </section>
+
+            <!-- SEÇÃO 2 -->
+            <section class="border border-slate-100 rounded-xl p-6 bg-slate-50/50">
+                <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span> 
+                    Arquitetura de Cadastro de Imóveis (Estoque)
+                </h2>
+                <div class="bg-white p-4 rounded-lg my-4 text-sm border-l-4 border-indigo-500 text-slate-600 shadow-sm">
+                    <strong>💡 Ponto Forte:</strong> Para evitar fadiga do corretor, o formulário de cadastro de um imóvel é massivo, porém elegantemente dividido em <strong>13 etapas ou abas de navegação horizontal</strong>.
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-slate-600">
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>1. Visão Geral:</strong> Proprietário vinculado ao banco, tipo/fase de obra e situação.</li>
+                        <li><strong>2. Metragens:</strong> Quebra cirúrgica por: área útil, área total, vagas etc.</li>
+                        <li><strong>3. Valores Exatos:</strong> Separação entre preço venda, locação, tributos e taxas.</li>
+                        <li><strong>4. Checklists:</strong> Extensas opções "switch" para comodidades (ex: piscina, guarita).</li>
+                    </ul>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>5. Localização/Geolocalização:</strong> Permitindo "Ocultar número no site público".</li>
+                        <li><strong>6. Galeria e Tour:</strong> Reordenamento "drag and drop" de fotos, link 360 e marca d'água automática da agência.</li>
+                        <li><strong>7. Informações de "Bastidor":</strong> Histórico documental e quem tem a chave do local. (Dados privados do cliente final).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SEÇÃO 3 -->
+            <section class="border border-slate-100 rounded-xl p-6 bg-slate-50/50">
+                <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="bg-slate-200 text-slate-700 w-8 h-8 rounded-full flex items-center justify-center text-sm">3</span> 
+                    Ecossistema de Leads e Funil (CRM)
+                </h2>
+                <div class="space-y-4 text-slate-600">
+                    <p>O conceito central é o cruzamento obrigatório entre <strong>LADO A (O que se quer vender)</strong> e <strong>LADO B (Quem quer comprar)</strong>.</p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>Formulário Completo de Cliente:</strong> Aceita N telefones agregados. Impede duplicidade exigindo CPF/CNPJ como chave de registro.</li>
+                        <li><strong class="text-emerald-600">Radar de Oportunidades (Match):</strong> Ferramenta que avalia a base de interessados e avisa ativamente: *"Chegou um 2 quartos no Leblon, aquele cliente X estava buscando isso"*.</li>
+                        <li><strong>Funil Kanban Arrastável:</strong> Mapeamento do ciclo de venda através de colunas visuais: Contato &rarr; Atendimento &rarr; Visita &rarr; Proposta &rarr; Documentação &rarr; Fechamento.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SEÇÃO 4 -->
+            <section class="border border-slate-100 rounded-xl p-6 bg-slate-50/50">
+                <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="bg-slate-200 text-slate-700 w-8 h-8 rounded-full flex items-center justify-center text-sm">4</span> 
+                    Módulos Operacionais Secundários
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-slate-600">
+                    <div>
+                        <h3 class="font-bold text-slate-800 mb-2 border-b border-slate-200 pb-2">Agenda</h3>
+                        <p class="text-sm">Agendamentos nunca ficam soltos; eles precisam ser "colados" ao cadastro de um Lead ou um Imóvel. Oferece visualização diária/mensal, grau de urgência e <strong class="text-slate-700">sincronização push para o Google Calendar</strong> do usuário.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 mb-2 border-b border-slate-200 pb-2">Financeiro</h3>
+                        <p class="text-sm">Aborda o "Plano de Contas" do imobiliário, contemplando repasses a corretores e despesas operacionais da agência, construindo gráficos de balanço de DRE em tempo real no Dashboard.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 mb-2 border-b border-slate-200 pb-2">Relatórios Gerenciais</h3>
+                        <p class="text-sm">Focado nos gerentes da imobiliária (quem traciona mais captações vs quem tem a melhor taxa de conversão do lead). Apresenta um interessante mapeamento de <strong>Motivos de Perda de Leads</strong> no funil.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 mb-2 border-b border-slate-200 pb-2">CMS de Site, Pixel e SEO</h3>
+                        <p class="text-sm">Painel amigável para o corretor mudar as cores de capa, inserir cookies LGPD e colar os códigos de pixel de conversão para o marketing orgânico/pago e a exclusivíssima **Roleta de Leads** (distribuição aleatória).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ROADMAP -->
+            <section class="bg-slate-900 rounded-2xl p-8 text-white mt-10 shadow-xl print-only-fix">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-indigo-400">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Conclusão do Levantamento (Para Backlog)
+                </h2>
+                <p class="text-slate-300 text-sm md:text-base leading-relaxed mb-6">
+                    A arquitetura do <strong>Imob - Multinível</strong> precisa abraçar duas lógicas fundamentais extraídas desse concorrente para garantir sucesso na retenção: o fracionamento rigoroso de informações gigantescas e a gestão puramente visual no funil de vendas (onde corretores abominam planilhas).
+                </p>
+                
+                <h3 class="text-lg font-bold text-indigo-300 mb-3 tracking-wide">Prioridades de Implementação (Fase 1):</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-white/10 rounded-lg p-4 border border-white/5">
+                        <div class="font-bold mb-1">1. Novo Cadastro Imóvel</div>
+                        <p class="text-xs text-slate-300">Criar o modelo de Wizard/Tabs horizontais com 5 a 10 passos para evitar repulsa aos longos campos na hora da captação.</p>
+                    </div>
+                    <div class="bg-white/10 rounded-lg p-4 border border-white/5">
+                        <div class="font-bold mb-1">2. CRM Kanban Base</div>
+                        <p class="text-xs text-slate-300">Implementação no Next.js (DndKit ou similar) para colunas de negócios (Lead x Imóvel).</p>
+                    </div>
+                    <div class="bg-white/10 rounded-lg p-4 border border-white/5">
+                        <div class="font-bold mb-1">3. Roleta MMN</div>
+                        <p class="text-xs text-slate-300">Adaptar a ideia de distribuição e atrelar à nossa inteligência multinível (rotatividade justa na rede).</p>
+                    </div>
+                    <div class="bg-white/10 rounded-lg p-4 border border-white/5">
+                        <div class="font-bold mb-1">4. Regras de Radar</div>
+                        <p class="text-xs text-slate-300">Match automático entre 'Ficha de Busca' e Banco de Dados (Postgres / Prisma).</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer class="mt-12 pt-6 border-t border-slate-200 text-center text-slate-400 text-xs">
+            <p>Imob Multinível System &copy; 2026. Documento de propriedade e uso restrito do time de desenvolvimento e diretoria técnica.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
