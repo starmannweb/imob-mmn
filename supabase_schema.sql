@@ -15,6 +15,16 @@ create table public.users (
   referred_by uuid references public.users(id), -- Quem indicou esse usuário na rede MMN
   plan_status user_plan_status default 'trial',
   role user_role default 'broker',
+  site_settings jsonb default '{
+    "primary_color": "#000000",
+    "logo_url": null,
+    "socials": {
+      "facebook": null,
+      "instagram": null,
+      "linkedin": null
+    },
+    "phone": null
+  }',
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 

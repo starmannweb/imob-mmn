@@ -50,3 +50,47 @@ export async function updateProfileUrl(formData: FormData) {
 
     return { success: true };
 }
+
+export async function updateSiteSettings(formData: FormData) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        return { error: "Não autorizado" };
+    }
+
+    const primaryColor = formData.get("primary_color") as string;
+    const logoUrl = formData.get("logo_url") as string;
+    const facebook = formData.get("facebook") as string;
+    const instagram = formData.get("instagram") as string;
+    const linkedin = formData.get("linkedin") as string;
+    const phone = formData.get("phone") as string;
+    const creci = formData.get("creci") as string;
+
+    const siteSettings = {
+        primary_color: primaryColor || "#000000",
+        logo_url: logoUrl || null,
+        socials: {
+            facebook: facebook || null,
+            instagram: instagram || null,
+            linkedin: linkedin || null
+        },
+        phone: phone || null
+    };
+
+    const { error: updateError } = await supabase
+        .from("users")
+        .update({ 
+            site_settings: siteSettings,
+            creci: creci || null
+        })
+        .eq("id", user.id);
+
+    if (updateError) {
+        return { error: "Ocorreu um erro ao atualizar as configurações do site." };
+    }
+
+    revalidatePath("/painel/configuracoes");
+
+    return { success: true };
+}
