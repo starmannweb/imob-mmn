@@ -19,25 +19,58 @@ create table public.users (
 );
 
 -- Tabela de imóveis
-create type property_status as enum ('available', 'sold', 'rented');
+create type property_status as enum ('draft', 'available', 'sold', 'rented', 'inactive');
+create type property_type as enum ('apartment', 'house', 'condo_house', 'land', 'commercial', 'other');
 
 create table public.properties (
   id uuid default uuid_generate_v4() primary key,
   owner_id uuid references public.users(id) not null,
   title text not null,
   description text,
+  type property_type default 'apartment',
+  
+  -- Valores
   price_sale numeric,
   price_rent numeric,
   iptu numeric,
   condominium numeric,
+  accepts_financing boolean default true,
+  
+  -- Comodos
   bedrooms smallint,
   bathrooms smallint,
   suites smallint,
   parking_spaces smallint,
-  area numeric,
+  area_useful numeric,
+  area_total numeric,
+  
+  -- Localização
+  zip_code text,
+  address text,
+  address_number text,
+  neighborhood text,
+  city text,
+  state text,
+  hide_address boolean default false,
+  latitude float,
+  longitude float,
+  
+  -- Mídia
+  video_url text, -- YouTube/Vimeo
+  tour_360_url text,
+  cover_image_url text,
+  
+  -- Dados Privativos (Ocultos ao público)
+  internal_notes text,
+  key_location text,
+  owner_phone text,
+  
+  -- Metadados
   slug text unique not null,
-  status property_status default 'available',
-  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+  status property_status default 'draft',
+  features jsonb default '[]', -- Ex: ["pool", "gym", "bbq"]
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
 -- Tabela de imagens dos imóveis
@@ -46,20 +79,86 @@ create table public.property_images (
   property_id uuid references public.properties(id) on delete cascade not null,
   url text not null,
   display_order smallint default 0,
+  is_watermarked boolean default false,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
 -- Tabela de leads (Contatos gerados)
-create type lead_status as enum ('new', 'contacted', 'negotiating', 'won', 'lost');
+create type lead_origin as enum ('website', 'portal', 'manual', 'referral');
+create type lead_status as enum ('new', 'contacted', 'qualified', 'negotiating', 'won', 'lost', 'trash');
 
 create table public.leads (
   id uuid default uuid_generate_v4() primary key,
   property_id uuid references public.properties(id),
-  assigned_to uuid references public.users(id) not null,
+  assigned_to uuid references public.users(id),
   name text not null,
   phone_whatsapp text not null,
   email text,
+  origin lead_origin default 'website',
   status lead_status default 'new',
+  search_profile jsonb default '{}', -- Preferências para Radar de Oportunidades
+  last_contact_at timestamp with time zone,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- CRM Kanban (Negócios/Deals)
+create type deal_stage as enum ('contact', 'service', 'visit', 'proposal', 'reservation', 'documentation', 'signature');
+
+create table public.deals (
+  id uuid default uuid_generate_v4() primary key,
+  lead_id uuid references public.leads(id) on delete cascade not null,
+  property_id uuid references public.properties(id) on delete cascade not null,
+  broker_id uuid references public.users(id) not null,
+  stage deal_stage default 'contact',
+  value numeric,
+  expected_closing_date date,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Histórico do CRM (Atividades/Timeline)
+create type activity_type as enum ('comment', 'stage_change', 'call', 'meeting', 'email', 'whatsapp', 'task', 'attachment');
+
+create table public.deal_activities (
+  id uuid default uuid_generate_v4() primary key,
+  deal_id uuid references public.deals(id) on delete cascade not null,
+  user_id uuid references public.users(id) not null,
+  type activity_type default 'comment',
+  content text,
+  metadata jsonb default '{}', -- Detalhes extras dependendo do tipo
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Agenda de Compromissos
+create type appointment_type as enum ('meeting', 'call', 'visit', 'follow_up', 'signature');
+create type appointment_priority as enum ('low', 'normal', 'urgent');
+
+create table public.appointments (
+  id uuid default uuid_generate_v4() primary key,
+  user_id uuid references public.users(id) not null,
+  lead_id uuid references public.leads(id) on delete cascade,
+  deal_id uuid references public.deals(id) on delete cascade,
+  title text not null,
+  description text,
+  type appointment_type default 'meeting',
+  priority appointment_priority default 'normal',
+  starts_at timestamp with time zone not null,
+  ends_at timestamp with time zone,
+  google_event_id text, -- Sincronização
+  status text default 'scheduled', -- scheduled, completed, cancelled
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Regras de Distribuição de Leads
+create type distribution_rule as enum ('random', 'round_robin', 'region', 'specialty');
+
+create table public.lead_distribution_configs (
+  id uuid default uuid_generate_v4() primary key,
+  team_id uuid, -- Para futuras expansões de times
+  rule distribution_rule default 'round_robin',
+  is_active boolean default true,
+  settings jsonb default '{}',
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
