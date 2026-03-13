@@ -5,7 +5,7 @@ import { createClient } from "@/utils/supabase/client";
 import { 
     Globe, Users, Phone, Calendar, Image, Lock, Shield, Search, 
     MessageSquare, RefreshCw, Code, AlertTriangle, ChevronRight, 
-    Plus, Trash2, CheckCircle, XCircle, AlertCircle, Save, Palette
+    Plus, Trash2, CheckCircle, XCircle, AlertCircle, Save, Palette, ExternalLink
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -255,12 +255,22 @@ export default function AdvancedConfigPage() {
     return (
         <div className="flex-1 flex flex-col w-full max-w-7xl pb-12">
             {/* Breadcrumb */}
-            <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-6 w-full px-4 md:px-0">
-                <Link href="/painel" className="font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">Home</Link>
-                <ChevronRight className="w-3 h-3" />
-                <Link href="/painel/meus-sites" className="font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">Meus Sites</Link>
-                <ChevronRight className="w-3 h-3" />
-                <span>Configurações Avançadas</span>
+            <div className="flex items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400 mb-6 w-full px-4 md:px-0">
+                <div className="flex items-center gap-2">
+                    <Link href="/painel" className="font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">Home</Link>
+                    <ChevronRight className="w-3 h-3" />
+                    <Link href="/painel/meus-sites" className="font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">Meu Site</Link>
+                    <ChevronRight className="w-3 h-3" />
+                    <span>Configurações Avançadas</span>
+                </div>
+                <a
+                    href={`/corretor/${profile?.referral_code || userId?.substring(0, 8)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors"
+                >
+                    <Globe className="w-4 h-4" /> Visualizar Site
+                </a>
             </div>
 
             <div className="flex flex-col md:flex-row gap-8">

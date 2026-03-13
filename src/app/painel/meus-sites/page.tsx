@@ -37,7 +37,7 @@ export default async function MeusSitesPage() {
             <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-6 w-full">
                 <Link href="/painel" className="font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">Home</Link>
                 <ChevronRight className="w-3 h-3" />
-                <span>Meus Sites</span>
+                <span>Meu Site</span>
             </div>
 
             {/* Header */}
@@ -88,7 +88,7 @@ export default async function MeusSitesPage() {
                                 Seu site pessoal com todos os seus imóveis cadastrados. Compartilhe com seus clientes para captação automática de leads.
                             </p>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex gap-2">
                             <a
                                 href={`/corretor/${siteSlug}`}
                                 target="_blank"
@@ -97,7 +97,7 @@ export default async function MeusSitesPage() {
                             >
                                 <ExternalLink className="w-4 h-4" /> Visualizar Site
                             </a>
-                            <Link href="/painel/configuracoes" className="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-4 py-2 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
+                            <Link href="/painel/meus-sites/configurar" className="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-4 py-2 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
                                 <Palette className="w-4 h-4" /> Personalizar
                             </Link>
                         </div>
