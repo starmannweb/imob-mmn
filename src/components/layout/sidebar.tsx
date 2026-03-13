@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { Home, Users, DollarSign, LineChart, AppWindow, BarChart2, Calculator, Building2, Building, Flame, UserCheck, Settings, Layers, Coins, Globe, Inbox, Kanban, FileText, Megaphone, Instagram } from 'lucide-react';
+import { Home, Users, DollarSign, LineChart, AppWindow, BarChart2, Calculator, Building2, Building, Flame, UserCheck, Settings, Layers, Coins, Globe, Inbox, Kanban, FileText, Megaphone, Instagram, Shield } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
+import { hasPermission, type UserRole } from '@/lib/permissions';
 
 const WhatsappIcon = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -11,7 +12,19 @@ const WhatsappIcon = ({ className }: { className?: string }) => (
 export default async function Sidebar() {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    const isAdmin = user?.email === 'ricieri@starmannweb.com.br';
+    
+    // Buscar perfil do usuário para obter role
+    const { data: profile } = await supabase
+        .from("users")
+        .select("role")
+        .eq("id", user?.id)
+        .single();
+    
+    const userRole = (profile?.role || 'user') as UserRole;
+    const canAccessDevTools = hasPermission(userRole, 'canAccessDevTools');
+    const canAccessCRM = hasPermission(userRole, 'canAccessCRM');
+    const canViewFinancials = hasPermission(userRole, 'canViewFinancials');
+    const canViewAllUsers = hasPermission(userRole, 'canViewAllUsers');
 
     return (
         <aside className="w-64 bg-[#111827] text-slate-300 hidden md:flex flex-col h-full overflow-hidden border-r border-slate-800 transition-colors duration-200">
@@ -66,12 +79,24 @@ export default async function Sidebar() {
                             <span className="ml-3 text-sm font-medium tracking-wide truncate">Leads</span>
                         </Link>
                     </li>
+                    
+                    {canAccessCRM && (
+                        <li>
+                            <Link href="/painel/crm" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
+                                <span className="inline-flex justify-center items-center">
+                                    <Kanban className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                                </span>
+                                <span className="ml-3 text-sm font-medium tracking-wide truncate">CRM</span>
+                            </Link>
+                        </li>
+                    )}
+                    
                     <li>
-                        <Link href="/painel/crm" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
+                        <Link href="/painel/clientes" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
                             <span className="inline-flex justify-center items-center">
-                                <Kanban className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                                <Users className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
                             </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">CRM</span>
+                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Meus Clientes</span>
                         </Link>
                     </li>
                     <li>
@@ -124,8 +149,20 @@ export default async function Sidebar() {
                         </Link>
                     </li>
 
-                    {/* Mostrar Dev/Testes SOMENTE se for admin */}
-                    {isAdmin && (
+                    {/* Gerenciamento de Usuários - Apenas Admin/Dev */}
+                    {canViewAllUsers && (
+                        <li>
+                            <Link href="/painel/usuarios" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-purple-400 border-l-4 border-transparent hover:border-purple-500 transition-colors group">
+                                <span className="inline-flex justify-center items-center">
+                                    <Shield className="w-5 h-5 text-slate-400 group-hover:text-purple-500 transition-colors" />
+                                </span>
+                                <span className="ml-3 text-sm font-medium tracking-wide truncate">Gerenciar Usuários</span>
+                            </Link>
+                        </li>
+                    )}
+
+                    {/* Mostrar Dev/Testes SOMENTE se for dev */}
+                    {canAccessDevTools && (
                         <>
                             <li>
                                 <Link href="/painel/dev" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-orange-400 border-l-4 border-transparent hover:border-orange-500 transition-colors group">

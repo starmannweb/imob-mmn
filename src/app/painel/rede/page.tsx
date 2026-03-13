@@ -6,6 +6,7 @@ import { Users, Copy, Share2, Search, Settings2, LayoutGrid, Network, Eye, Chevr
 import { Button } from "@/components/ui/button";
 import TreeGraph from "./tree-graph";
 import CreateOpportunityModal from "./create-opportunity-modal";
+import { hasPermission } from "@/lib/permissions";
 
 export default async function MinhaRedePage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
     const supabase = await createClient();
@@ -20,11 +21,14 @@ export default async function MinhaRedePage({ searchParams }: { searchParams: Pr
         .eq("id", user?.id)
         .single();
 
-    // Fetch network (direct referrals)
-    const { data: network } = await supabase
-        .from("users")
-        .select("*")
-        .eq("referred_by", user?.id);
+    // Verificar permissões
+    const canViewFullNetwork = hasPermission(profile?.role || 'user', 'canViewFullNetwork');
+
+    // Fetch network based on permissions
+    // Admin/Dev vê toda a rede, User vê apenas sua rede
+    const { data: network } = canViewFullNetwork
+        ? await supabase.from("users").select("*").order("created_at", { ascending: false })
+        : await supabase.from("users").select("*").eq("referred_by", user?.id);
 
     const referralCode = profile?.referral_code || "GERANDO...";
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -43,9 +47,13 @@ export default async function MinhaRedePage({ searchParams }: { searchParams: Pr
             <div className="mb-6 flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <div>
                     <h1 className="text-3xl font-extrabold text-blue-600 dark:text-blue-500 flex items-center gap-2 tracking-tight">
-                        Oportunidades e Parcerias <Users className="w-7 h-7 fill-current text-blue-500/20" />
+                        {canViewFullNetwork ? 'Rede Completa' : 'Oportunidades e Parcerias'} <Users className="w-7 h-7 fill-current text-blue-500/20" />
                     </h1>
-                    <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm font-medium">Conecte-se com outros corretores, feche parcerias e expanda seus negócios.</p>
+                    <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm font-medium">
+                        {canViewFullNetwork 
+                            ? 'Visualize e gerencie toda a rede de usuários do sistema' 
+                            : 'Conecte-se com outros corretores, feche parcerias e expanda seus negócios.'}
+                    </p>
                 </div>
                 <div className="flex items-center gap-2">
                     <CreateOpportunityModal />
@@ -56,8 +64,8 @@ export default async function MinhaRedePage({ searchParams }: { searchParams: Pr
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 shadow-sm flex flex-col items-center justify-center text-center">
                     <div className="text-blue-500 mb-2 bg-blue-50 dark:bg-blue-900/30 p-2 rounded-lg"><Users className="w-5 h-5" /></div>
-                    <h2 className="text-2xl font-extrabold text-blue-600 dark:text-blue-400">0</h2>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Usuários Ativos</p>
+                    <h2 className="text-2xl font-extrabold text-blue-600 dark:text-blue-400">{network?.length || 0}</h2>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{canViewFullNetwork ? 'Total de Usuários' : 'Usuários na Rede'}</p>
                 </div>
 
                 <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 shadow-sm flex flex-col items-center justify-center text-center">
