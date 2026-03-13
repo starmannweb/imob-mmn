@@ -59,6 +59,15 @@ export async function updateSiteSettings(formData: FormData) {
         return { error: "Não autorizado" };
     }
 
+    // Fetch existing settings first to merge
+    const { data: currentUser } = await supabase
+        .from("users")
+        .select("site_settings")
+        .eq("id", user.id)
+        .single();
+
+    const existingSettings = currentUser?.site_settings || {};
+
     const primaryColor = formData.get("primary_color") as string;
     const logoUrl = formData.get("logo_url") as string;
     const facebook = formData.get("facebook") as string;
@@ -67,7 +76,8 @@ export async function updateSiteSettings(formData: FormData) {
     const phone = formData.get("phone") as string;
     const creci = formData.get("creci") as string;
 
-    const siteSettings = {
+    const newSettings = {
+        ...existingSettings, // Merge with existing (domains, lead_rotation, etc.)
         primary_color: primaryColor || "#000000",
         logo_url: logoUrl || null,
         socials: {
@@ -81,7 +91,7 @@ export async function updateSiteSettings(formData: FormData) {
     const { error: updateError } = await supabase
         .from("users")
         .update({ 
-            site_settings: siteSettings,
+            site_settings: newSettings,
             creci: creci || null
         })
         .eq("id", user.id);
@@ -91,6 +101,7 @@ export async function updateSiteSettings(formData: FormData) {
     }
 
     revalidatePath("/painel/configuracoes");
+    revalidatePath("/painel/meus-sites/configurar");
 
     return { success: true };
 }
