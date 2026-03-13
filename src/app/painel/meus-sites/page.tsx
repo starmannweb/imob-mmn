@@ -90,7 +90,7 @@ export default async function MeusSitesPage() {
                                 Seu site pessoal com todos os seus imóveis cadastrados. Compartilhe com seus clientes para captação automática de leads.
                             </p>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-2">
                             <a
                                 href={`/corretor/${siteSlug}`}
                                 target="_blank"
@@ -99,8 +99,11 @@ export default async function MeusSitesPage() {
                             >
                                 <ExternalLink className="w-4 h-4" /> Visualizar Site
                             </a>
-                            <Link href="/painel/meus-sites/configurar" className="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-4 py-2 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
-                                <Settings className="w-4 h-4" /> Editar
+                            <Link href="/painel/configuracoes" className="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-4 py-2 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
+                                <Palette className="w-4 h-4" /> Personalizar
+                            </Link>
+                            <Link href="/painel/meus-sites/configurar" className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors">
+                                <Settings className="w-4 h-4" /> Configurações Avançadas
                             </Link>
                         </div>
                     </div>
