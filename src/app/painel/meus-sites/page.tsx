@@ -48,45 +48,14 @@ export default async function MeusSitesPage() {
                             <Globe className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                         </div>
                         <div>
-                            <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Meus Sites</h1>
+                            <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Meu Site</h1>
                             <p className="text-slate-500 dark:text-slate-400 mt-0.5 text-sm">Crie e gerencie sua lead page personalizada para captar clientes.</p>
                         </div>
                     </div>
                 </div>
-                <div className="flex gap-2">
-                    <Link href="/painel/meus-sites/configurar" className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm flex items-center gap-2 transition-colors">
-                        <Settings className="w-4 h-4" /> Configurações Avançadas
-                    </Link>
-                    <GenerateSiteModal>
-                        <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm flex items-center gap-2 transition-colors">
-                            <Sparkles className="w-4 h-4" /> Criar Site com IA
-                        </button>
-                    </GenerateSiteModal>
-                </div>
-            </div>
-
-            {/* Quick Access Card - Configurações Avançadas */}
-            <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-6 mb-8 shadow-lg">
-                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                    <div className="flex items-start gap-4">
-                        <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
-                            <Settings className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="text-white">
-                            <h3 className="text-lg font-bold mb-1">Configurações Avançadas do Site</h3>
-                            <p className="text-white/90 text-sm">
-                                Configure rodízio de leads, SEO, WhatsApp, formulários, LGPD e muito mais.
-                            </p>
-                        </div>
-                    </div>
-                    <Link 
-                        href="/painel/meus-sites/configurar"
-                        className="bg-white text-emerald-700 px-6 py-3 rounded-xl text-sm font-bold hover:bg-emerald-50 transition-colors shadow-md whitespace-nowrap flex items-center gap-2"
-                    >
-                        <Settings className="w-4 h-4" />
-                        Acessar Configurações
-                    </Link>
-                </div>
+                <Link href="/painel/meus-sites/configurar" className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm flex items-center gap-2 transition-colors">
+                    <Settings className="w-4 h-4" /> Configurações Avançadas
+                </Link>
             </div>
 
             {/* Lead Page Card Principal */}
@@ -130,9 +99,6 @@ export default async function MeusSitesPage() {
                             </a>
                             <Link href="/painel/configuracoes" className="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-4 py-2 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
                                 <Palette className="w-4 h-4" /> Personalizar
-                            </Link>
-                            <Link href="/painel/meus-sites/configurar" className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors">
-                                <Settings className="w-4 h-4" /> Configurações Avançadas
                             </Link>
                         </div>
                     </div>
