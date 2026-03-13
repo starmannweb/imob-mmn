@@ -181,6 +181,9 @@ export default async function MeusSitesPage() {
                         <h2 className="text-xl font-extrabold text-slate-800 dark:text-slate-200">Templates Disponíveis</h2>
                         <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Escolha um template para personalizar sua lead page.</p>
                     </div>
+                    <Link href="/painel/meus-sites/templates" className="text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors">
+                        Ver todos os modelos →
+                    </Link>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -22,6 +22,8 @@ import { MaintenanceConfig } from "./components/MaintenanceConfig";
 import { PopupConfig } from "./components/PopupConfig";
 import { LeadRotationConfig } from "./components/LeadRotationConfig";
 
+import { AppearanceConfig } from "./components/AppearanceConfig";
+
 // Componentes de Configuração
 const DomainConfig = ({ settings, updateSettings }: { settings: any, updateSettings: (key: string, value: any) => void }) => {
     const [domainInput, setDomainInput] = useState("");
@@ -233,6 +235,7 @@ export default function AdvancedConfigPage() {
 
     const sidebarItems = [
         { id: "contact", label: "Dados de contato", icon: Users },
+        { id: "appearance", label: "Aparência", icon: Palette },
         { id: "domain", label: "Domínio", icon: Globe },
         { id: "whatsapp", label: "Whatsapp", icon: Phone },
         { id: "schedule", label: "Agendar Visitas", icon: Calendar },
@@ -296,6 +299,9 @@ export default function AdvancedConfigPage() {
                     {activeTab === "contact" && (
                         <ContactConfig settings={settings} updateSettings={updateSettings} />
                     )}
+                    {activeTab === "appearance" && (
+                        <AppearanceConfig settings={settings} updateSettings={updateSettings} />
+                    )}
                     {activeTab === "domain" && (
                         <DomainConfig settings={settings} updateSettings={updateSettings} />
                     )}
@@ -330,7 +336,7 @@ export default function AdvancedConfigPage() {
                         <PopupConfig settings={settings} updateSettings={updateSettings} />
                     )}
                     {/* Placeholder para outras abas */}
-                    {!["contact", "domain", "whatsapp", "schedule", "photos", "lgpd", "lead_rotation", "seo", "form", "script", "maintenance", "popup"].includes(activeTab) && (
+                    {!["contact", "appearance", "domain", "whatsapp", "schedule", "photos", "lgpd", "lead_rotation", "seo", "form", "script", "maintenance", "popup"].includes(activeTab) && (
                         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-12 text-center">
                             <div className="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <AlertTriangle className="w-8 h-8 text-slate-400" />
