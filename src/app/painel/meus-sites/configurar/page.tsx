@@ -173,10 +173,7 @@ const DomainConfig = ({ settings, updateSettings }: { settings: any, updateSetti
     );
 };
 
-const LeadRotationConfig = ({ settings, updateSettings }: { settings: any, updateSettings: (key: string, value: any) => void }) => {
-    // Componente removido para usar a versão importada
-    return null;
-};
+
 
 // Ícone auxiliar
 const ExternalLinkIcon = ({ className }: { className?: string }) => (
