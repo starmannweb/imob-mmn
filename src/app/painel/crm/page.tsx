@@ -30,12 +30,13 @@ export default async function CrmPage({ searchParams }: { searchParams: Promise<
     // Transform leads for the kanban component
     const kanbanLeads = (leads || []).map(lead => ({
         id: lead.id,
-        name: lead.name,
-        phone_whatsapp: lead.phone_whatsapp,
+        lead_name: lead.name,
+        phone: lead.phone_whatsapp,
         email: lead.email,
-        property_title: lead.property?.title || null,
+        property_title: lead.property?.title || 'Sem imóvel',
+        value: 0, // Valor padrão, pode ser ajustado depois
         created_at: lead.created_at,
-        status: lead.status || 'new',
+        stage: lead.status === 'new' ? 'contact' : lead.status || 'contact',
     }));
 
     return (
@@ -78,11 +79,11 @@ export default async function CrmPage({ searchParams }: { searchParams: Promise<
             {/* KPIs */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
                 {[
-                    { label: 'Novos', count: kanbanLeads.filter(l => l.status === 'new').length, color: 'blue' },
-                    { label: 'Contatados', count: kanbanLeads.filter(l => l.status === 'contacted').length, color: 'amber' },
-                    { label: 'Negociando', count: kanbanLeads.filter(l => l.status === 'negotiating').length, color: 'purple' },
-                    { label: 'Convertidos', count: kanbanLeads.filter(l => l.status === 'won').length, color: 'emerald' },
-                    { label: 'Perdidos', count: kanbanLeads.filter(l => l.status === 'lost').length, color: 'red' },
+                    { label: 'Novos', count: kanbanLeads.filter(l => l.stage === 'contact').length, color: 'blue' },
+                    { label: 'Contatados', count: kanbanLeads.filter(l => l.stage === 'service').length, color: 'amber' },
+                    { label: 'Negociando', count: kanbanLeads.filter(l => ['visit', 'proposal'].includes(l.stage)).length, color: 'purple' },
+                    { label: 'Convertidos', count: kanbanLeads.filter(l => l.stage === 'signature').length, color: 'emerald' },
+                    { label: 'Perdidos', count: kanbanLeads.filter(l => l.stage === 'lost').length, color: 'red' },
                 ].map(kpi => (
                     <div key={kpi.label} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-center">
                         <span className={`text-2xl font-black text-${kpi.color}-600 dark:text-${kpi.color}-400`}>{kpi.count}</span>
@@ -93,7 +94,7 @@ export default async function CrmPage({ searchParams }: { searchParams: Promise<
 
             {/* Visualizações CrmKanban / Lista */}
             {currentTab === 'pipeline' ? (
-                <CrmKanban initialLeads={kanbanLeads} />
+                <CrmKanban initialDeals={kanbanLeads} />
             ) : (
                 <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm overflow-hidden flex-1">
                     <div className="overflow-x-auto">
@@ -110,9 +111,9 @@ export default async function CrmPage({ searchParams }: { searchParams: Promise<
                             <tbody>
                                 {kanbanLeads.length > 0 ? kanbanLeads.map((lead) => (
                                     <tr key={lead.id} className="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                                        <td className="px-6 py-4 font-bold text-slate-800 dark:text-slate-200">{lead.name}</td>
+                                        <td className="px-6 py-4 font-bold text-slate-800 dark:text-slate-200">{lead.lead_name}</td>
                                         <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
-                                            {lead.phone_whatsapp && <div className="text-sm">{lead.phone_whatsapp}</div>}
+                                            {lead.phone && <div className="text-sm">{lead.phone}</div>}
                                             {lead.email && <div className="text-xs">{lead.email}</div>}
                                         </td>
                                         <td className="px-6 py-4 text-slate-600 dark:text-slate-300">
@@ -122,17 +123,17 @@ export default async function CrmPage({ searchParams }: { searchParams: Promise<
                                             {new Date(lead.created_at).toLocaleDateString('pt-BR')}
                                         </td>
                                         <td className="px-6 py-4 text-xs font-bold uppercase tracking-wider">
-                                            <span className={`px-2.5 py-1 rounded-full ${lead.status === 'new' ? 'bg-blue-100 text-blue-700' :
-                                                lead.status === 'contacted' ? 'bg-amber-100 text-amber-700' :
-                                                    lead.status === 'negotiating' ? 'bg-purple-100 text-purple-700' :
-                                                        lead.status === 'won' ? 'bg-emerald-100 text-emerald-700' :
-                                                            lead.status === 'lost' ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-700'
+                                            <span className={`px-2.5 py-1 rounded-full ${lead.stage === 'contact' ? 'bg-blue-100 text-blue-700' :
+                                                lead.stage === 'service' ? 'bg-amber-100 text-amber-700' :
+                                                    ['visit', 'proposal'].includes(lead.stage) ? 'bg-purple-100 text-purple-700' :
+                                                        lead.stage === 'signature' ? 'bg-emerald-100 text-emerald-700' :
+                                                            lead.stage === 'lost' ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-700'
                                                 }`}>
-                                                {lead.status === 'new' ? 'Novo' :
-                                                    lead.status === 'contacted' ? 'Contatado' :
-                                                        lead.status === 'negotiating' ? 'Negociando' :
-                                                            lead.status === 'won' ? 'Convertido' :
-                                                                lead.status === 'lost' ? 'Perdido' : 'Desconhecido'}
+                                                {lead.stage === 'contact' ? 'Novo' :
+                                                    lead.stage === 'service' ? 'Contatado' :
+                                                        ['visit', 'proposal'].includes(lead.stage) ? 'Negociando' :
+                                                            lead.stage === 'signature' ? 'Convertido' :
+                                                                lead.stage === 'lost' ? 'Perdido' : 'Desconhecido'}
                                             </span>
                                         </td>
                                     </tr>

@@ -4,7 +4,6 @@ import { SiteHeader } from "./Header";
 import { SiteHero } from "./Hero";
 import { SitePropertyCard } from "./PropertyCard";
 import { SiteWhatsAppButton } from "./WhatsAppButton";
-import { Footer } from "@/components/layout/footer"; // Supondo que exista um footer base ou criamos um novo
 
 interface SiteTemplateProps {
     broker: {
