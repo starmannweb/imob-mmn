@@ -2,6 +2,7 @@
 
 import { Search, MapPin, Building, Bed, Bath, Car, Maximize2, Sparkles, ChevronRight, LayoutDashboard, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AdvancedSearch } from "./AdvancedSearch";
 
 interface HeroProps {
     featuredProperty?: {
@@ -119,9 +120,12 @@ export function SiteHero({ featuredProperty, primaryColor = "#000000" }: HeroPro
                 </div>
                 
                 {/* IA Prompt Hint */}
-                <div className="mt-4 flex items-center justify-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                    <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-                    Prefere buscar por voz ou texto livre? <span className="text-indigo-600 cursor-pointer hover:underline">Tente nossa busca com IA</span>
+                <div className="mt-4 flex items-center justify-center gap-4">
+                    <AdvancedSearch primaryColor={primaryColor} />
+                    <div className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+                        Prefere buscar por voz ou texto livre? <span className="text-indigo-600 cursor-pointer hover:underline">Tente nossa busca com IA</span>
+                    </div>
                 </div>
             </div>
         </section>
