@@ -5,7 +5,7 @@ import { createClient } from "@/utils/supabase/client";
 import { 
     Globe, Users, Phone, Calendar, Image, Lock, Shield, Search, 
     MessageSquare, RefreshCw, Code, AlertTriangle, ChevronRight, 
-    Plus, Trash2, CheckCircle, XCircle, AlertCircle, Save
+    Plus, Trash2, CheckCircle, XCircle, AlertCircle, Save, Palette
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
