@@ -53,11 +53,40 @@ export default async function MeusSitesPage() {
                         </div>
                     </div>
                 </div>
-                <GenerateSiteModal>
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm flex items-center gap-2 transition-colors">
-                        <Sparkles className="w-4 h-4" /> Criar Site com IA
-                    </button>
-                </GenerateSiteModal>
+                <div className="flex gap-2">
+                    <Link href="/painel/meus-sites/configurar" className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm flex items-center gap-2 transition-colors">
+                        <Settings className="w-4 h-4" /> Configurações Avançadas
+                    </Link>
+                    <GenerateSiteModal>
+                        <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm flex items-center gap-2 transition-colors">
+                            <Sparkles className="w-4 h-4" /> Criar Site com IA
+                        </button>
+                    </GenerateSiteModal>
+                </div>
+            </div>
+
+            {/* Quick Access Card - Configurações Avançadas */}
+            <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-6 mb-8 shadow-lg">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div className="flex items-start gap-4">
+                        <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+                            <Settings className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="text-white">
+                            <h3 className="text-lg font-bold mb-1">Configurações Avançadas do Site</h3>
+                            <p className="text-white/90 text-sm">
+                                Configure rodízio de leads, SEO, WhatsApp, formulários, LGPD e muito mais.
+                            </p>
+                        </div>
+                    </div>
+                    <Link 
+                        href="/painel/meus-sites/configurar"
+                        className="bg-white text-emerald-700 px-6 py-3 rounded-xl text-sm font-bold hover:bg-emerald-50 transition-colors shadow-md whitespace-nowrap flex items-center gap-2"
+                    >
+                        <Settings className="w-4 h-4" />
+                        Acessar Configurações
+                    </Link>
+                </div>
             </div>
 
             {/* Lead Page Card Principal */}
