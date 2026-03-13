@@ -234,17 +234,16 @@ export default function AdvancedConfigPage() {
     };
 
     const sidebarItems = [
-        { id: "contact", label: "Dados de contato", icon: Users },
         { id: "appearance", label: "Aparência", icon: Palette },
+        { id: "contact", label: "Contatos do Site", icon: Users },
         { id: "domain", label: "Domínio", icon: Globe },
-        { id: "whatsapp", label: "Whatsapp", icon: Phone },
+        { id: "whatsapp", label: "WhatsApp", icon: MessageSquare },
         { id: "schedule", label: "Agendar Visitas", icon: Calendar },
         { id: "popup", label: "Popup", icon: MessageSquare },
         { id: "photos", label: "Restrição de fotos", icon: Image },
         { id: "lgpd", label: "LGPD", icon: Shield },
         { id: "seo", label: "SEO", icon: Search },
         { id: "form", label: "Formulário de contato", icon: MessageSquare },
-        { id: "lead_rotation", label: "Rodízio de leads", icon: RefreshCw },
         { id: "script", label: "Injetar script", icon: Code },
         { id: "maintenance", label: "Manutenção", icon: AlertTriangle },
     ];
@@ -296,11 +295,11 @@ export default function AdvancedConfigPage() {
 
                 {/* Main Content */}
                 <main className="flex-1 min-w-0">
-                    {activeTab === "contact" && (
-                        <ContactConfig settings={settings} updateSettings={updateSettings} />
-                    )}
                     {activeTab === "appearance" && (
                         <AppearanceConfig settings={settings} updateSettings={updateSettings} />
+                    )}
+                    {activeTab === "contact" && (
+                        <ContactConfig settings={settings} updateSettings={updateSettings} />
                     )}
                     {activeTab === "domain" && (
                         <DomainConfig settings={settings} updateSettings={updateSettings} />
@@ -323,8 +322,8 @@ export default function AdvancedConfigPage() {
                     {activeTab === "form" && (
                         <FormConfig settings={settings} updateSettings={updateSettings} />
                     )}
-                    {activeTab === "lead_rotation" && (
-                        <LeadRotationConfig settings={settings} updateSettings={updateSettings} />
+                    {activeTab === "popup" && (
+                        <PopupConfig settings={settings} updateSettings={updateSettings} />
                     )}
                     {activeTab === "script" && (
                         <ScriptConfig settings={settings} updateSettings={updateSettings} />
@@ -332,11 +331,8 @@ export default function AdvancedConfigPage() {
                     {activeTab === "maintenance" && (
                         <MaintenanceConfig settings={settings} updateSettings={updateSettings} />
                     )}
-                    {activeTab === "popup" && (
-                        <PopupConfig settings={settings} updateSettings={updateSettings} />
-                    )}
                     {/* Placeholder para outras abas */}
-                    {!["contact", "appearance", "domain", "whatsapp", "schedule", "photos", "lgpd", "lead_rotation", "seo", "form", "script", "maintenance", "popup"].includes(activeTab) && (
+                    {!["appearance", "contact", "domain", "whatsapp", "schedule", "photos", "lgpd", "seo", "form", "script", "maintenance", "popup"].includes(activeTab) && (
                         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-12 text-center">
                             <div className="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <AlertTriangle className="w-8 h-8 text-slate-400" />
