@@ -88,43 +88,49 @@ export default function PropertyWizard() {
             </div>
 
             {/* Barra de Progresso */}
-            <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full mb-8 overflow-hidden">
+            <div className="w-full bg-slate-100 dark:bg-slate-800/50 h-1.5 rounded-full mb-8 overflow-hidden">
                 <div 
-                    className="bg-indigo-600 h-full transition-all duration-500 ease-out"
+                    className="bg-blue-600 h-full transition-all duration-700 ease-in-out"
                     style={{ width: `${progress}%` }}
                 />
             </div>
 
-            {/* Stepper Navigation */}
-            <div className="flex bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-2 mb-8 overflow-x-auto hide-scrollbar">
-                {STEPS.map((step, index) => {
-                    const isActive = index === currentStep;
-                    const isCompleted = index < currentStep;
-                    const Icon = step.icon;
+            {/* Stepper Navigation Premium */}
+            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800/80 p-3 mb-8">
+                <div className="flex items-center overflow-x-auto hide-scrollbar scroll-smooth gap-2 snap-x">
+                    {STEPS.map((step, index) => {
+                        const isActive = index === currentStep;
+                        const isCompleted = index < currentStep;
+                        const Icon = step.icon;
 
-                    return (
-                        <button
-                            key={step.id}
-                            type="button"
-                            onClick={() => setCurrentStep(index)}
-                            className={`flex items-center whitespace-nowrap px-4 py-3 rounded-lg text-sm font-medium transition-all ${
-                                isActive
-                                    ? "bg-slate-900 text-white dark:bg-white dark:text-black shadow-md"
-                                    : isCompleted
-                                    ? "text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
-                                    : "text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800"
-                            }`}
-                        >
-                            <span className={`w-6 h-6 rounded-full flex items-center justify-center mr-2 text-xs ${
-                                isActive ? "bg-white/20" : isCompleted ? "bg-emerald-100 dark:bg-emerald-900/50" : "bg-slate-100 dark:bg-slate-800"
-                            }`}>
-                                {isCompleted ? <Check className="w-3.5 h-3.5" /> : index + 1}
-                            </span>
-                            <Icon className="w-4 h-4 mr-2 hidden sm:block" />
-                            {step.title}
-                        </button>
-                    );
-                })}
+                        return (
+                            <button
+                                key={step.id}
+                                type="button"
+                                onClick={() => setCurrentStep(index)}
+                                className={`flex items-center whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-bold transition-all snap-start shrink-0 ${
+                                    isActive
+                                        ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-md transform scale-[1.02]"
+                                        : isCompleted
+                                        ? "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+                                        : "text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
+                                }`}
+                            >
+                                <span className={`w-6 h-6 rounded-full flex items-center justify-center mr-2.5 text-xs font-black transition-colors ${
+                                    isActive 
+                                        ? "bg-white/20 text-white dark:bg-slate-900/20 dark:text-slate-900" 
+                                        : isCompleted 
+                                        ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400" 
+                                        : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+                                }`}>
+                                    {isCompleted ? <Check className="w-3.5 h-3.5" /> : index + 1}
+                                </span>
+                                {isActive && <Icon className="w-4 h-4 mr-2" />}
+                                {step.title}
+                            </button>
+                        );
+                    })}
+                </div>
             </div>
 
             {/* Formulário Principal */}

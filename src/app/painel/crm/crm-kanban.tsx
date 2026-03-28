@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { createClient } from "@/utils/supabase/client";
 
 type Deal = {
     id: string;
@@ -44,6 +45,44 @@ export default function CrmKanban({ initialDeals = [] }: { initialDeals?: Deal[]
     const [searchQuery, setSearchQuery] = useState("");
     const [isClient, setIsClient] = useState(false);
     const [isNewDealOpen, setIsClientOpen] = useState(false);
+
+    // Estados para o Combobox de Leads
+    const [leadSearch, setLeadSearch] = useState("");
+    const [leads, setLeads] = useState<any[]>([]);
+    const [isSearchingLeads, setIsSearchingLeads] = useState(false);
+    const [showLeadDropdown, setShowLeadDropdown] = useState(false);
+    const [selectedLead, setSelectedLead] = useState<any>(null);
+
+    const searchLeads = async (query: string) => {
+        setLeadSearch(query);
+        setSelectedLead(null);
+        if (query.length < 2) {
+            setLeads([]);
+            setShowLeadDropdown(false);
+            return;
+        }
+
+        setIsSearchingLeads(true);
+        setShowLeadDropdown(true);
+        
+        const supabase = createClient();
+        const { data, error } = await supabase
+            .from("leads")
+            .select("id, name, email, phone")
+            .ilike("name", `%${query}%`)
+            .limit(5);
+
+        if (!error && data) {
+            setLeads(data);
+        }
+        setIsSearchingLeads(false);
+    };
+
+    const handleSelectLead = (lead: any) => {
+        setSelectedLead(lead);
+        setLeadSearch(lead.name);
+        setShowLeadDropdown(false);
+    };
 
     useEffect(() => {
         setIsClient(true);
@@ -121,26 +160,63 @@ export default function CrmKanban({ initialDeals = [] }: { initialDeals?: Deal[]
                                 <UserPlus className="w-4 h-4" /> Novo Negócio
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-[600px]">
+                        <DialogContent className="sm:max-w-[600px] overflow-visible">
                             <DialogHeader>
                                 <DialogTitle>Novo Negócio</DialogTitle>
                             </DialogHeader>
                             <div className="grid gap-4 py-4">
                                 <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <Label>Cliente (Lead)</Label>
-                                        <Input placeholder="Buscar cliente..." />
+                                    <div className="space-y-2 relative">
+                                        <Label>Cliente (Lead) *</Label>
+                                        <Input 
+                                            placeholder="Buscar cliente..." 
+                                            value={leadSearch}
+                                            onChange={(e) => searchLeads(e.target.value)}
+                                            onFocus={() => { if (leads.length > 0) setShowLeadDropdown(true) }}
+                                            className="focus:ring-indigo-500"
+                                        />
+                                        {/* Dropdown de Resultados */}
+                                        {showLeadDropdown && (
+                                            <div className="absolute top-[68px] left-0 w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-50 max-h-60 overflow-y-auto overflow-x-hidden">
+                                                {isSearchingLeads ? (
+                                                    <div className="p-4 text-sm font-medium text-center text-slate-500">Buscando...</div>
+                                                ) : leads.length > 0 ? (
+                                                    leads.map((lead) => (
+                                                        <div 
+                                                            key={lead.id} 
+                                                            className="p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer border-b border-slate-100 dark:border-slate-800 last:border-0 transition-colors"
+                                                            onClick={() => handleSelectLead(lead)}
+                                                        >
+                                                            <div className="font-bold text-sm text-slate-900 dark:text-white flex justify-between items-center">
+                                                                {lead.name}
+                                                                <BadgeCheck className="w-3.5 h-3.5 text-indigo-500 opacity-50" />
+                                                            </div>
+                                                            {(lead.email || lead.phone) && (
+                                                                <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">{lead.email || lead.phone}</div>
+                                                            )}
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <div className="p-4 text-sm font-medium text-center text-slate-500">Nenhum cliente encontrado</div>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="space-y-2">
                                         <Label>Imóvel de Interesse</Label>
                                         <Input placeholder="Buscar imóvel..." />
                                     </div>
                                 </div>
-                                <div className="space-y-2">
+                                <div className="space-y-2 mt-2">
                                     <Label>Valor da Proposta</Label>
                                     <Input type="number" placeholder="R$ 0,00" />
                                 </div>
-                                <Button className="w-full bg-indigo-600 text-white mt-4">Criar Negócio</Button>
+                                <Button 
+                                    className="w-full bg-indigo-600 hover:bg-indigo-700 font-bold text-white mt-4" 
+                                    disabled={!selectedLead}
+                                >
+                                    Criar Negócio
+                                </Button>
                             </div>
                         </DialogContent>
                     </Dialog>

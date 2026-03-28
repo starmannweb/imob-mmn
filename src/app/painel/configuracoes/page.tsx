@@ -339,7 +339,7 @@ export default async function ConfiguracoesPage({ searchParams }: { searchParams
                                     </div>
 
                                 </div>
-                            )}
+                            ) : null}
                         </div>
 
                         {/* Modal Footer */}

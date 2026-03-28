@@ -36,7 +36,7 @@ export function SiteTemplateWrapper({ broker, properties, featuredProperties, pr
     } : undefined;
 
     return (
-        <div className="min-h-screen bg-slate-50/30 flex flex-col font-sans" style={{ "--site-primary": primaryColor } as React.CSSProperties}>
+        <div className="min-h-screen bg-white flex flex-col font-sans" style={{ "--site-primary": primaryColor } as React.CSSProperties}>
             {/* 1. HEADER */}
             <SiteHeader 
                 brokerName={broker.full_name}
@@ -56,9 +56,9 @@ export function SiteTemplateWrapper({ broker, properties, featuredProperties, pr
             {/* 3. PROPERTY GRID */}
             <main className="max-w-7xl mx-auto px-4 py-20 w-full space-y-12">
                 <div className="flex flex-col items-center text-center space-y-4">
-                    <span className="text-[10px] font-black text-indigo-500 uppercase tracking-[0.3em]">Nossa Vitrine</span>
-                    <h2 className="text-4xl font-black text-slate-900 tracking-tighter uppercase">Imóveis Selecionados</h2>
-                    <div className="w-12 h-1 bg-indigo-600 rounded-full"></div>
+                    <span className="text-[11px] font-black text-[#c28e46] uppercase tracking-[0.3em]">Nossa Vitrine</span>
+                    <h2 className="text-4xl font-black text-[#111111] tracking-tighter uppercase relative">Imóveis Selecionados</h2>
+                    <div className="w-12 h-1 bg-[#c28e46] rounded-full"></div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -99,16 +99,17 @@ export function SiteTemplateWrapper({ broker, properties, featuredProperties, pr
             />
 
             {/* FOOTER */}
-            <footer className="bg-slate-900 text-white py-12 border-t border-slate-800">
+            <footer className="bg-[#111111] text-white py-16 border-t border-white/5">
                 <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
                     <div className="flex flex-col items-center md:items-start">
                         <span className="text-2xl font-black uppercase tracking-tighter mb-1">{broker.full_name}</span>
-                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">CRECI: {broker.creci}</span>
+                        <span className="text-[10px] font-bold text-[#c28e46] uppercase tracking-widest">CRECI: {broker.creci}</span>
                     </div>
-                    <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest text-center md:text-right">
+                    <div className="text-[10px] font-medium text-slate-500 uppercase tracking-widest text-center md:text-right leading-relaxed">
+                        Este site utiliza cookies para oferecer a melhor experiência. <a href="#" className="text-white hover:text-[#c28e46] transition-colors underline underline-offset-4">Saiba mais</a><br/>
                         © {new Date().getFullYear()} {broker.full_name}. Todos os direitos reservados.
                         <br />
-                        <span className="text-slate-700">Desenvolvido por Imob-Multinivel</span>
+                        <span className="text-slate-600 mt-2 block">Desenvolvido por Imob-Multinivel</span>
                     </div>
                 </div>
             </footer>

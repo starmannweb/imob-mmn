@@ -83,19 +83,19 @@ export function SiteHero({ featuredProperty, primaryColor = "#000000" }: HeroPro
             </div>
 
             {/* Advanced Search Bar (Minimalist) */}
-            <div className="max-w-6xl mx-auto px-4 -mt-16 relative z-30 pb-12">
+            <div className="max-w-6xl mx-auto px-4 -mt-16 relative z-30 pb-12 w-full">
                 <div className="bg-white rounded-[32px] shadow-2xl border border-slate-100 p-3 flex flex-col md:flex-row items-center gap-2">
                     <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 w-full">
                         <div className="px-6 py-3 border-r border-slate-50 flex flex-col justify-center">
                             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Finalidade</label>
-                            <select className="bg-transparent font-black text-sm text-slate-900 outline-none appearance-none cursor-pointer">
+                            <select className="bg-transparent font-black text-sm text-[#111111] outline-none appearance-none cursor-pointer">
                                 <option>Comprar</option>
                                 <option>Alugar</option>
                             </select>
                         </div>
                         <div className="px-6 py-3 border-r border-slate-50 flex flex-col justify-center">
                             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Tipo de Imóvel</label>
-                            <select className="bg-transparent font-black text-sm text-slate-900 outline-none appearance-none cursor-pointer">
+                            <select className="bg-transparent font-black text-sm text-[#111111] outline-none appearance-none cursor-pointer">
                                 <option>Todos os tipos</option>
                                 <option>Casa</option>
                                 <option>Apartamento</option>
@@ -104,27 +104,27 @@ export function SiteHero({ featuredProperty, primaryColor = "#000000" }: HeroPro
                         </div>
                         <div className="px-6 py-3 border-r border-slate-50 flex flex-col justify-center">
                             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Cidade / Bairro</label>
-                            <input type="text" placeholder="Qualquer local" className="bg-transparent font-black text-sm text-slate-900 outline-none placeholder:text-slate-300" />
+                            <input type="text" placeholder="Qualquer local" className="bg-transparent font-black text-sm text-[#111111] outline-none placeholder:text-slate-300" />
                         </div>
                         <div className="px-6 py-3 flex flex-col justify-center relative group">
                             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Referência</label>
                             <div className="flex items-center gap-2">
-                                <LayoutDashboard className="w-4 h-4 text-slate-300 group-hover:text-slate-900 transition-colors" />
-                                <input type="text" placeholder="Código" className="bg-transparent font-black text-sm text-slate-900 outline-none placeholder:text-slate-300 w-20" />
+                                <LayoutDashboard className="w-4 h-4 text-[#c28e46] group-hover:text-[#111111] transition-colors" />
+                                <input type="text" placeholder="Código" className="bg-transparent font-black text-sm text-[#111111] outline-none placeholder:text-slate-300 w-20" />
                             </div>
                         </div>
                     </div>
-                    <Button className="w-full md:w-auto bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase tracking-widest px-10 py-8 rounded-[24px] shadow-lg shadow-slate-900/20 transition-all hover:scale-105 active:scale-95 gap-3">
+                    <Button className="w-full md:w-auto bg-[#c28e46] hover:bg-[#a67738] text-white font-black text-xs uppercase tracking-widest px-10 py-8 rounded-[24px] shadow-lg shadow-[#c28e46]/30 transition-all hover:scale-105 active:scale-95 gap-3">
                         <Search className="w-5 h-5" /> Buscar Imóvel
                     </Button>
                 </div>
                 
                 {/* IA Prompt Hint */}
-                <div className="mt-4 flex items-center justify-center gap-4">
+                <div className="mt-6 flex items-center justify-center gap-4">
                     <AdvancedSearch primaryColor={primaryColor} />
-                    <div className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                        <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-                        Prefere buscar por voz ou texto livre? <span className="text-indigo-600 cursor-pointer hover:underline">Tente nossa busca com IA</span>
+                    <div className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                        <Sparkles className="w-3.5 h-3.5 text-[#c28e46]" />
+                        Buscar através da nossa IA inteligente? <span className="text-[#c28e46] cursor-pointer hover:underline font-black">Testar agora</span>
                     </div>
                 </div>
             </div>
