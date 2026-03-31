@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Home, Users, DollarSign, LineChart, AppWindow, BarChart2, Calculator, Building2, Building, Flame, UserCheck, Settings, Layers, Coins, Globe, Inbox, Kanban, FileText, Megaphone, Instagram, Shield } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 import { hasPermission, type UserRole } from '@/lib/permissions';
+import { SidebarLink } from './sidebar-link';
 
 const WhatsappIcon = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -37,142 +38,32 @@ export default async function Sidebar() {
 
             <div className="overflow-y-auto overflow-x-hidden flex-1 py-4 custom-scrollbar">
                 <ul className="flex flex-col space-y-1">
-                    {/* Sem cabeçalho "Menu" */}
-                    <li>
-                        <Link href="/painel" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <Home className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Dashboard</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/painel/rede" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <Users className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Meus Afiliados</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/painel/imoveis" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <Building className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Meus Imóveis</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/painel/simuladores" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <Calculator className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Simulador de Custo</span>
-                        </Link>
-                    </li>
-
-                    <li>
-                        <Link href="/painel/leads" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <Inbox className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Leads</span>
-                        </Link>
-                    </li>
+                    <SidebarLink href="/painel" icon={Home}>Dashboard</SidebarLink>
+                    <SidebarLink href="/painel/rede" icon={Users}>Meus Afiliados</SidebarLink>
+                    <SidebarLink href="/painel/imoveis" icon={Building}>Meus Imóveis</SidebarLink>
+                    <SidebarLink href="/painel/simuladores" icon={Calculator}>Simulador de Custo</SidebarLink>
+                    <SidebarLink href="/painel/leads" icon={Inbox}>Leads</SidebarLink>
                     
                     {canAccessCRM && (
-                        <li>
-                            <Link href="/painel/crm" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                                <span className="inline-flex justify-center items-center">
-                                    <Kanban className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                                </span>
-                                <span className="ml-3 text-sm font-medium tracking-wide truncate">CRM</span>
-                            </Link>
-                        </li>
+                        <SidebarLink href="/painel/crm" icon={Kanban}>CRM</SidebarLink>
                     )}
                     
-                    <li>
-                        <Link href="/painel/clientes" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <Users className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Meus Clientes</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/painel/negocios" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <DollarSign className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Vendas e Locações</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/painel/whatsapp" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <WhatsappIcon className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Atendimento de Whatsapp</span>
-                        </Link>
-                    </li>
-
-                    <li>
-                        <Link href="/painel/seletor" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <UserCheck className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Encaminhar Leads</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/painel/anuncios" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <Megaphone className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Anúncios</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/painel/midias-sociais" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <Instagram className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Mídias Sociais</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/painel/meus-sites" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-white border-l-4 border-transparent hover:border-blue-500 transition-colors group">
-                            <span className="inline-flex justify-center items-center">
-                                <Globe className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                            </span>
-                            <span className="ml-3 text-sm font-medium tracking-wide truncate">Meu Site</span>
-                        </Link>
-                    </li>
+                    <SidebarLink href="/painel/clientes" icon={Users}>Meus Clientes</SidebarLink>
+                    <SidebarLink href="/painel/negocios" icon={DollarSign}>Vendas e Locações</SidebarLink>
+                    <SidebarLink href="/painel/whatsapp" icon={WhatsappIcon}>Atendimento de Whatsapp</SidebarLink>
+                    <SidebarLink href="/painel/seletor" icon={UserCheck}>Encaminhar Leads</SidebarLink>
+                    <SidebarLink href="/painel/anuncios" icon={Megaphone}>Anúncios</SidebarLink>
+                    <SidebarLink href="/painel/midias-sociais" icon={Instagram}>Mídias Sociais</SidebarLink>
+                    <SidebarLink href="/painel/meus-sites" icon={Globe}>Meu Site</SidebarLink>
 
                     {/* Gerenciamento de Usuários - Apenas Admin/Dev */}
                     {canViewAllUsers && (
-                        <li>
-                            <Link href="/painel/usuarios" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-purple-400 border-l-4 border-transparent hover:border-purple-500 transition-colors group">
-                                <span className="inline-flex justify-center items-center">
-                                    <Shield className="w-5 h-5 text-slate-400 group-hover:text-purple-500 transition-colors" />
-                                </span>
-                                <span className="ml-3 text-sm font-medium tracking-wide truncate">Gerenciar Usuários</span>
-                            </Link>
-                        </li>
+                        <SidebarLink href="/painel/usuarios" icon={Shield}>Gerenciar Usuários</SidebarLink>
                     )}
 
                     {/* Mostrar Dev/Testes SOMENTE se for dev */}
                     {canAccessDevTools && (
-                        <>
-                            <li>
-                                <Link href="/painel/dev" className="relative flex flex-row items-center h-12 px-6 focus:outline-none hover:bg-slate-800/50 text-slate-300 hover:text-orange-400 border-l-4 border-transparent hover:border-orange-500 transition-colors group">
-                                    <span className="inline-flex justify-center items-center">
-                                        <Flame className="w-5 h-5 text-slate-400 group-hover:text-orange-500 transition-colors" />
-                                    </span>
-                                    <span className="ml-3 text-sm font-medium tracking-wide truncate">Dev / Testes</span>
-                                </Link>
-                            </li>
-                        </>
+                        <SidebarLink href="/painel/dev" icon={Flame}>Dev / Testes</SidebarLink>
                     )}
                 </ul>
             </div>

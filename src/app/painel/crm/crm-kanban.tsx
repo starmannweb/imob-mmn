@@ -146,80 +146,11 @@ export default function CrmKanban({ initialDeals = [] }: { initialDeals?: Deal[]
                     </Button>
                 </div>
 
-                <div className="flex items-center gap-2 w-full md:w-auto">
-                    <div className="text-right mr-4 hidden lg:block">
-                        <p className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Total em Negociação</p>
-                        <p className="text-lg font-black text-indigo-600 dark:text-indigo-400">
-                            {formatCurrency(filteredDeals.reduce((acc, curr) => acc + (curr.value || 0), 0))}
-                        </p>
-                    </div>
-                    
-                    <Dialog open={isNewDealOpen} onOpenChange={setIsClientOpen}>
-                        <DialogTrigger asChild>
-                            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white gap-2 rounded-xl px-6">
-                                <UserPlus className="w-4 h-4" /> Novo Negócio
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-[600px] overflow-visible">
-                            <DialogHeader>
-                                <DialogTitle>Novo Negócio</DialogTitle>
-                            </DialogHeader>
-                            <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2 relative">
-                                        <Label>Cliente (Lead) *</Label>
-                                        <Input 
-                                            placeholder="Buscar cliente..." 
-                                            value={leadSearch}
-                                            onChange={(e) => searchLeads(e.target.value)}
-                                            onFocus={() => { if (leads.length > 0) setShowLeadDropdown(true) }}
-                                            className="focus:ring-indigo-500"
-                                        />
-                                        {/* Dropdown de Resultados */}
-                                        {showLeadDropdown && (
-                                            <div className="absolute top-[68px] left-0 w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-50 max-h-60 overflow-y-auto overflow-x-hidden">
-                                                {isSearchingLeads ? (
-                                                    <div className="p-4 text-sm font-medium text-center text-slate-500">Buscando...</div>
-                                                ) : leads.length > 0 ? (
-                                                    leads.map((lead) => (
-                                                        <div 
-                                                            key={lead.id} 
-                                                            className="p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer border-b border-slate-100 dark:border-slate-800 last:border-0 transition-colors"
-                                                            onClick={() => handleSelectLead(lead)}
-                                                        >
-                                                            <div className="font-bold text-sm text-slate-900 dark:text-white flex justify-between items-center">
-                                                                {lead.name}
-                                                                <BadgeCheck className="w-3.5 h-3.5 text-indigo-500 opacity-50" />
-                                                            </div>
-                                                            {(lead.email || lead.phone) && (
-                                                                <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">{lead.email || lead.phone}</div>
-                                                            )}
-                                                        </div>
-                                                    ))
-                                                ) : (
-                                                    <div className="p-4 text-sm font-medium text-center text-slate-500">Nenhum cliente encontrado</div>
-                                                )}
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label>Imóvel de Interesse</Label>
-                                        <Input placeholder="Buscar imóvel..." />
-                                    </div>
-                                </div>
-                                <div className="space-y-2 mt-2">
-                                    <Label>Valor da Proposta</Label>
-                                    <Input type="number" placeholder="R$ 0,00" />
-                                </div>
-                                <Button 
-                                    className="w-full bg-indigo-600 hover:bg-indigo-700 font-bold text-white mt-4" 
-                                    disabled={!selectedLead}
-                                >
-                                    Criar Negócio
-                                </Button>
-                            </div>
-                        </DialogContent>
-                    </Dialog>
+                <div className="text-right hidden lg:block">
+                    <p className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Total em Negociação</p>
+                    <p className="text-lg font-black text-indigo-600 dark:text-indigo-400">
+                        {formatCurrency(filteredDeals.reduce((acc, curr) => acc + (curr.value || 0), 0))}
+                    </p>
                 </div>
             </div>
 

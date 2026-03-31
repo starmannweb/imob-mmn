@@ -6,6 +6,7 @@ import { Users, Copy, Share2, Search, Settings2, LayoutGrid, Network, Eye, Chevr
 import { Button } from "@/components/ui/button";
 import TreeGraph from "./tree-graph";
 import CreateOpportunityModal from "./create-opportunity-modal";
+import InviteBrokerButton from "./copy-invite-button";
 import { hasPermission } from "@/lib/permissions";
 
 export default async function MinhaRedePage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
@@ -56,6 +57,7 @@ export default async function MinhaRedePage({ searchParams }: { searchParams: Pr
                     </p>
                 </div>
                 <div className="flex items-center gap-2">
+                    <InviteBrokerButton inviteLink={inviteLink} />
                     <CreateOpportunityModal />
                 </div>
             </div>

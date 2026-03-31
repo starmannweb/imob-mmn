@@ -96,41 +96,36 @@ export default function PropertyWizard() {
             </div>
 
             {/* Stepper Navigation Premium */}
-            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800/80 p-3 mb-8">
-                <div className="flex items-center overflow-x-auto hide-scrollbar scroll-smooth gap-2 snap-x">
-                    {STEPS.map((step, index) => {
-                        const isActive = index === currentStep;
-                        const isCompleted = index < currentStep;
-                        const Icon = step.icon;
+            <div className="flex items-center justify-center w-full max-w-4xl mx-auto mb-10 overflow-x-auto hide-scrollbar px-4">
+                {STEPS.map((step, index) => {
+                    const isActive = index === currentStep;
+                    const isCompleted = index < currentStep;
 
-                        return (
+                    return (
+                        <div key={step.id} className="flex items-center">
+                            {/* Círculo do Step */}
                             <button
-                                key={step.id}
                                 type="button"
                                 onClick={() => setCurrentStep(index)}
-                                className={`flex items-center whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-bold transition-all snap-start shrink-0 ${
-                                    isActive
-                                        ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-md transform scale-[1.02]"
-                                        : isCompleted
-                                        ? "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
-                                        : "text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
+                                className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 shrink-0 ${
+                                    isActive || isCompleted
+                                        ? "bg-blue-600 text-white shadow-md shadow-blue-500/30 ring-4 ring-blue-50 dark:ring-slate-900"
+                                        : "bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-700"
                                 }`}
+                                title={step.title}
                             >
-                                <span className={`w-6 h-6 rounded-full flex items-center justify-center mr-2.5 text-xs font-black transition-colors ${
-                                    isActive 
-                                        ? "bg-white/20 text-white dark:bg-slate-900/20 dark:text-slate-900" 
-                                        : isCompleted 
-                                        ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400" 
-                                        : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
-                                }`}>
-                                    {isCompleted ? <Check className="w-3.5 h-3.5" /> : index + 1}
-                                </span>
-                                {isActive && <Icon className="w-4 h-4 mr-2" />}
-                                {step.title}
+                                {isCompleted ? <Check className="w-5 h-5 max-w-full" /> : index + 1}
                             </button>
-                        );
-                    })}
-                </div>
+                            
+                            {/* Linha Conectora */}
+                            {index < STEPS.length - 1 && (
+                                <div className={`h-1.5 w-8 sm:w-16 md:w-24 lg:w-32 rounded-full mx-1 sm:mx-2 transition-all duration-500 shrink-0 ${
+                                    isCompleted ? "bg-blue-600" : "bg-slate-200 dark:bg-slate-800"
+                                }`} />
+                            )}
+                        </div>
+                    );
+                })}
             </div>
 
             {/* Formulário Principal */}
