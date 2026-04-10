@@ -12,7 +12,9 @@ interface SidebarLinkProps {
 
 export function SidebarLink({ href, icon, children }: SidebarLinkProps) {
     const pathname = usePathname();
-    const isActive = pathname === href || pathname.startsWith(href + '/');
+    const isActive = href === '/painel' 
+        ? pathname === href 
+        : pathname === href || pathname.startsWith(href + '/');
 
     return (
         <li>

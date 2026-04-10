@@ -93,35 +93,36 @@ export default function PropertyWizard() {
                 />
             </div>
 
-            {/* Stepper Navigation Premium Sem overflow-x-auto (sem rolagem) */}
-            <div className="flex flex-wrap items-center justify-center w-full max-w-4xl mx-auto mb-10 gap-2 sm:gap-0 px-2 sm:px-4">
+            {/* Stepper Navigation Premium Seguro e Responsivo */}
+            <div className="relative flex items-center justify-between w-full max-w-3xl mx-auto mb-12 sm:mb-16 px-4 sm:px-0">
+                {/* Linha de fundo absoluta */}
+                <div className="absolute left-4 sm:left-0 right-4 sm:right-0 top-1/2 -translate-y-1/2 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full z-0"></div>
+                
+                {/* Linha preenchida absoluta */}
+                <div 
+                    className="absolute left-4 sm:left-0 top-1/2 -translate-y-1/2 h-1.5 bg-blue-600 rounded-full z-0 transition-all duration-500" 
+                    style={{ width: `calc(${(currentStep / (STEPS.length - 1)) * 100}% - ${currentStep === 0 ? '0px' : '16px'})` }}
+                ></div>
+
                 {STEPS.map((step, index) => {
                     const isActive = index === currentStep;
                     const isCompleted = index < currentStep;
 
                     return (
-                        <div key={step.id} className="flex items-center mb-2 sm:mb-0">
-                            {/* Desktop e Mobile: Layout do Step Responsivo */}
-                            <button
-                                type="button"
-                                onClick={() => setCurrentStep(index)}
-                                className={`flex items-center justify-center gap-2 px-3 py-2 sm:w-auto sm:h-10 sm:rounded-full rounded-lg font-bold text-xs sm:text-sm transition-all duration-300 shrink-0 ${
+                        <div key={step.id} className="relative z-10 flex flex-col items-center group cursor-pointer" onClick={() => setCurrentStep(index)}>
+                            <div
+                                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ring-4 ring-slate-50 dark:ring-[#0f172a] ${
                                     isActive || isCompleted
-                                        ? "bg-blue-600 text-white shadow-md shadow-blue-500/30 sm:ring-4 ring-blue-50 dark:ring-slate-900"
+                                        ? "bg-blue-600 text-white shadow-md shadow-blue-500/30"
                                         : "bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-700"
                                 }`}
                                 title={step.title}
                             >
-                                {isCompleted ? <Check className="w-4 h-4 sm:w-5 sm:h-5" /> : <step.icon className="w-4 h-4 sm:w-5 sm:h-5 hidden sm:block" />}
-                                <span className={!isActive && !isCompleted ? "hidden sm:inline" : ""}>{step.title}</span>
-                            </button>
-                            
-                            {/* Linha Conectora (Esconde em telas muito pequenas que quebram) */}
-                            {index < STEPS.length - 1 && (
-                                <div className={`h-1.5 w-6 sm:w-16 md:w-24 rounded-full mx-1 sm:mx-2 transition-all duration-500 shrink-0 hidden sm:block ${
-                                    isCompleted ? "bg-blue-600" : "bg-slate-200 dark:bg-slate-800"
-                                }`} />
-                            )}
+                                {isCompleted ? <Check className="w-5 h-5" /> : <step.icon className="w-4 h-4 sm:w-5 sm:h-5" />}
+                            </div>
+                            <span className={`absolute -bottom-8 text-[11px] sm:text-xs font-bold whitespace-nowrap ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>
+                                {step.title}
+                            </span>
                         </div>
                     );
                 })}
