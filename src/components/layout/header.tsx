@@ -3,10 +3,22 @@ import { createClient } from "@/utils/supabase/server";
 import { Bell, User, LogOut, Share2 } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "../theme-toggle";
+import { CopyInviteHeaderButton } from "./copy-invite-header-button";
 
 export default async function Header() {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
+
+    // Buscar código de indicação do usuário para o link de afiliado
+    const { data: profile } = user ? await supabase
+        .from("users")
+        .select("referral_code")
+        .eq("id", user.id)
+        .single() : { data: null };
+
+    const referralCode = profile?.referral_code || user?.id;
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.adigitalmultinivel.com.br";
+    const inviteLink = `${siteUrl}/registrar?ref=${referralCode}`;
 
     return (
         <header className="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 z-30">
@@ -15,10 +27,7 @@ export default async function Header() {
 
                     {/* Botão Convidar Corretor Multinível */}
                     <div className="flex flex-1 items-center justify-end mr-6">
-                        <Link href="/painel/rede" className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-bold flex items-center gap-2 transition-colors text-sm shadow-sm">
-                            <Share2 className="w-4 h-4" />
-                            Convidar o corretor para ser seu afiliado
-                        </Link>
+                        <CopyInviteHeaderButton inviteLink={inviteLink} />
                     </div>
 
                     <div className="flex items-center gap-4">

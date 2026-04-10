@@ -26,10 +26,33 @@ export default async function MinhaRedePage({ searchParams }: { searchParams: Pr
     const canViewFullNetwork = hasPermission(profile?.role || 'user', 'canViewFullNetwork');
 
     // Fetch network based on permissions
-    // Admin/Dev vê toda a rede, User vê apenas sua rede
-    const { data: network } = canViewFullNetwork
-        ? await supabase.from("users").select("*").order("created_at", { ascending: false })
-        : await supabase.from("users").select("*").eq("referred_by", user?.id);
+    let network: any[] = [];
+    if (canViewFullNetwork) {
+        const { data } = await supabase.from("users").select("*").order("created_at", { ascending: false });
+        network = (data || []).map(u => ({ ...u, mmn_level: 1 })); // Admin view everything flat
+    } else {
+        // Fetch Gen 1
+        const { data: gen1 } = await supabase.from("users").select("*").eq("referred_by", user?.id);
+        const g1 = (gen1 || []).map(u => ({ ...u, mmn_level: 1 }));
+        
+        // Fetch Gen 2
+        let g2: any[] = [];
+        if (g1.length > 0) {
+            const g1Ids = g1.map(u => u.id);
+            const { data: gen2 } = await supabase.from("users").select("*").in("referred_by", g1Ids);
+            g2 = (gen2 || []).map(u => ({ ...u, mmn_level: 2 }));
+        }
+
+        // Fetch Gen 3
+        let g3: any[] = [];
+        if (g2.length > 0) {
+            const g2Ids = g2.map(u => u.id);
+            const { data: gen3 } = await supabase.from("users").select("*").in("referred_by", g2Ids);
+            g3 = (gen3 || []).map(u => ({ ...u, mmn_level: 3 }));
+        }
+
+        network = [...g1, ...g2, ...g3];
+    }
 
     const referralCode = profile?.referral_code || "GERANDO...";
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";

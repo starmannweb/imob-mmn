@@ -6,7 +6,10 @@ export const metadata: Metadata = {
   description: "Plataforma de imóveis com programa de afiliação",
 };
 
+import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+
+const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 
 export default function RootLayout({
   children,
@@ -15,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased max-w-[100vw] overflow-x-hidden">
+      <body className={`${inter.className} ${inter.variable} font-sans antialiased max-w-[100vw] overflow-x-hidden`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

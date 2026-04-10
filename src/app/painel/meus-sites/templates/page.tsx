@@ -72,9 +72,9 @@ export default async function TemplatesPage() {
                             ))}
                         </nav>
                         <div className="p-4 border-t border-slate-100 dark:border-slate-700">
-                            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                            <Link href="/painel/meus-sites/personalizar" className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors block text-center">
                                 Personalizar
-                            </button>
+                            </Link>
                             <button className="w-full mt-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg text-sm font-bold transition-colors">
                                 Histórico de versões
                             </button>
