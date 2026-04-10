@@ -33,32 +33,32 @@ export default async function Sidebar() {
 
             <div className="overflow-y-auto overflow-x-hidden flex-1 py-4 custom-scrollbar">
                 <ul className="flex flex-col space-y-1">
-                    <SidebarLink href="/painel" icon={Home}>Dashboard</SidebarLink>
-                    <SidebarLink href="/painel/rede" icon={Users}>Meus Afiliados</SidebarLink>
-                    <SidebarLink href="/painel/imoveis" icon={Building}>Meus Imóveis</SidebarLink>
-                    <SidebarLink href="/painel/simuladores" icon={Calculator}>Simulador de Custo</SidebarLink>
-                    <SidebarLink href="/painel/leads" icon={Inbox}>Leads</SidebarLink>
+                    <SidebarLink href="/painel" icon={<Home className="w-5 h-5" />}>Dashboard</SidebarLink>
+                    <SidebarLink href="/painel/rede" icon={<Users className="w-5 h-5" />}>Meus Afiliados</SidebarLink>
+                    <SidebarLink href="/painel/imoveis" icon={<Building className="w-5 h-5" />}>Meus Imóveis</SidebarLink>
+                    <SidebarLink href="/painel/simuladores" icon={<Calculator className="w-5 h-5" />}>Simulador de Custo</SidebarLink>
+                    <SidebarLink href="/painel/leads" icon={<Inbox className="w-5 h-5" />}>Leads</SidebarLink>
                     
                     {canAccessCRM && (
-                        <SidebarLink href="/painel/crm" icon={Kanban}>CRM</SidebarLink>
+                        <SidebarLink href="/painel/crm" icon={<Kanban className="w-5 h-5" />}>CRM</SidebarLink>
                     )}
                     
-                    <SidebarLink href="/painel/clientes" icon={Users}>Meus Clientes</SidebarLink>
-                    <SidebarLink href="/painel/negocios" icon={DollarSign}>Vendas e Locações</SidebarLink>
-                    <SidebarLink href="/painel/whatsapp" icon={WhatsappIcon}>Atendimento de Whatsapp</SidebarLink>
-                    <SidebarLink href="/painel/seletor" icon={UserCheck}>Encaminhar Leads</SidebarLink>
-                    <SidebarLink href="/painel/anuncios" icon={Megaphone}>Anúncios</SidebarLink>
-                    <SidebarLink href="/painel/midias-sociais" icon={Instagram}>Mídias Sociais</SidebarLink>
-                    <SidebarLink href="/painel/meus-sites" icon={Globe}>Meu Site</SidebarLink>
+                    <SidebarLink href="/painel/clientes" icon={<Users className="w-5 h-5" />}>Meus Clientes</SidebarLink>
+                    <SidebarLink href="/painel/negocios" icon={<DollarSign className="w-5 h-5" />}>Vendas e Locações</SidebarLink>
+                    <SidebarLink href="/painel/whatsapp" icon={<WhatsappIcon className="w-5 h-5" />}>Atendimento de Whatsapp</SidebarLink>
+                    <SidebarLink href="/painel/seletor" icon={<UserCheck className="w-5 h-5" />}>Encaminhar Leads</SidebarLink>
+                    <SidebarLink href="/painel/anuncios" icon={<Megaphone className="w-5 h-5" />}>Anúncios</SidebarLink>
+                    <SidebarLink href="/painel/midias-sociais" icon={<Instagram className="w-5 h-5" />}>Mídias Sociais</SidebarLink>
+                    <SidebarLink href="/painel/meus-sites" icon={<Globe className="w-5 h-5" />}>Meu Site</SidebarLink>
 
                     {/* Gerenciamento de Usuários - Apenas Admin/Dev */}
                     {canViewAllUsers && (
-                        <SidebarLink href="/painel/usuarios" icon={Shield}>Gerenciar Usuários</SidebarLink>
+                        <SidebarLink href="/painel/usuarios" icon={<Shield className="w-5 h-5" />}>Gerenciar Usuários</SidebarLink>
                     )}
 
                     {/* Mostrar Dev/Testes SOMENTE se for dev */}
                     {canAccessDevTools && (
-                        <SidebarLink href="/painel/dev" icon={Flame}>Dev / Testes</SidebarLink>
+                        <SidebarLink href="/painel/dev" icon={<Flame className="w-5 h-5" />}>Dev / Testes</SidebarLink>
                     )}
                 </ul>
             </div>

@@ -1,10 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Imob Afiliação",
@@ -20,9 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.className} antialiased max-w-[100vw] overflow-x-hidden`}
-      >
+      <body className="antialiased max-w-[100vw] overflow-x-hidden">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

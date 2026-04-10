@@ -8,6 +8,20 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { NewLeadModal } from "./NewLeadModal";
 
+function formatLeadCreatedAt(value: string | null | undefined) {
+    if (!value) {
+        return "Data indisponivel";
+    }
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return "Data indisponivel";
+    }
+
+    return formatDistanceToNow(date, { addSuffix: true, locale: ptBR });
+}
+
 export default async function LeadsPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -20,7 +34,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
     const currentTab = sp.tab || 'leads';
 
     // Fetch leads for this user, including property info
-    const { data: leads } = await supabase
+    const { data: leads, error: leadsError } = await supabase
         .from("leads")
         .select(`
             *,
@@ -28,6 +42,12 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
         `)
         .eq("assigned_to", user.id)
         .order("created_at", { ascending: false });
+
+    if (leadsError) {
+        console.error("Failed to load leads:", leadsError);
+    }
+
+    const leadList = leads ?? [];
 
     const statusMap: Record<string, { label: string, color: string, bg: string }> = {
         'new': { label: 'Novo Lead', color: 'text-blue-700 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30' },
@@ -38,11 +58,11 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
     };
 
     const stats = [
-        { label: 'TOTAL', value: leads?.length || 0, color: 'text-blue-500', bg: 'bg-blue-50', icon: Users },
-        { label: 'NOVOS', value: leads?.filter(l => l.status === 'new').length || 0, color: 'text-cyan-500', bg: 'bg-cyan-50', icon: Target },
-        { label: 'QUALIFICADOS', value: leads?.filter(l => l.status === 'contacted').length || 0, color: 'text-emerald-500', bg: 'bg-emerald-50', icon: CheckCircle2 },
-        { label: 'NEGOCIANDO', value: leads?.filter(l => l.status === 'negotiating').length || 0, color: 'text-orange-500', bg: 'bg-orange-50', icon: LineChart },
-        { label: 'CONVERTIDOS', value: leads?.filter(l => l.status === 'won').length || 0, color: 'text-emerald-500', bg: 'bg-emerald-50', icon: CheckCircle2 },
+        { label: 'TOTAL', value: leadList.length, color: 'text-blue-500', bg: 'bg-blue-50', icon: Users },
+        { label: 'NOVOS', value: leadList.filter((lead) => lead.status === 'new').length, color: 'text-cyan-500', bg: 'bg-cyan-50', icon: Target },
+        { label: 'QUALIFICADOS', value: leadList.filter((lead) => lead.status === 'contacted').length, color: 'text-emerald-500', bg: 'bg-emerald-50', icon: CheckCircle2 },
+        { label: 'NEGOCIANDO', value: leadList.filter((lead) => lead.status === 'negotiating').length, color: 'text-orange-500', bg: 'bg-orange-50', icon: LineChart },
+        { label: 'CONVERTIDOS', value: leadList.filter((lead) => lead.status === 'won').length, color: 'text-emerald-500', bg: 'bg-emerald-50', icon: CheckCircle2 },
     ];
 
     return (
@@ -83,6 +103,12 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
 
             {currentTab === 'leads' ? (
                 <>
+                    {leadsError ? (
+                        <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
+                            Nao foi possivel carregar os leads agora. Tente novamente em instantes.
+                        </div>
+                    ) : null}
+
                     {/* Stats Row (5 Cards) */}
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4 mb-8">
                         {stats.map((stat, i) => {
@@ -153,11 +179,12 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                     </div>
 
                     {/* Lista de Leads */}
-                    {leads && leads.length > 0 ? (
+                    {leadList.length > 0 ? (
                         <div className="flex flex-col gap-3">
-                            {leads.map((lead) => {
+                            {leadList.map((lead) => {
                                 const s = statusMap[lead.status] || statusMap['new'];
                                 const initial = (lead.name || '?').charAt(0).toUpperCase();
+                                const createdAtLabel = formatLeadCreatedAt(lead.created_at);
 
                                 return (
                                     <div key={lead.id} className="bg-white dark:bg-[#1a1f2c] rounded-xl p-4 md:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all group">
@@ -175,7 +202,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                                                         <Mail className="w-3.5 h-3.5 text-slate-400" /> {lead.email || 'Sem email'}
                                                     </span>
                                                     <span className="flex items-center gap-1 text-slate-400 sm:hidden">
-                                                        <Clock className="w-3 h-3" /> {formatDistanceToNow(new Date(lead.created_at), { addSuffix: true, locale: ptBR })}
+                                                        <Clock className="w-3 h-3" /> {createdAtLabel}
                                                     </span>
                                                 </div>
                                             </div>
@@ -185,7 +212,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                                             <div className="hidden lg:block min-w-[140px]">
                                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Data</p>
                                                 <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                                                    {formatDistanceToNow(new Date(lead.created_at), { addSuffix: true, locale: ptBR })}
+                                                    {createdAtLabel}
                                                 </p>
                                             </div>
                                             <div className="hidden md:block w-48">

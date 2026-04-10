@@ -2,15 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ElementType } from "react";
+import { ReactNode } from "react";
 
 interface SidebarLinkProps {
     href: string;
-    icon: ElementType;
-    children: React.ReactNode;
+    icon: ReactNode;
+    children: ReactNode;
 }
 
-export function SidebarLink({ href, icon: Icon, children }: SidebarLinkProps) {
+export function SidebarLink({ href, icon, children }: SidebarLinkProps) {
     const pathname = usePathname();
     const isActive = pathname === href || pathname.startsWith(href + '/');
 
@@ -24,10 +24,10 @@ export function SidebarLink({ href, icon: Icon, children }: SidebarLinkProps) {
                         : 'border-transparent text-slate-300 hover:text-white hover:bg-slate-800/50 hover:border-blue-500'
                 }`}
             >
-                <span className="inline-flex justify-center items-center">
-                    <Icon className={`w-5 h-5 transition-colors ${
-                        isActive ? 'text-blue-500' : 'text-slate-400 group-hover:text-blue-500'
-                    }`} />
+                <span className={`inline-flex justify-center items-center transition-colors ${
+                    isActive ? 'text-blue-500' : 'text-slate-400 group-hover:text-blue-500'
+                }`}>
+                    {icon}
                 </span>
                 <span className="ml-3 text-sm font-medium tracking-wide truncate">
                     {children}
