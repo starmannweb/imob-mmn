@@ -9,14 +9,18 @@ export default async function Sidebar() {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     
-    // Buscar perfil do usuário para obter role
-    const { data: profile } = await supabase
-        .from("users")
-        .select("role")
-        .eq("id", user?.id)
-        .single();
+    let userRole: UserRole = 'user';
     
-    const userRole = (profile?.role || 'user') as UserRole;
+    if (user) {
+        // Buscar perfil do usuário para obter role
+        const { data: profile } = await supabase
+            .from("users")
+            .select("role")
+            .eq("id", user.id)
+            .single();
+        userRole = (profile?.role || 'user') as UserRole;
+    }
+    
     const canAccessDevTools = hasPermission(userRole, 'canAccessDevTools');
     const canAccessCRM = hasPermission(userRole, 'canAccessCRM');
     const canViewFinancials = hasPermission(userRole, 'canViewFinancials');
