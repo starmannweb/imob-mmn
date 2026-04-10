@@ -11,14 +11,12 @@ import {
     Map, Key, Video, FileCheck, Save, EyeOff 
 } from "lucide-react";
 
+// Redução para 4 etapas para facilitar e acelerar o cadastro pelo corretor
 const STEPS = [
-    { id: 'basico', title: 'Dados Básicos', icon: Home },
-    { id: 'comodos', title: 'Cômodos', icon: Map },
-    { id: 'valores', title: 'Valores', icon: List },
-    { id: 'caracteristicas', title: 'Características', icon: FileCheck },
+    { id: 'basico', title: 'Básico e Valores', icon: Home },
+    { id: 'detalhes', title: 'Detalhes do Imóvel', icon: FileCheck },
     { id: 'localizacao', title: 'Localização', icon: MapPin },
-    { id: 'midia', title: 'Mídia', icon: ImageIcon },
-    { id: 'privado', title: 'Privativo', icon: Key },
+    { id: 'midia', title: 'Mídias e Sigilo', icon: ImageIcon },
 ];
 
 export default function PropertyWizard() {
@@ -80,7 +78,7 @@ export default function PropertyWizard() {
             <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Cadastrar Imóvel</h1>
-                    <p className="text-slate-500 mt-2">Módulo ImobPainel - Gestão Comercial</p>
+                    <p className="text-slate-500 mt-2 text-sm">Preencha os dados de forma rápida e simplificada.</p>
                 </div>
                 <Button variant="outline" onClick={handleSaveDraft} className="flex items-center gap-2">
                     <Save className="w-4 h-4" /> Salvar Rascunho
@@ -95,31 +93,32 @@ export default function PropertyWizard() {
                 />
             </div>
 
-            {/* Stepper Navigation Premium */}
-            <div className="flex items-center justify-center w-full max-w-4xl mx-auto mb-10 overflow-x-auto hide-scrollbar px-4">
+            {/* Stepper Navigation Premium Sem overflow-x-auto (sem rolagem) */}
+            <div className="flex flex-wrap items-center justify-center w-full max-w-4xl mx-auto mb-10 gap-2 sm:gap-0 px-2 sm:px-4">
                 {STEPS.map((step, index) => {
                     const isActive = index === currentStep;
                     const isCompleted = index < currentStep;
 
                     return (
-                        <div key={step.id} className="flex items-center">
-                            {/* Círculo do Step */}
+                        <div key={step.id} className="flex items-center mb-2 sm:mb-0">
+                            {/* Desktop e Mobile: Layout do Step Responsivo */}
                             <button
                                 type="button"
                                 onClick={() => setCurrentStep(index)}
-                                className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 shrink-0 ${
+                                className={`flex items-center justify-center gap-2 px-3 py-2 sm:w-auto sm:h-10 sm:rounded-full rounded-lg font-bold text-xs sm:text-sm transition-all duration-300 shrink-0 ${
                                     isActive || isCompleted
-                                        ? "bg-blue-600 text-white shadow-md shadow-blue-500/30 ring-4 ring-blue-50 dark:ring-slate-900"
+                                        ? "bg-blue-600 text-white shadow-md shadow-blue-500/30 sm:ring-4 ring-blue-50 dark:ring-slate-900"
                                         : "bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-700"
                                 }`}
                                 title={step.title}
                             >
-                                {isCompleted ? <Check className="w-5 h-5 max-w-full" /> : index + 1}
+                                {isCompleted ? <Check className="w-4 h-4 sm:w-5 sm:h-5" /> : <step.icon className="w-4 h-4 sm:w-5 sm:h-5 hidden sm:block" />}
+                                <span className={!isActive && !isCompleted ? "hidden sm:inline" : ""}>{step.title}</span>
                             </button>
                             
-                            {/* Linha Conectora */}
+                            {/* Linha Conectora (Esconde em telas muito pequenas que quebram) */}
                             {index < STEPS.length - 1 && (
-                                <div className={`h-1.5 w-8 sm:w-16 md:w-24 lg:w-32 rounded-full mx-1 sm:mx-2 transition-all duration-500 shrink-0 ${
+                                <div className={`h-1.5 w-6 sm:w-16 md:w-24 rounded-full mx-1 sm:mx-2 transition-all duration-500 shrink-0 hidden sm:block ${
                                     isCompleted ? "bg-blue-600" : "bg-slate-200 dark:bg-slate-800"
                                 }`} />
                             )}
@@ -129,122 +128,68 @@ export default function PropertyWizard() {
             </div>
 
             {/* Formulário Principal */}
-            <form action="/painel/imoveis/actions" method="POST" className="bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-slate-800 p-8 rounded-2xl shadow-sm min-h-[500px] flex flex-col justify-between">
+            <form action="/painel/imoveis/actions" method="POST" className="bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-slate-800 p-6 sm:p-8 rounded-2xl shadow-sm min-h-[500px] flex flex-col justify-between">
                 
                 <div className="flex-1">
-                    {/* ETAPA 1: DADOS BÁSICOS */}
+                    {/* ETAPA 1: BÁSICO E VALORES */}
                     {currentStep === 0 && (
-                        <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
-                            <h2 className="text-xl font-bold flex items-center gap-2 mb-6 border-b pb-4">
-                                <Home className="text-indigo-500" /> 1. Informações Básicas
-                            </h2>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label className="text-slate-700 dark:text-slate-300 font-semibold">Tipo do Imóvel</Label>
-                                    <select 
-                                        name="type"
-                                        value={formData.type}
+                        <div className="space-y-8 animate-in fade-in slide-in-from-right-4">
+                            <div>
+                                <h2 className="text-xl font-bold flex items-center gap-2 mb-6 border-b border-slate-100 dark:border-slate-800 pb-4">
+                                    <Home className="text-blue-500" /> 1. Básico e Valores
+                                </h2>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <Label className="text-slate-700 dark:text-slate-300 font-semibold">Tipo do Imóvel</Label>
+                                        <select 
+                                            name="type"
+                                            value={formData.type}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                        >
+                                            <option value="apartment">Apartamento</option>
+                                            <option value="house">Casa de Rua</option>
+                                            <option value="condo_house">Casa em Condomínio</option>
+                                            <option value="land">Terreno</option>
+                                            <option value="commercial">Sala Comercial</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label className="text-slate-700 dark:text-slate-300 font-semibold">Status do Anúncio</Label>
+                                        <select 
+                                            name="status"
+                                            value={formData.status}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                        >
+                                            <option value="draft">Rascunho</option>
+                                            <option value="available">Disponível</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div className="space-y-2 mt-6">
+                                    <Label className="text-slate-700 dark:text-slate-300 font-semibold">Título do Anúncio *</Label>
+                                    <Input 
+                                        name="title" 
+                                        value={formData.title}
                                         onChange={handleInputChange}
-                                        className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
-                                    >
-                                        <option value="apartment">Apartamento</option>
-                                        <option value="house">Casa de Rua</option>
-                                        <option value="condo_house">Casa em Condomínio</option>
-                                        <option value="land">Terreno</option>
-                                        <option value="commercial">Sala Comercial</option>
-                                    </select>
-                                </div>
-                                <div className="space-y-2">
-                                    <Label className="text-slate-700 dark:text-slate-300 font-semibold">Status do Anúncio</Label>
-                                    <select 
-                                        name="status"
-                                        value={formData.status}
-                                        onChange={handleInputChange}
-                                        className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
-                                    >
-                                        <option value="draft">Rascunho</option>
-                                        <option value="available">Disponível</option>
-                                    </select>
+                                        placeholder="Ex: Maravilhoso Apartamento de Alto Padrão no Leblon" 
+                                        required 
+                                        className="py-6 text-lg" 
+                                    />
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <Label className="text-slate-700 dark:text-slate-300 font-semibold">Título Principal do Anúncio *</Label>
-                                <Input 
-                                    name="title" 
-                                    value={formData.title}
-                                    onChange={handleInputChange}
-                                    placeholder="Ex: Maravilhoso Apartamento de Alto Padrão no Leblon" 
-                                    required 
-                                    className="py-6 text-lg" 
-                                />
-                            </div>
-                            
-                            <div className="space-y-2">
-                                <Label className="text-slate-700 dark:text-slate-300 font-semibold">Descrição Comercial</Label>
-                                <Textarea 
-                                    name="description" 
-                                    value={formData.description}
-                                    onChange={handleInputChange}
-                                    placeholder="Descreva os encantos e benefícios deste imóvel..." 
-                                    rows={6} 
-                                    className="bg-slate-50 dark:bg-slate-900" 
-                                />
-                            </div>
-                        </div>
-                    )}
-
-                    {/* ETAPA 2: COMODOS */}
-                    {currentStep === 1 && (
-                        <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
-                            <h2 className="text-xl font-bold flex items-center gap-2 mb-6 border-b pb-4">
-                                <Map className="text-indigo-500" /> 2. Metragens e Peças
-                            </h2>
-                            
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                                <div className="space-y-2">
-                                    <Label>Área Útil (m²)</Label>
-                                    <Input name="area_useful" value={formData.area_useful} onChange={handleInputChange} type="number" placeholder="Ex: 120" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Área Total (m²)</Label>
-                                    <Input name="area_total" value={formData.area_total} onChange={handleInputChange} type="number" placeholder="Ex: 150" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Quartos</Label>
-                                    <Input name="bedrooms" value={formData.bedrooms} onChange={handleInputChange} type="number" placeholder="Ex: 3" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Sendo Suítes</Label>
-                                    <Input name="suites" value={formData.suites} onChange={handleInputChange} type="number" placeholder="Ex: 1" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Banheiros Sociais</Label>
-                                    <Input name="bathrooms" value={formData.bathrooms} onChange={handleInputChange} type="number" placeholder="Ex: 2" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Vagas de Garagem</Label>
-                                    <Input name="parking_spaces" value={formData.parking_spaces} onChange={handleInputChange} type="number" placeholder="Ex: 2" />
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* ETAPA 3: VALORES */}
-                    {currentStep === 2 && (
-                        <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
-                            <h2 className="text-xl font-bold flex items-center gap-2 mb-6 border-b pb-4">
-                                <List className="text-emerald-500" /> 3. Precificação
-                            </h2>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
-                                    <h3 className="font-bold mb-4 text-emerald-600">Venda</h3>
-                                    <div className="space-y-4">
+                            <div className="pt-6 border-t border-slate-100 dark:border-slate-800">
+                                <h3 className="font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
+                                    <List className="w-5 h-5 text-emerald-500" /> Precificação Rápida
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-4 bg-emerald-50 dark:bg-emerald-900/10 p-5 rounded-xl border border-emerald-100 dark:border-emerald-900/30">
                                         <div className="space-y-2">
-                                            <Label>Valor do Imóvel (R$)</Label>
-                                            <Input name="price_sale" value={formData.price_sale} onChange={handleInputChange} type="number" placeholder="Ex: 850000" className="text-lg font-bold" />
+                                            <Label className="font-semibold text-emerald-800 dark:text-emerald-400">Valor de Venda (R$)</Label>
+                                            <Input name="price_sale" value={formData.price_sale} onChange={handleInputChange} type="number" placeholder="Ex: 850000" className="text-lg font-bold bg-white dark:bg-slate-900" />
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <input 
@@ -253,61 +198,105 @@ export default function PropertyWizard() {
                                                 checked={formData.accepts_financing} 
                                                 onChange={(e) => setFormData(prev => ({ ...prev, accepts_financing: e.target.checked }))}
                                                 id="aceita-fin" 
-                                                className="w-4 h-4 rounded border-slate-300" 
+                                                className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" 
                                             />
-                                            <label htmlFor="aceita-fin" className="text-sm">Aceita Financiamento Bancário</label>
+                                            <label htmlFor="aceita-fin" className="text-sm font-medium text-emerald-800 dark:text-emerald-400">Aceita Financiamento</label>
                                         </div>
                                     </div>
-                                </div>
-                                
-                                <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
-                                    <h3 className="font-bold mb-4 text-amber-600">Locação</h3>
-                                    <div className="space-y-4">
+                                    
+                                    <div className="space-y-4 bg-amber-50 dark:bg-amber-900/10 p-5 rounded-xl border border-amber-100 dark:border-amber-900/30">
                                         <div className="space-y-2">
-                                            <Label>Valor do Aluguel Mensal (R$)</Label>
-                                            <Input name="price_rent" value={formData.price_rent} onChange={handleInputChange} type="number" placeholder="Ex: 4500" className="text-lg font-bold" />
+                                            <Label className="font-semibold text-amber-800 dark:text-amber-400">Valor de Locação (R$)</Label>
+                                            <Input name="price_rent" value={formData.price_rent} onChange={handleInputChange} type="number" placeholder="Ex: 4500" className="text-lg font-bold bg-white dark:bg-slate-900" />
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                                <div className="space-y-2">
-                                    <Label>Valor do Condomínio (R$ / mês)</Label>
-                                    <Input name="condominium" value={formData.condominium} onChange={handleInputChange} type="number" placeholder="Ex: 950" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Valor do IPTU (R$ / ano)</Label>
-                                    <Input name="iptu" value={formData.iptu} onChange={handleInputChange} type="number" placeholder="Ex: 2100" />
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* ETAPA 4: CARACTERÍSTICAS */}
-                    {currentStep === 3 && (
-                        <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
-                            <h2 className="text-xl font-bold flex items-center gap-2 mb-6 border-b pb-4">
-                                <FileCheck className="text-indigo-500" /> 4. Características e Comodidades
-                            </h2>
-                            <p className="text-sm text-slate-500">Selecione os diferenciais deste imóvel.</p>
-                            
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                {["Piscina", "Academia", "Churrasqueira", "Varanda Gourmet", "Mobiliado", "Ar Condicionado", "Portaria 24h", "Salão de Festas", "Pet Friendly"].map(feature => (
-                                    <div key={feature} className="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800">
-                                        <input type="checkbox" id={feature} className="w-4 h-4" />
-                                        <label htmlFor={feature} className="text-sm">{feature}</label>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                                    <div className="space-y-2">
+                                        <Label>Valor do Condomínio Mensal (R$)</Label>
+                                        <Input name="condominium" value={formData.condominium} onChange={handleInputChange} type="number" placeholder="Ex: 950" />
                                     </div>
-                                ))}
+                                    <div className="space-y-2">
+                                        <Label>Valor do IPTU Anual (R$)</Label>
+                                        <Input name="iptu" value={formData.iptu} onChange={handleInputChange} type="number" placeholder="Ex: 2100" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     )}
 
-                    {/* ETAPA 5: LOCALIZAÇÃO */}
-                    {currentStep === 4 && (
+                    {/* ETAPA 2: DETALHES DO IMÓVEL */}
+                    {currentStep === 1 && (
+                        <div className="space-y-8 animate-in fade-in slide-in-from-right-4">
+                            <div>
+                                <h2 className="text-xl font-bold flex items-center gap-2 mb-6 border-b border-slate-100 dark:border-slate-800 pb-4">
+                                    <Map className="text-indigo-500" /> 2. Detalhes e Cômodos
+                                </h2>
+                                
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                    <div className="space-y-2">
+                                        <Label>Área Útil (m²)</Label>
+                                        <Input name="area_useful" value={formData.area_useful} onChange={handleInputChange} type="number" placeholder="Ex: 120" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Área Total (m²)</Label>
+                                        <Input name="area_total" value={formData.area_total} onChange={handleInputChange} type="number" placeholder="Ex: 150" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Quartos</Label>
+                                        <Input name="bedrooms" value={formData.bedrooms} onChange={handleInputChange} type="number" placeholder="Ex: 3" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Sendo Suítes</Label>
+                                        <Input name="suites" value={formData.suites} onChange={handleInputChange} type="number" placeholder="Ex: 1" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Banheiros Sociais</Label>
+                                        <Input name="bathrooms" value={formData.bathrooms} onChange={handleInputChange} type="number" placeholder="Ex: 2" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Vagas de Garagem</Label>
+                                        <Input name="parking_spaces" value={formData.parking_spaces} onChange={handleInputChange} type="number" placeholder="Ex: 2" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="pt-6 border-t border-slate-100 dark:border-slate-800">
+                                <h3 className="font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
+                                    <FileCheck className="w-5 h-5 text-indigo-500" /> Descrição Comercial
+                                </h3>
+                                <Textarea 
+                                    name="description" 
+                                    value={formData.description}
+                                    onChange={handleInputChange}
+                                    placeholder="Venda o imóvel com as melhores palavras... Destaque a localização, acabamentos e diferenciais." 
+                                    rows={5} 
+                                    className="bg-slate-50 dark:bg-slate-900" 
+                                />
+                            </div>
+
+                            <div className="pt-6 border-t border-slate-100 dark:border-slate-800">
+                                <h3 className="font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
+                                    <Check className="w-5 h-5 text-indigo-500" /> Principais Comodidades
+                                </h3>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                    {["Piscina", "Academia", "Churrasqueira", "Varanda Gourmet", "Mobiliado", "Ar Condicionado", "Portaria 24h", "Salão de Festas", "Elevador", "Área de Serviço", "Aceita Pet", "Sauna"].map(feature => (
+                                        <label key={feature} className="flex items-center gap-2 p-3 bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-800 cursor-pointer transition-colors">
+                                            <input type="checkbox" id={feature} className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500" />
+                                            <span className="text-sm font-medium">{feature}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ETAPA 3: LOCALIZAÇÃO */}
+                    {currentStep === 2 && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
-                            <h2 className="text-xl font-bold flex items-center gap-2 mb-6 border-b pb-4">
-                                <MapPin className="text-rose-500" /> 5. Localização
+                            <h2 className="text-xl font-bold flex items-center gap-2 mb-6 border-b border-slate-100 dark:border-slate-800 pb-4">
+                                <MapPin className="text-rose-500" /> 3. Localização
                             </h2>
                             
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -320,121 +309,124 @@ export default function PropertyWizard() {
                                     <Input name="address" value={formData.address} onChange={handleInputChange} placeholder="Ex: Av. Atlântica" />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Número</Label>
-                                    <Input name="address_number" value={formData.address_number} onChange={handleInputChange} placeholder="Ex: 123" />
+                                    <Label>Número / Complemento</Label>
+                                    <Input name="address_number" value={formData.address_number} onChange={handleInputChange} placeholder="Ex: 123, Apto 401" />
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Bairro</Label>
                                     <Input name="neighborhood" value={formData.neighborhood} onChange={handleInputChange} placeholder="Ex: Copacabana" />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Cidade</Label>
-                                    <Input name="city" value={formData.city} onChange={handleInputChange} placeholder="Ex: Rio de Janeiro" />
+                                    <Label>Cidade / Estado</Label>
+                                    <Input name="city" value={formData.city} onChange={handleInputChange} placeholder="Ex: Rio de Janeiro - RJ" />
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-dashed border-slate-300 dark:border-slate-700">
+                            <div className="flex items-start gap-4 p-5 bg-rose-50 dark:bg-rose-900/10 rounded-xl border border-rose-200 dark:border-rose-900/30 mt-6">
                                 <input 
                                     type="checkbox" 
                                     name="hide_address" 
                                     checked={formData.hide_address} 
                                     onChange={(e) => setFormData(prev => ({ ...prev, hide_address: e.target.checked }))}
                                     id="hide_address" 
-                                    className="w-5 h-5" 
+                                    className="w-5 h-5 mt-0.5 text-rose-600 rounded focus:ring-rose-500 border-rose-300" 
                                 />
                                 <div>
-                                    <label htmlFor="hide_address" className="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                                        <EyeOff className="w-4 h-4" /> Ocultar endereço exato no site
+                                    <label htmlFor="hide_address" className="font-bold text-rose-900 dark:text-rose-400 flex items-center gap-2 cursor-pointer">
+                                        <EyeOff className="w-5 h-5" /> Ocultar endereço exato no site
                                     </label>
-                                    <p className="text-xs text-slate-500">Apenas o bairro e cidade serão exibidos publicamente.</p>
+                                    <p className="text-sm mt-1 text-rose-800 dark:text-rose-300/80">
+                                        Mantenha a segurança do seu anúncio. Apenas o bairro e a cidade serão exibidos para o público geral.
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     )}
 
-                    {/* ETAPA 6: MÍDIA */}
-                    {currentStep === 5 && (
-                        <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
-                            <h2 className="text-xl font-bold flex items-center gap-2 mb-6 border-b pb-4">
-                                <ImageIcon className="text-indigo-500" /> 6. Fotos e Vídeos
-                            </h2>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label>Link do Vídeo (YouTube)</Label>
-                                    <Input name="video_url" value={formData.video_url} onChange={handleInputChange} placeholder="https://youtube.com/watch?v=..." />
+                    {/* ETAPA 4: MÍDIAS E SIGILO */}
+                    {currentStep === 3 && (
+                        <div className="space-y-8 animate-in fade-in slide-in-from-right-4">
+                            <div>
+                                <h2 className="text-xl font-bold flex items-center gap-2 mb-6 border-b border-slate-100 dark:border-slate-800 pb-4">
+                                    <ImageIcon className="text-purple-500" /> 4. Fotos e Tour Virtual
+                                </h2>
+                                
+                                <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-purple-500 dark:hover:border-purple-500 transition-colors rounded-2xl p-8 sm:p-12 text-center group cursor-pointer bg-slate-50 dark:bg-slate-900/50">
+                                    <div className="bg-white dark:bg-slate-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm group-hover:scale-110 transition-transform">
+                                        <ImageIcon className="w-8 h-8 text-purple-500" />
+                                    </div>
+                                    <h3 className="font-bold text-lg mb-2">Upload de Fotos Rápidas</h3>
+                                    <p className="text-sm text-slate-500 mb-6 max-w-md mx-auto">
+                                        Arraste as fotos ou clique aqui. A marca d'água da sua corretora será aplicada automaticamente.
+                                    </p>
+                                    <Button type="button" className="bg-purple-600 hover:bg-purple-700 text-white font-semibold">
+                                        Selecionar do Computador
+                                    </Button>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label>Link Tour 360º</Label>
-                                    <Input name="tour_360_url" value={formData.tour_360_url} onChange={handleInputChange} placeholder="https://meutour360.com/..." />
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                                    <div className="space-y-2">
+                                        <Label>Link do Vídeo (YouTube/Vimeo)</Label>
+                                        <Input name="video_url" value={formData.video_url} onChange={handleInputChange} placeholder="https://youtube.com/watch?v=..." />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Link do Tour 360º</Label>
+                                        <Input name="tour_360_url" value={formData.tour_360_url} onChange={handleInputChange} placeholder="https://meutour360.com/..." />
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-12 text-center">
-                                <div className="bg-slate-100 dark:bg-slate-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <ImageIcon className="w-8 h-8 text-slate-400" />
-                                </div>
-                                <h3 className="font-bold text-lg">Upload de Fotos</h3>
-                                <p className="text-slate-500 mb-6">Arraste as fotos ou clique para selecionar. Marca d'água será aplicada automaticamente.</p>
-                                <Button type="button" variant="outline">Selecionar Arquivos</Button>
-                            </div>
-                        </div>
-                    )}
+                            <div className="pt-6 border-t border-slate-100 dark:border-slate-800">
+                                <h2 className="text-xl font-bold flex items-center gap-2 mb-4">
+                                    <Key className="text-amber-500" /> Dados Reservados (Apenas para Você)
+                                </h2>
+                                <p className="text-sm text-slate-500 mb-6">Informações vitais de captação, seguras e ocultas do público.</p>
 
-                    {/* ETAPA 7: PRIVATIVO */}
-                    {currentStep === 6 && (
-                        <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
-                            <h2 className="text-xl font-bold flex items-center gap-2 mb-6 border-b pb-4">
-                                <Key className="text-rose-500" /> 7. Dados Privativos (Sigiloso)
-                            </h2>
-                            
-                            <div className="p-4 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 rounded-lg text-sm border border-amber-200 dark:border-amber-800/50 mb-6">
-                                <strong>Importante:</strong> Estas informações NUNCA serão exibidas no site público.
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label>Telefone do Proprietário</Label>
-                                    <Input name="owner_phone" value={formData.owner_phone} onChange={handleInputChange} placeholder="(00) 00000-0000" />
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <Label>Contato do Proprietário</Label>
+                                        <Input name="owner_phone" value={formData.owner_phone} onChange={handleInputChange} placeholder="Nome e (00) 00000-0000" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Localização Exata das Chaves</Label>
+                                        <Input name="key_location" value={formData.key_location} onChange={handleInputChange} placeholder="Ex: Portaria torre B, ou com Dona Maria" />
+                                    </div>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label>Localização das Chaves</Label>
-                                    <Input name="key_location" value={formData.key_location} onChange={handleInputChange} placeholder="Ex: Portaria ou Imobiliária" />
+                                
+                                <div className="space-y-2 mt-6">
+                                    <Label>Anotações Confidenciais</Label>
+                                    <Textarea 
+                                        name="internal_notes" 
+                                        value={formData.internal_notes}
+                                        onChange={handleInputChange}
+                                        placeholder="Regras de permuta, disponibilidade para visita final de semana..." 
+                                        rows={3} 
+                                        className="bg-slate-50 dark:bg-slate-900"
+                                    />
                                 </div>
-                            </div>
-                            
-                            <div className="space-y-2">
-                                <Label>Anotações Internas de Captação</Label>
-                                <Textarea 
-                                    name="internal_notes" 
-                                    value={formData.internal_notes}
-                                    onChange={handleInputChange}
-                                    placeholder="Ex: Proprietário aceita permuta, chaves com zelador Sr. João..." 
-                                    rows={4} 
-                                />
                             </div>
                         </div>
                     )}
                 </div>
 
-                {/* Controles de Navegação */}
-                <div className="flex items-center justify-between pt-8 mt-12 border-t border-slate-100 dark:border-slate-800">
-                    <div>
+                {/* Controles de Navegação Fixos no Rodapé do Form */}
+                <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 pt-6 mt-8 border-t border-slate-100 dark:border-slate-800">
+                    <div className="w-full sm:w-auto">
                         {currentStep > 0 && (
-                            <Button type="button" variant="outline" onClick={handlePrev} className="font-semibold px-6">
+                            <Button type="button" variant="outline" onClick={handlePrev} className="font-semibold px-6 w-full sm:w-auto">
                                 <ChevronLeft className="w-4 h-4 mr-1" /> Voltar
                             </Button>
                         )}
                     </div>
                     
-                    <div>
+                    <div className="w-full sm:w-auto">
                         {currentStep < STEPS.length - 1 ? (
-                            <Button type="button" onClick={handleNext} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold px-8 dark:bg-slate-100 dark:text-slate-900">
+                            <Button type="button" onClick={handleNext} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 w-full sm:w-auto shadow-md">
                                 Próxima Etapa <ChevronRight className="w-4 h-4 ml-1" />
                             </Button>
                         ) : (
-                            <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-10 shadow-lg">
-                                Finalizar e Publicar <Check className="w-4 h-4 ml-2" />
+                            <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 w-full sm:w-auto shadow-lg shadow-emerald-500/20">
+                                Finalizar Cadastro <Check className="w-4 h-4 ml-2" />
                             </Button>
                         )}
                     </div>
