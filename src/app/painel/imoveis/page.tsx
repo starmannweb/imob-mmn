@@ -1,45 +1,81 @@
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
-import { Plus, MoreHorizontal, Search, SlidersHorizontal, Building2, Target, History } from "lucide-react";
+import { Building2, History, LayoutGrid, List, Plus, Search, Target } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/utils/supabase/server";
+
 import { deleteProperty } from "./actions";
 
-export default async function ImoveisPage({ searchParams }: { searchParams: Promise<{ tab?: string, view?: string }> }) {
+type Property = {
+    id: string;
+    title: string;
+    slug: string;
+    status: "available" | "sold" | "rented";
+    area: number | null;
+    price_sale: number | null;
+};
+
+const statusMap = {
+    available: { label: "Disponível", classes: "bg-emerald-500/95 text-white" },
+    sold: { label: "Vendido", classes: "bg-slate-800/95 text-white" },
+    rented: { label: "Alugado", classes: "bg-blue-600/95 text-white" },
+} as const;
+
+function EmptyState({ title, description }: { title: string; description: string }) {
+    return (
+        <div className="flex flex-col items-center justify-center py-24 text-center bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-200 dark:border-slate-800 border-dashed">
+            <Building2 className="w-16 h-16 text-slate-300 dark:text-slate-500 mb-6 stroke-[1.5]" />
+            <h3 className="text-xl font-medium text-slate-700 dark:text-slate-300 mb-2">{title}</h3>
+            <p className="text-sm text-slate-500 max-w-sm">{description}</p>
+        </div>
+    );
+}
+
+export default async function ImoveisPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ tab?: string; view?: string }>;
+}) {
     const supabase = await createClient();
-
-    // Buscar imóveis do corretor
-    const { data: properties, error } = await supabase
-        .from("properties")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-    if (error) {
-        console.error(error);
-    }
-
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
     const sp = await searchParams;
-    const currentTab = sp.tab || 'meus_imoveis';
-    const viewMode = sp.view || 'grid';
+    const currentTab = sp.tab || "meus_imoveis";
+    const viewMode = sp.view === "list" ? "list" : "grid";
+
+    const response = user?.id
+        ? await supabase
+              .from("properties")
+              .select("id, title, slug, status, area, price_sale")
+              .eq("owner_id", user.id)
+              .order("created_at", { ascending: false })
+        : { data: [], error: null };
+
+    if (response.error) console.error(response.error);
+    const properties = (response.data || []) as Property[];
+
+    const tabs = [
+        { id: "meus_imoveis", label: "Meus imóveis" },
+        { id: "marketplace", label: "Marketplace" },
+        { id: "radar", label: "Radar Imobiliário", icon: <Target className="w-4 h-4" /> },
+    ];
 
     return (
         <div className="animate-in flex-1 w-full max-w-[1500px]">
-            
             <div className="flex flex-col lg:flex-row gap-8 w-full">
-                {/* Lado Esquerdo - Pesquisa Estilo TecImob */}
-                <div className="w-full lg:w-72 shrink-0">
+                <aside className="w-full lg:w-72 shrink-0">
                     <div className="bg-white dark:bg-[#1e293b] p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm sticky top-24">
                         <h2 className="font-bold text-slate-900 dark:text-white mb-4 text-sm uppercase tracking-wider">Pesquisa</h2>
                         <div className="space-y-3">
-                            <div className="relative">
-                                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                                <input type="text" placeholder="Digite a referência, ou" className="w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 dark:bg-[#0f172a] border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium text-slate-900 dark:text-slate-100 placeholder-slate-400" />
-                            </div>
-                            <div className="relative">
-                                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                                <input type="text" placeholder="Digite o logradouro, ou" className="w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 dark:bg-[#0f172a] border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium text-slate-900 dark:text-slate-100 placeholder-slate-400" />
-                            </div>
+                            {["Digite a referência, ou", "Digite o logradouro, ou"].map((placeholder) => (
+                                <div key={placeholder} className="relative">
+                                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                                    <input type="text" placeholder={placeholder} className="w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 dark:bg-[#0f172a] border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium text-slate-900 dark:text-slate-100 placeholder-slate-400" />
+                                </div>
+                            ))}
                             <select className="w-full px-3 py-2.5 text-sm bg-slate-50 dark:bg-[#0f172a] border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-500 font-medium appearance-none">
                                 <option>Selecione o condomínio, ou</option>
                             </select>
@@ -47,105 +83,57 @@ export default async function ImoveisPage({ searchParams }: { searchParams: Prom
                                 Pesquisar por características
                             </button>
                         </div>
-
                         <div className="mt-8 border-t border-slate-100 dark:border-slate-800/80 pt-6">
-                            <h3 className="font-bold text-slate-900 dark:text-white mb-4 text-sm flex items-center gap-2">
-                                <Search className="w-4 h-4 text-slate-400" /> Últimas pesquisas
-                            </h3>
-                            <div className="flex flex-col items-center justify-center py-6 text-slate-400">
-                                <History className="w-6 h-6 mb-2 opacity-50" />
-                                <span className="text-xs font-semibold">Sem histórico</span>
-                            </div>
-                        </div>
-
-                        <div className="mt-2 border-t border-slate-100 dark:border-slate-800/80 pt-6">
-                            <h3 className="font-bold text-slate-900 dark:text-white mb-4 text-sm flex items-center gap-2">
-                                <Building2 className="w-4 h-4 text-slate-400" /> Últimos imóveis
-                            </h3>
+                            <h3 className="font-bold text-slate-900 dark:text-white mb-4 text-sm flex items-center gap-2"><Search className="w-4 h-4 text-slate-400" /> Últimas pesquisas</h3>
                             <div className="flex flex-col items-center justify-center py-6 text-slate-400">
                                 <History className="w-6 h-6 mb-2 opacity-50" />
                                 <span className="text-xs font-semibold">Sem histórico</span>
                             </div>
                         </div>
                     </div>
-                </div>
+                </aside>
 
-                {/* Lado Direito - Conteúdo Principal */}
-                <div className="flex-1 min-w-0 flex flex-col">
-                    {/* Tabs */}
+                <section className="flex-1 min-w-0 flex flex-col">
                     <div className="flex flex-wrap gap-2 mb-6 bg-slate-100 dark:bg-slate-900/50 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700/50 overflow-x-auto hide-scrollbar">
-                        <Link href="/painel/imoveis?tab=meus_imoveis" className={`flex-1 min-w-[120px] flex justify-center items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold shadow-sm transition-all focus:outline-none ${currentTab === 'meus_imoveis' ? 'bg-white text-slate-900 border border-slate-200 dark:bg-[#1e293b] dark:text-slate-200 dark:border-transparent' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'}`}>
-                            Meus imóveis
-                        </Link>
-                        <Link href="/painel/imoveis?tab=marketplace" className={`flex-1 min-w-[120px] flex justify-center items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold shadow-sm transition-all focus:outline-none ${currentTab === 'marketplace' ? 'bg-white text-slate-900 border border-slate-200 dark:bg-[#1e293b] dark:text-slate-200 dark:border-transparent' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'}`}>
-                            Marketplace
-                        </Link>
-                        <Link href="/painel/imoveis?tab=radar" className={`flex-1 min-w-[160px] flex justify-center items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold shadow-sm transition-all focus:outline-none ${currentTab === 'radar' ? 'bg-blue-600 text-white border border-blue-600' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'}`}>
-                            <Target className="w-4 h-4" /> Radar Imobiliário
-                        </Link>
+                        {tabs.map((tab) => (
+                            <Link
+                                key={tab.id}
+                                href={`/painel/imoveis?tab=${tab.id}`}
+                                className={`flex-1 min-w-[120px] flex justify-center items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold shadow-sm transition-all ${
+                                    currentTab === tab.id
+                                        ? tab.id === "radar"
+                                            ? "bg-blue-600 text-white border border-blue-600"
+                                            : "bg-white text-slate-900 border border-slate-200 dark:bg-[#1e293b] dark:text-slate-200 dark:border-transparent"
+                                        : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300"
+                                }`}
+                            >
+                                {tab.icon}
+                                {tab.label}
+                            </Link>
+                        ))}
                     </div>
 
-                    {/* Admin Toggle */}
-                    <div className="flex items-center gap-3 mb-6">
-                        <div className="w-10 h-5 bg-slate-200 dark:bg-slate-700 rounded-full relative cursor-pointer border border-slate-300 dark:border-slate-600">
-                            <div className="w-4 h-4 bg-white dark:bg-slate-400 rounded-full absolute top-[1px] left-[1px] shadow-sm"></div>
-                        </div>
-                        <span className="text-sm font-bold text-slate-700 dark:text-slate-300">Visão Modo Dono (Rede)</span>
-                    </div>
-
-                    {currentTab === 'radar' ? (
-                        <div className="animate-in fade-in">
-                            <div className="bg-white dark:bg-[#1e293b] p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm mb-6">
-                                <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
-                                    <Target className="w-6 h-6 text-blue-500" />
-                                    Radar de oportunidades | Imóveis compatíveis
-                                </h2>
-                                <p className="text-sm text-slate-500 dark:text-slate-400 mb-8 max-w-2xl">
-                                    Esta ferramenta cruza automaticamente os interesses dos seus clientes (Leads do CRM) com o seu portfólio de imóveis. Sempre que um imóvel bater com a preferência de um cliente, ele aparecerá aqui.
-                                </p>
-                                
-                                <div className="w-full bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden overflow-x-auto">
-                                    <table className="w-full text-sm text-left">
-                                        <thead className="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-xs uppercase font-bold border-b border-slate-200 dark:border-slate-700">
-                                            <tr>
-                                                <th className="px-6 py-4 w-10">
-                                                    <input type="checkbox" className="rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" />
-                                                </th>
-                                                <th className="px-6 py-4">Imóvel Ofertado</th>
-                                                <th className="px-6 py-4">Detalhes do Math</th>
-                                                <th className="px-6 py-4 text-center">Clientes no Radar</th>
-                                                <th className="px-6 py-4 text-right">Ação</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr className="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                                                <td colSpan={5} className="px-6 py-16 text-center text-slate-500">
-                                                    <Target className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-4 opacity-70" />
-                                                    <p className="font-medium text-base text-slate-700 dark:text-slate-300">Nenhum cruzamento de oportunidades no momento.</p>
-                                                    <p className="text-sm mt-1">Atualize os perfis de busca dos seus leads no CRM para gerar matches.</p>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                    {currentTab === "radar" ? (
+                        <div className="bg-white dark:bg-[#1e293b] p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                                <Target className="w-6 h-6 text-blue-500" />
+                                Radar de oportunidades | Imóveis compatíveis
+                            </h2>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 mb-8 max-w-2xl">
+                                Esta área cruza os interesses dos clientes com o seu portfólio para destacar possíveis matches.
+                            </p>
+                            <EmptyState title="Nenhum cruzamento de oportunidades no momento." description="Atualize os perfis de busca dos seus leads no CRM para gerar matches." />
                         </div>
                     ) : (
                         <>
-                            {/* Action Bar (Count, View mode, Add Button) */}
                             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
                                 <span className="text-sm font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-[#1e293b] px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm w-full sm:w-auto text-center">
-                                    {properties?.length || 0} resultado{properties?.length === 1 ? '' : 's'}
+                                    {properties.length} resultado{properties.length === 1 ? "" : "s"}
                                 </span>
-
                                 <div className="flex items-center gap-3 w-full sm:w-auto">
                                     <div className="flex bg-white dark:bg-slate-800/50 p-1 rounded-lg border border-slate-200 dark:border-slate-700/50 shadow-sm h-10 items-center">
-                                        <Link href={`/painel/imoveis?tab=${currentTab}&view=grid`} className={`p-1.5 h-full flex items-center justify-center rounded-md transition-colors ${viewMode === 'grid' ? 'bg-slate-100 text-slate-900 dark:bg-slate-700 dark:text-white' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'}`}>
-                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
-                                        </Link>
-                                        <Link href={`/painel/imoveis?tab=${currentTab}&view=list`} className={`p-1.5 h-full flex items-center justify-center rounded-md transition-colors ${viewMode === 'list' ? 'bg-slate-100 text-slate-900 dark:bg-slate-700 dark:text-white' : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'}`}>
-                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
-                                        </Link>
+                                        <Link href={`/painel/imoveis?tab=${currentTab}&view=grid`} className={`p-2 rounded-md ${viewMode === "grid" ? "bg-slate-100 text-slate-900 dark:bg-slate-700 dark:text-white" : "text-slate-400 hover:text-slate-700"}`}><LayoutGrid className="w-4 h-4" /></Link>
+                                        <Link href={`/painel/imoveis?tab=${currentTab}&view=list`} className={`p-2 rounded-md ${viewMode === "list" ? "bg-slate-100 text-slate-900 dark:bg-slate-700 dark:text-white" : "text-slate-400 hover:text-slate-700"}`}><List className="w-4 h-4" /></Link>
                                     </div>
                                     <Link href="/painel/imoveis/novo" className="w-full sm:w-auto">
                                         <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 h-10 font-bold shadow-sm flex items-center gap-2 text-white">
@@ -155,133 +143,48 @@ export default async function ImoveisPage({ searchParams }: { searchParams: Prom
                                 </div>
                             </div>
 
-                            {currentTab === 'meus_imoveis' ? (
-                                properties && properties.length > 0 ? (
-                                    viewMode === 'grid' ? (
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                                            {properties.map((prop) => (
-                                                <div key={prop.id} className="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300 group flex flex-col">
-                                                    <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-800/50 overflow-hidden flex items-center justify-center">
-                                                        <div className="absolute top-3 left-3 z-10 flex gap-2">
-                                                            <span className={`px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider backdrop-blur-md shadow-sm border border-white/10 ${
-                                                                prop.status === 'available' ? 'bg-emerald-500/95 text-white' : 
-                                                                prop.status === 'sold' ? 'bg-slate-800/95 text-white' : 'bg-blue-600/95 text-white'
-                                                            }`}>
-                                                                {prop.status === 'available' ? 'Disponível' : prop.status === 'sold' ? 'Vendido' : 'Alugado'}
-                                                            </span>
-                                                        </div>
-                                                        <Building2 className="w-12 h-12 text-slate-300 dark:text-slate-600 stroke-[1.5] group-hover:scale-110 group-hover:text-blue-200 transition-all duration-500" />
+                            {currentTab === "marketplace" ? (
+                                <EmptyState title="Marketplace vazio" description="Ainda não há imóveis de outros corretores disponíveis para rede no momento." />
+                            ) : properties.length === 0 ? (
+                                <EmptyState title="Nenhum imóvel encontrado" description="Você ainda não cadastrou nenhum imóvel no seu portfólio." />
+                            ) : (
+                                <div className={viewMode === "grid" ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6" : "flex flex-col gap-4"}>
+                                    {properties.map((prop) => {
+                                        const status = statusMap[prop.status] || statusMap.available;
+                                        return (
+                                            <article key={prop.id} className={`bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden ${viewMode === "list" ? "flex flex-col sm:flex-row items-center gap-6 p-4" : "flex flex-col"}`}>
+                                                <div className={`${viewMode === "list" ? "w-full sm:w-40 aspect-video shrink-0" : "aspect-[4/3]"} relative bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center`}>
+                                                    <span className={`absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider ${status.classes}`}>{status.label}</span>
+                                                    <Building2 className="w-12 h-12 text-slate-300 dark:text-slate-600" />
+                                                </div>
+                                                <div className="p-5 flex-1 flex flex-col justify-between w-full">
+                                                    <div>
+                                                        <h3 className="font-bold text-base text-slate-900 dark:text-white mb-1">
+                                                            <Link href={`/painel/imoveis/${prop.id}/editar`} className="hover:text-blue-600">{prop.title}</Link>
+                                                        </h3>
+                                                        <p className="text-[11px] text-slate-400 dark:text-slate-500 mb-4 truncate font-medium">/{prop.slug}</p>
+                                                        {prop.area ? <div className="inline-flex bg-slate-50 dark:bg-slate-900/80 text-slate-600 dark:text-slate-300 text-[11px] px-2.5 py-1 rounded-lg border border-slate-100 dark:border-slate-800 font-bold">Área: {prop.area}m²</div> : null}
                                                     </div>
-                                                    <div className="p-5 flex-1 flex flex-col justify-between">
-                                                        <div>
-                                                            <h3 className="font-bold text-base text-slate-900 dark:text-white line-clamp-2 leading-snug mb-1">
-                                                                <Link href={`/painel/imoveis/${prop.id}/editar`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                                                    {prop.title}
-                                                                </Link>
-                                                            </h3>
-                                                            <p className="text-[11px] text-slate-400 dark:text-slate-500 mb-4 truncate font-medium">/{prop.slug}</p>
-                                                            
-                                                            <div className="flex flex-wrap gap-2 mb-5">
-                                                                 {prop.area && (
-                                                                     <div className="bg-slate-50 dark:bg-slate-900/80 text-slate-600 dark:text-slate-300 text-[11px] px-2.5 py-1 rounded-lg border border-slate-100 dark:border-slate-800 font-bold whitespace-nowrap flex items-center gap-1.5">
-                                                                         Área: {prop.area}m²
-                                                                     </div>
-                                                                 )}
-                                                            </div>
-                                                        </div>
-                                                        <div className="mt-auto">
-                                                            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-0.5">Venda</p>
-                                                            <p className="text-xl font-black text-slate-900 dark:text-white mb-5">
-                                                                {prop.price_sale ? `R$ ${prop.price_sale.toLocaleString('pt-BR')}` : 'Sob Consulta'}
-                                                            </p>
-                                                            <div className="flex items-center gap-2 pt-4 border-t border-slate-100 dark:border-slate-800/80">
-                                                                <Link href={`/imoveis/${prop.slug}`} target="_blank" className="flex-1">
-                                                                    <Button variant="outline" size="sm" className="w-full text-blue-600 border-blue-200 hover:bg-blue-50 dark:border-blue-900/50 dark:hover:bg-blue-900/20 text-xs font-bold rounded-xl h-9">
-                                                                        Ver Site
-                                                                    </Button>
-                                                                </Link>
-                                                                <Link href={`/painel/imoveis/${prop.id}/editar`} className="flex-1">
-                                                                    <Button variant="ghost" size="sm" className="w-full text-amber-600 bg-amber-50 hover:bg-amber-100 dark:bg-amber-900/10 dark:hover:bg-amber-900/30 text-xs font-bold rounded-xl h-9">
-                                                                        Editar
-                                                                    </Button>
-                                                                </Link>
-                                                                <form action={deleteProperty.bind(null, prop.id)}>
-                                                                    <Button variant="ghost" size="sm" className="px-3 text-red-500 bg-red-50 hover:bg-red-100 dark:bg-red-900/10 dark:hover:bg-red-900/30 rounded-xl h-9">
-                                                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                                                                    </Button>
-                                                                </form>
-                                                            </div>
+                                                    <div className="mt-5">
+                                                        <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Venda</p>
+                                                        <p className="text-xl font-black text-slate-900 dark:text-white mb-4">{prop.price_sale ? `R$ ${prop.price_sale.toLocaleString("pt-BR")}` : "Sob consulta"}</p>
+                                                        <div className="flex items-center gap-2 flex-wrap">
+                                                            <Link href={`/imoveis/${prop.slug}`} target="_blank"><Button variant="outline" size="sm" className="text-blue-600 border-blue-200 hover:bg-blue-50 text-xs font-bold">Ver site</Button></Link>
+                                                            <Link href={`/painel/imoveis/${prop.id}/editar`}><Button variant="ghost" size="sm" className="text-amber-600 bg-amber-50 hover:bg-amber-100 text-xs font-bold">Editar</Button></Link>
+                                                            <form action={deleteProperty.bind(null, prop.id)}>
+                                                                <Button variant="ghost" size="sm" className="text-red-500 bg-red-50 hover:bg-red-100 text-xs font-bold">Excluir</Button>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            ))}
-                                        </div>
-                                    ) : (
-                                        <div className="flex flex-col gap-4">
-                                            {properties.map((prop) => (
-                                                <div key={prop.id} className="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 hover:shadow-md transition-all flex flex-col sm:flex-row items-center gap-6">
-                                                    {/* Layout em lista */}
-                                                    <div className="relative w-full sm:w-40 aspect-video sm:aspect-square md:aspect-video bg-slate-100 dark:bg-slate-800/50 rounded-xl overflow-hidden flex items-center justify-center shrink-0">
-                                                        <Building2 className="w-10 h-10 text-slate-300 dark:text-slate-600" />
-                                                        <div className="absolute top-2 left-2 z-10 flex gap-2">
-                                                            <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider text-white ${
-                                                                prop.status === 'available' ? 'bg-emerald-500/95' : 
-                                                                prop.status === 'sold' ? 'bg-slate-800/95' : 'bg-blue-600/95'
-                                                            }`}>
-                                                                {prop.status === 'available' ? 'Disponível' : prop.status === 'sold' ? 'Vendido' : 'Alugado'}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div className="flex-1 flex flex-col sm:flex-row w-full items-start sm:items-center justify-between gap-4">
-                                                        <div className="flex-1">
-                                                            <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-1">
-                                                                <Link href={`/painel/imoveis/${prop.id}/editar`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                                                    {prop.title}
-                                                                </Link>
-                                                            </h3>
-                                                            <p className="text-xs text-slate-400 dark:text-slate-500 mb-3 font-medium">/{prop.slug}</p>
-                                                        </div>
-                                                        <div className="flex flex-col sm:items-end w-full sm:w-auto">
-                                                            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Venda</p>
-                                                            <p className="text-2xl font-black text-slate-900 dark:text-white mb-4">
-                                                                {prop.price_sale ? `R$ ${prop.price_sale.toLocaleString('pt-BR')}` : 'Sob Consulta'}
-                                                            </p>
-                                                            <div className="flex items-center gap-2 w-full sm:w-auto">
-                                                                <Link href={`/imoveis/${prop.slug}`} target="_blank">
-                                                                    <Button variant="outline" size="sm" className="text-blue-600 border-blue-200 hover:bg-blue-50 dark:border-blue-900/50 dark:hover:bg-blue-900/20 text-xs font-bold rounded-lg h-9 px-4">
-                                                                        Ver Site
-                                                                    </Button>
-                                                                </Link>
-                                                                <Link href={`/painel/imoveis/${prop.id}/editar`}>
-                                                                    <Button variant="ghost" size="sm" className="text-amber-600 bg-amber-50 hover:bg-amber-100 dark:bg-amber-900/10 dark:hover:bg-amber-900/30 text-xs font-bold rounded-lg h-9 px-4">
-                                                                        Editar
-                                                                    </Button>
-                                                                </Link>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )
-                                ) : (
-                                    <div className="flex flex-col items-center justify-center py-24 text-center bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-200 dark:border-slate-800 border-dashed">
-                                        <Building2 className="w-16 h-16 text-slate-300 dark:text-slate-500 mb-6 stroke-[1.5]" />
-                                        <h3 className="text-xl font-medium text-slate-700 dark:text-slate-300 mb-2">Nenhum imóvel encontrado</h3>
-                                        <p className="text-sm text-slate-500 max-w-sm">Você ainda não cadastrou nenhum imóvel no seu portfólio.</p>
-                                    </div>
-                                )
-                            ) : ( /* Marketplace View */
-                                <div className="flex flex-col items-center justify-center py-24 text-center bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-200 dark:border-slate-800 border-dashed">
-                                    <Building2 className="w-16 h-16 text-slate-300 dark:text-slate-500 mb-6 stroke-[1.5]" />
-                                    <h3 className="text-xl font-medium text-slate-700 dark:text-slate-300 mb-2">Marketplace vazio</h3>
-                                    <p className="text-sm text-slate-500 max-w-sm">Ainda não há imóveis de outros corretores disponíveis para rede no momento.</p>
+                                            </article>
+                                        );
+                                    })}
                                 </div>
                             )}
                         </>
                     )}
-                </div>
+                </section>
             </div>
         </div>
     );
