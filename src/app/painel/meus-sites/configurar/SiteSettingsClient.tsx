@@ -109,11 +109,11 @@ export default function SiteSettingsClient() {
     });
     /* Agendar Visitas */
     const [visitas, setVi] = useState({
-        ativo: true, mesmoDia: false, limiteDias: false, lead: true,
+        ativo: false, mesmoDia: false, limiteDias: false, lead: true,
         fluxo: "padrao", horarios: [{ dias: "Todos os dias", de: "08:00", ate: "18:00" }],
     });
     /* Popup */
-    const [popup, setPp] = useState({ ativo: true, gatilho: "segundos", segundos: 5, frequencia: false });
+    const [popup, setPp] = useState({ ativo: false, gatilho: "segundos", segundos: 5, frequencia: false });
     /* Restrição de fotos */
     const [restricao, setRe] = useState({
         ativo: false, quantas: "", titulo: "", frase: "",
@@ -121,7 +121,29 @@ export default function SiteSettingsClient() {
     /* LGPD */
     const [lgpd, setLg] = useState({
         cookies: true, privacidade: false,
-        texto: "Em atenção à LGPD ficam todos os meios em conformidade com as informações e proteção de dados coletados neste site.\n\nOs dados coletados (do Nome, Telefone, E-mail, dados sobre o imóvel a serem processados e páginas visitadas neste site) são coletados diretamente dos usuários e utilizados exclusivamente para preenchimento dos formulários de contato.\n\nConforme os regulamentos atuais, os dados de: Nome, Telefone, E-mail, dados sobre o imóvel a ser processado e páginas visitadas neste site são coletados de forma anônima pelo sistema de análise Google Analytics. Dados para de marketing em ferramentas externas, por exemplo a empresa de mídia social Facebook (pixels de conversão e outras informações) estão sujeitas às políticas de privacidade e Análise de Privacidade.",
+        texto: `Em atenção a LGPD, foram tomadas todas as medidas cabíveis em respeito à sua privacidade com relação às informações e proteção de dados coletadas neste site.
+
+As informações armazenadas são: Nome, Telefone, E-mail, dados sobre o tipo/perfil de imóvel procurado e páginas visitadas nesse site.
+
+Com relação a Cookies de terceiros serão coletadas: informações sobre o tempo de acesso no site, páginas visitadas e demais informações relevantes do Google Analytics. Dados para re-marketing em ferramentas externas, como por exemplo o serviço oferecido pelo Facebook (Meta). (Para maiores informações sobre os cookies dos serviços de terceiros, acesse o site do Google Analytics e Facebook).
+
+Este site possui o fim de coletar informações para:
+- Criar seu cadastro como lead;
+- Localizar imóveis compatíveis, baseados no tipo de imóvel ideal para você;
+- Determinar os imóveis mais atraentes para o público;
+- Criação, divulgação e envio de conteúdos relevantes;
+
+Não são compartilhadas informações pessoais de forma pública ou com terceiros (exceto em serviços com finalidade comercial no ramo imobiliário), ou quando a lei exigir.
+
+As informações recebidas serão solicitadas no menu "Contato", nos Formulários de Contato dos Imóveis, no menu "Negocie seu Imóvel", no formulário de contato da galeria de imagens, no formulário do pop-up e em eventuais menus criados.
+
+Todas as informações serão previamente solicitadas a você, não tendo captura de nenhuma informação pessoal de maneira automática.
+
+Você pode não aceitar o envio das informações, porém alguns serviços desejados não serão concluídos sem que estas informações sejam recebidas.
+
+Você pode solicitar a exclusão das suas informações a qualquer momento entrando em contato pelos meios disponibilizados no site.
+
+Você pode desativar os Cookies em seu navegador a qualquer momento (consulte no campo "Ajuda" em seu navegador), porém a desativação pode afetar a usabilidade e funcionalidade não só de nosso site, como também de outros sites que você visitar.`,
     });
     /* SEO */
     const [seo, setSeo] = useState({ titulo: "Ricieri Moraes - Compra, Venda e Aluguel de Imóveis", descricao: "Somos especializados na compra, venda e aluguel de imóveis. Conte com a máxima transparência e atenção de um corretor especializado." });
@@ -136,6 +158,8 @@ export default function SiteSettingsClient() {
     const [rodLocacao, setRl] = useState({ novos: "responsavel", conhecidos: "responsavel_cliente" });
     /* Script */
     const [script, setSc] = useState({ nome: "", local: "todas", posicao: "", codigo: "" });
+    const [scripts, setScripts] = useState<{ nome: string; local: string; posicao: string; codigo: string }[]>([]);
+    const [showAddScript, setShowAddScript] = useState(false);
     /* Manutenção */
     const [mnt, setMn] = useState({ ativo: false, texto: "" });
 
@@ -525,61 +549,106 @@ export default function SiteSettingsClient() {
                         <SectionTitle
                             title="Agendar Visitas"
                             subtitle="Defina como vai funcionar o botão de agendamento de visitas no seu site."
-                            action={<button className="bg-red-500 hover:bg-red-600 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors">Desativar agendamento</button>}
+                            action={visitas.ativo ? (
+                                <button onClick={() => setVi({...visitas, ativo: false})} className="bg-red-500 hover:bg-red-600 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors">Desativar agendamento</button>
+                            ) : undefined}
                         />
 
-                        <Card className="space-y-0 divide-y divide-slate-100 dark:divide-slate-700 p-0 overflow-hidden">
-                            {[
-                                { k: "mesmoDia", label: "Permitir agendamento para o mesmo dia?", desc: "Desativado, só permite agendamento para o dia seguinte em diante" },
-                                { k: "limiteDias", label: "Definir limite de dias à frente para agendamento?", desc: "Desativado, aceita qualquer data no futuro" },
-                                { k: "lead", label: "Cadastrar pessoa do agendamento como um lead?", desc: "Desativando gera apenas o contato" },
-                            ].map(({ k, label, desc }) => (
-                                <div key={k} className="flex items-center justify-between px-5 py-4">
-                                    <div><p className="text-sm font-bold text-slate-700 dark:text-slate-200">{label}</p><p className="text-xs text-slate-500">{desc}</p></div>
-                                    <Toggle value={visitas[k as keyof typeof visitas] as boolean} onChange={v => setVi({...visitas, [k]: v})} />
+                        {!visitas.ativo && (
+                            <Card className="flex flex-col md:flex-row items-center gap-8 py-10">
+                                <div className="flex-1">
+                                    <h3 className="font-bold text-slate-800 dark:text-slate-200 text-base mb-2">Agendar visitas</h3>
+                                    <p className="text-sm text-slate-500 leading-relaxed mb-4">
+                                        Configurando o agendamento de visitas, seu cliente pode pré-agendar uma visita pelo seu site, de acordo com os dias e horários estabelecidos.{" "}
+                                        <a href="#" className="text-blue-600 hover:underline text-sm">Saiba mais</a>
+                                    </p>
+                                    <button
+                                        onClick={() => setVi({...visitas, ativo: true})}
+                                        className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-6 py-2.5 rounded-xl text-sm transition-colors"
+                                    >
+                                        Ativar agendamento de visitas
+                                    </button>
                                 </div>
-                            ))}
-                            <div className="flex items-center justify-between px-5 py-4">
-                                <div><p className="text-sm font-bold text-slate-700 dark:text-slate-200">Enviar agendamento para o responsável do imóvel ou seguir fluxo padrão?</p>
-                                    <p className="text-xs text-slate-500">Defina quem irá ser responsável pelo atendimento</p></div>
-                                <div className="flex rounded overflow-hidden border border-slate-200 text-xs font-bold">
-                                    {[["padrao","Fluxo padrão"],["responsavel","Responsável"]].map(([v,l]) => (
-                                        <button key={v} onClick={() => setVi({...visitas, fluxo: v})}
-                                            className={`px-4 py-1.5 transition-colors ${visitas.fluxo === v ? "bg-emerald-500 text-white" : "bg-white text-slate-500 hover:bg-slate-50"}`}>{l}</button>
-                                    ))}
+                                {/* Calendar illustration */}
+                                <div className="shrink-0 w-44 h-36 bg-slate-100 dark:bg-slate-700 rounded-xl flex items-center justify-center">
+                                    <svg viewBox="0 0 160 130" className="w-36 h-28" fill="none">
+                                        <rect x="10" y="20" width="140" height="100" rx="8" fill="#e2e8f0" stroke="#cbd5e1" strokeWidth="2"/>
+                                        <rect x="10" y="20" width="140" height="28" rx="8" fill="#cbd5e1"/>
+                                        <rect x="10" y="40" width="140" height="8" fill="#cbd5e1"/>
+                                        <line x1="50" y1="10" x2="50" y2="32" stroke="#94a3b8" strokeWidth="3" strokeLinecap="round"/>
+                                        <line x1="110" y1="10" x2="110" y2="32" stroke="#94a3b8" strokeWidth="3" strokeLinecap="round"/>
+                                        {/* Grid cells */}
+                                        {[0,1,2,3,4,5,6].map(col => [0,1,2,3].map(row => (
+                                            <rect key={`${col}-${row}`} x={18 + col*20} y={56 + row*17} width="14" height="11" rx="2" fill="#f1f5f9" stroke="#e2e8f0" strokeWidth="1"/>
+                                        )))}
+                                        {/* Checked cells */}
+                                        <circle cx="90" cy="61" r="7" fill="#3b82f6"/>
+                                        <path d="M86 61 L89 64 L94 58" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <circle cx="30" cy="78" r="7" fill="#3b82f6"/>
+                                        <path d="M26 78 L29 81 L34 75" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <circle cx="50" cy="78" r="7" fill="#3b82f6"/>
+                                        <path d="M46 78 L49 81 L54 75" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
                                 </div>
-                            </div>
-                        </Card>
+                            </Card>
+                        )}
 
-                        <Card>
-                            <h4 className="font-bold text-slate-700 dark:text-slate-200 text-sm mb-3">Horários permitidos</h4>
-                            <p className="text-xs text-slate-500 mb-4">Defina os horários disponíveis para visitas</p>
-                            {visitas.horarios.map((h, i) => (
-                                <div key={i} className="flex items-center gap-3 mb-3">
-                                    <div className="flex-1">
-                                        <label className="text-xs text-slate-500 block mb-1">Dias</label>
-                                        <select className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2 text-sm">
-                                            <option>Todos os dias</option>
-                                            <option>Dias úteis</option>
-                                            <option>Fins de semana</option>
-                                        </select>
+                        {visitas.ativo && (
+                            <>
+                            <Card className="space-y-0 divide-y divide-slate-100 dark:divide-slate-700 p-0 overflow-hidden">
+                                {[
+                                    { k: "mesmoDia", label: "Permitir agendamento para o mesmo dia?", desc: "Desativado, só permite agendamento para o dia seguinte em diante" },
+                                    { k: "limiteDias", label: "Definir limite de dias à frente para agendamento?", desc: "Desativado, aceita qualquer data no futuro" },
+                                    { k: "lead", label: "Cadastrar pessoa do agendamento como um lead?", desc: "Desativando gera apenas o contato" },
+                                ].map(({ k, label, desc }) => (
+                                    <div key={k} className="flex items-center justify-between px-5 py-4">
+                                        <div><p className="text-sm font-bold text-slate-700 dark:text-slate-200">{label}</p><p className="text-xs text-slate-500">{desc}</p></div>
+                                        <Toggle value={visitas[k as keyof typeof visitas] as boolean} onChange={v => setVi({...visitas, [k]: v})} />
                                     </div>
-                                    <div className="w-28">
-                                        <label className="text-xs text-slate-500 block mb-1">De</label>
-                                        <input type="time" defaultValue="08:00" className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2 text-sm" />
+                                ))}
+                                <div className="flex items-center justify-between px-5 py-4">
+                                    <div><p className="text-sm font-bold text-slate-700 dark:text-slate-200">Enviar agendamento para o responsável do imóvel ou seguir fluxo padrão?</p>
+                                        <p className="text-xs text-slate-500">Defina quem irá ser responsável pelo atendimento</p></div>
+                                    <div className="flex rounded overflow-hidden border border-slate-200 text-xs font-bold">
+                                        {[["padrao","Fluxo padrão"],["responsavel","Responsável"]].map(([v,l]) => (
+                                            <button key={v} onClick={() => setVi({...visitas, fluxo: v})}
+                                                className={`px-4 py-1.5 transition-colors ${visitas.fluxo === v ? "bg-emerald-500 text-white" : "bg-white text-slate-500 hover:bg-slate-50"}`}>{l}</button>
+                                        ))}
                                     </div>
-                                    <div className="w-28">
-                                        <label className="text-xs text-slate-500 block mb-1">Até</label>
-                                        <input type="time" defaultValue="18:00" className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2 text-sm" />
-                                    </div>
-                                    <button className="mt-5 text-slate-400 hover:text-red-500 transition-colors"><Trash2 className="w-4 h-4" /></button>
                                 </div>
-                            ))}
-                            <button className="mt-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
-                                <Plus className="w-4 h-4" /> Adicionar horas
-                            </button>
-                        </Card>
-                        <SaveBar onSave={save} saving={saving} />
+                            </Card>
+
+                            <Card>
+                                <h4 className="font-bold text-slate-700 dark:text-slate-200 text-sm mb-3">Horários permitidos</h4>
+                                <p className="text-xs text-slate-500 mb-4">Defina os horários disponíveis para visitas</p>
+                                {visitas.horarios.map((h, i) => (
+                                    <div key={i} className="flex items-center gap-3 mb-3">
+                                        <div className="flex-1">
+                                            <label className="text-xs text-slate-500 block mb-1">Dias</label>
+                                            <select className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2 text-sm">
+                                                <option>Todos os dias</option>
+                                                <option>Dias úteis</option>
+                                                <option>Fins de semana</option>
+                                            </select>
+                                        </div>
+                                        <div className="w-28">
+                                            <label className="text-xs text-slate-500 block mb-1">De</label>
+                                            <input type="time" defaultValue="08:00" className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2 text-sm" />
+                                        </div>
+                                        <div className="w-28">
+                                            <label className="text-xs text-slate-500 block mb-1">Até</label>
+                                            <input type="time" defaultValue="18:00" className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2 text-sm" />
+                                        </div>
+                                        <button className="mt-5 text-slate-400 hover:text-red-500 transition-colors"><Trash2 className="w-4 h-4" /></button>
+                                    </div>
+                                ))}
+                                <button className="mt-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                                    <Plus className="w-4 h-4" /> Adicionar horas
+                                </button>
+                            </Card>
+                            <SaveBar onSave={save} saving={saving} />
+                            </>
+                        )}
                     </div>
                 )}
 
@@ -589,47 +658,92 @@ export default function SiteSettingsClient() {
                         <SectionTitle
                             title="Pop-up"
                             subtitle="Adicione um pop-up em seu site para divulgar promoções, avisos ou qualquer informação que desejar."
-                            action={<button className="bg-red-500 hover:bg-red-600 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors">Desativar pop-up</button>}
+                            action={popup.ativo ? (
+                                <button onClick={() => setPp({...popup, ativo: false})} className="bg-red-500 hover:bg-red-600 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors">Desativar pop-up</button>
+                            ) : undefined}
                         />
 
-                        <div className="grid grid-cols-2 gap-5 mb-5">
-                            {["Popup Desktop","Popup Mobile"].map((lbl,i) => (
-                                <Card key={lbl}>
-                                    <h4 className="font-bold text-slate-700 dark:text-slate-200 text-sm mb-3">{lbl}</h4>
-                                    <div className="bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-600 rounded-xl min-h-[180px] flex flex-col items-center justify-center text-center p-4">
-                                        <p className="text-sm text-slate-500 mb-1">Recomendado:</p>
-                                        <p className="text-sm text-slate-500">{i === 0 ? "No máximo: 1200px de largura\nNo máximo: 600px de altura" : "No máximo: 600px de largura"}</p>
-                                        <button className="mt-4 bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-2 rounded-lg text-sm transition-colors">Enviar</button>
-                                    </div>
-                                </Card>
-                            ))}
-                        </div>
+                        {!popup.ativo && (
+                            <Card className="flex flex-col md:flex-row items-center gap-8 py-10">
+                                <div className="flex-1">
+                                    <h3 className="font-bold text-slate-800 dark:text-slate-200 text-base mb-2">Pop-ups</h3>
+                                    <p className="text-sm text-slate-500 leading-relaxed mb-2">
+                                        Ative e configure pop-ups para exibir mensagens importantes, promoções ou chamadas para ação no momento certo.
+                                    </p>
+                                    <p className="text-sm text-slate-500 leading-relaxed mb-4">
+                                        Com apenas alguns cliques, você pode criar pop-ups eficientes que capturam a atenção e geram resultados.
+                                    </p>
+                                    <button
+                                        onClick={() => setPp({...popup, ativo: true})}
+                                        className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-6 py-2.5 rounded-xl text-sm transition-colors"
+                                    >
+                                        Ativar janela pop-up
+                                    </button>
+                                </div>
+                                {/* Popup illustration */}
+                                <div className="shrink-0 w-44 h-36 bg-slate-100 dark:bg-slate-700 rounded-xl flex items-center justify-center">
+                                    <svg viewBox="0 0 160 130" className="w-36 h-28" fill="none">
+                                        <rect x="20" y="15" width="120" height="100" rx="8" fill="white" stroke="#e2e8f0" strokeWidth="2"/>
+                                        <rect x="20" y="15" width="120" height="20" rx="8" fill="#f1f5f9"/>
+                                        <rect x="20" y="27" width="120" height="8" fill="#f1f5f9"/>
+                                        <circle cx="130" cy="22" r="5" fill="#e2e8f0"/>
+                                        <line x1="127" y1="19" x2="133" y2="25" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round"/>
+                                        <line x1="133" y1="19" x2="127" y2="25" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round"/>
+                                        <circle cx="44" cy="57" r="6" fill="#3b82f6" opacity="0.9"/>
+                                        <path d="M41 57 L43.5 59.5 L48 54.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <rect x="56" y="52" width="60" height="5" rx="2" fill="#cbd5e1"/>
+                                        <rect x="56" y="61" width="40" height="4" rx="2" fill="#e2e8f0"/>
+                                        <circle cx="44" cy="80" r="6" fill="#e2e8f0"/>
+                                        <rect x="56" y="75" width="60" height="5" rx="2" fill="#e2e8f0"/>
+                                        <rect x="56" y="84" width="50" height="4" rx="2" fill="#e2e8f0"/>
+                                        <rect x="35" y="98" width="90" height="3" rx="1.5" fill="#3b82f6" opacity="0.4"/>
+                                    </svg>
+                                </div>
+                            </Card>
+                        )}
 
-                        <Card>
-                            <div className="flex items-center justify-between py-1 border-b border-slate-100 dark:border-slate-700 pb-4 mb-4">
-                                <div>
-                                    <p className="text-sm font-bold text-slate-700 dark:text-slate-200">Gatilho para ativar pop-up</p>
-                                    <p className="text-xs text-slate-500">Escolha em que momento o pop-up deve ser ativado.</p>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <select className="border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-sm rounded-lg px-3 py-2">
-                                        <option>Depois de "X" segundos</option>
-                                        <option>Ao tentar sair da página</option>
-                                    </select>
-                                    <input type="number" value={popup.segundos} onChange={e => setPp({...popup, segundos: Number(e.target.value)})}
-                                        className="w-16 border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2 text-sm text-center" />
-                                    <span className="text-sm text-slate-500">segundos</span>
-                                </div>
+                        {popup.ativo && (
+                            <>
+                            <div className="grid grid-cols-2 gap-5 mb-5">
+                                {["Popup Desktop","Popup Mobile"].map((lbl,i) => (
+                                    <Card key={lbl}>
+                                        <h4 className="font-bold text-slate-700 dark:text-slate-200 text-sm mb-3">{lbl}</h4>
+                                        <div className="bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-600 rounded-xl min-h-[180px] flex flex-col items-center justify-center text-center p-4">
+                                            <p className="text-sm text-slate-500 mb-1">Recomendado:</p>
+                                            <p className="text-sm text-slate-500">{i === 0 ? "No máximo: 1200px de largura\nNo máximo: 600px de altura" : "No máximo: 600px de largura"}</p>
+                                            <button className="mt-4 bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-2 rounded-lg text-sm transition-colors">Enviar</button>
+                                        </div>
+                                    </Card>
+                                ))}
                             </div>
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="text-sm font-bold text-slate-700 dark:text-slate-200">Mostrar pop-up com frequência?</p>
-                                    <p className="text-xs text-slate-500">Permite exibir o pop-up novamente mesmo para usuários que já o visualizaram recentemente.</p>
+
+                            <Card>
+                                <div className="flex items-center justify-between py-1 border-b border-slate-100 dark:border-slate-700 pb-4 mb-4">
+                                    <div>
+                                        <p className="text-sm font-bold text-slate-700 dark:text-slate-200">Gatilho para ativar pop-up</p>
+                                        <p className="text-xs text-slate-500">Escolha em que momento o pop-up deve ser ativado.</p>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <select className="border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-sm rounded-lg px-3 py-2">
+                                            <option>Depois de &quot;X&quot; segundos</option>
+                                            <option>Ao tentar sair da página</option>
+                                        </select>
+                                        <input type="number" value={popup.segundos} onChange={e => setPp({...popup, segundos: Number(e.target.value)})}
+                                            className="w-16 border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2 text-sm text-center" />
+                                        <span className="text-sm text-slate-500">segundos</span>
+                                    </div>
                                 </div>
-                                <Toggle value={popup.frequencia} onChange={v => setPp({...popup, frequencia: v})} />
-                            </div>
-                        </Card>
-                        <SaveBar onSave={save} saving={saving} />
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-sm font-bold text-slate-700 dark:text-slate-200">Mostrar pop-up com frequência?</p>
+                                        <p className="text-xs text-slate-500">Permite exibir o pop-up novamente mesmo para usuários que já o visualizaram recentemente.</p>
+                                    </div>
+                                    <Toggle value={popup.frequencia} onChange={v => setPp({...popup, frequencia: v})} />
+                                </div>
+                            </Card>
+                            <SaveBar onSave={save} saving={saving} />
+                            </>
+                        )}
                     </div>
                 )}
 
@@ -909,60 +1023,132 @@ export default function SiteSettingsClient() {
                 {/* ══════════════ INJETAR SCRIPT ══════════════ */}
                 {tab === "script" && (
                     <div className="animate-in fade-in duration-200">
-                        <SectionTitle title="Códigos e Scripts" subtitle="Insira códigos externos, como Pixel do Facebook, Tag Manager." />
+                        <SectionTitle
+                            title="Códigos e Scripts"
+                            subtitle="Adicione códigos e scripts de terceiros em seu site."
+                            action={
+                                <button
+                                    onClick={() => { setSc({ nome: "", local: "todas", posicao: "", codigo: "" }); setShowAddScript(true); }}
+                                    className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
+                                >
+                                    <Plus className="w-4 h-4" /> Adicionar código
+                                </button>
+                            }
+                        />
 
                         <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-300 dark:border-amber-700 rounded-xl px-4 py-3 mb-5 flex items-start gap-2">
                             <AlertTriangle className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
                             <p className="text-sm text-amber-700 dark:text-amber-300">Atenção: Não garantimos que scripts de terceiros adicionados em seu site funcionarão corretamente.</p>
                         </div>
 
-                        <Card>
-                            <div className="grid grid-cols-3 gap-4 mb-4">
-                                <div>
-                                    <label className="text-xs font-bold text-slate-500 uppercase block mb-1.5">Nome</label>
-                                    <input value={script.nome} onChange={e => setSc({...script, nome: e.target.value})}
-                                        className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2 text-sm" placeholder="Digite..." />
+                        {scripts.length === 0 ? (
+                            <Card className="flex flex-col items-center justify-center py-16 text-center">
+                                <div className="w-20 h-20 bg-slate-100 dark:bg-slate-700 rounded-2xl flex items-center justify-center mb-4">
+                                    <Code className="w-10 h-10 text-slate-300 dark:text-slate-500" />
                                 </div>
-                                <div>
-                                    <label className="text-xs font-bold text-slate-500 uppercase block mb-1.5">Local da publicação</label>
-                                    <div className="flex items-center gap-1 border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2">
-                                        <span className="text-sm text-slate-700 dark:text-slate-300 flex-1">Todas as páginas</span>
-                                        <button className="text-slate-400 hover:text-slate-600"><X className="w-3.5 h-3.5" /></button>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label className="text-xs font-bold text-slate-500 uppercase block mb-1.5">Posição</label>
-                                    <select className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2 text-sm text-slate-500">
-                                        <option>Selecione</option>
-                                        <option>Head</option>
-                                        <option>Body (início)</option>
-                                        <option>Body (fim)</option>
-                                    </select>
-                                </div>
-                            </div>
-                            {/* Editor de código */}
-                            <div className="border border-slate-200 dark:border-slate-600 rounded-xl overflow-hidden">
-                                <div className="bg-slate-100 dark:bg-slate-700 px-3 py-2 flex items-center gap-2 border-b border-slate-200 dark:border-slate-600">
-                                    <span className="text-xs font-bold text-slate-500">Código</span>
-                                </div>
-                                <div className="flex">
-                                    <div className="bg-slate-50 dark:bg-slate-900 px-3 py-3 text-xs text-slate-400 border-r border-slate-200 dark:border-slate-600 select-none" style={{ minWidth: "40px" }}>
-                                        {Array.from({ length: 20 }, (_, i) => (
-                                            <div key={i} className="leading-6">{i + 1}</div>
+                                <h3 className="font-bold text-slate-700 dark:text-slate-200 mb-1">Nenhum Script adicionado</h3>
+                                <p className="text-sm text-slate-400 dark:text-slate-500">Você não adicionou nenhum código.</p>
+                            </Card>
+                        ) : (
+                            <Card className="p-0 overflow-hidden">
+                                <table className="w-full text-sm">
+                                    <thead><tr className="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
+                                        <th className="text-left text-xs font-bold text-slate-500 uppercase px-5 py-3">Nome</th>
+                                        <th className="text-left text-xs font-bold text-slate-500 uppercase px-5 py-3">Local</th>
+                                        <th className="text-left text-xs font-bold text-slate-500 uppercase px-5 py-3">Posição</th>
+                                        <th className="px-5 py-3"></th>
+                                    </tr></thead>
+                                    <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
+                                        {scripts.map((s, i) => (
+                                            <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                                                <td className="px-5 py-3 font-medium text-slate-800 dark:text-slate-200">{s.nome || "—"}</td>
+                                                <td className="px-5 py-3 text-slate-600 dark:text-slate-400">{s.local}</td>
+                                                <td className="px-5 py-3 text-slate-600 dark:text-slate-400">{s.posicao || "—"}</td>
+                                                <td className="px-5 py-3 flex items-center gap-2 justify-end">
+                                                    <button onClick={() => { setSc(s); setShowAddScript(true); }} className="p-1.5 text-slate-400 hover:text-blue-600 transition-colors"><Edit2 className="w-4 h-4" /></button>
+                                                    <button onClick={() => setScripts(scripts.filter((_,j) => j !== i))} className="p-1.5 text-slate-400 hover:text-red-500 transition-colors"><Trash2 className="w-4 h-4" /></button>
+                                                </td>
+                                            </tr>
                                         ))}
+                                    </tbody>
+                                </table>
+                            </Card>
+                        )}
+
+                        {/* Add/Edit Script Modal */}
+                        {showAddScript && (
+                            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 animate-in fade-in duration-200">
+                                <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-2xl flex flex-col">
+                                    <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-700">
+                                        <h3 className="font-bold text-slate-800 dark:text-slate-200">Adicionar código</h3>
+                                        <button onClick={() => setShowAddScript(false)} className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                                            <X className="w-4 h-4" />
+                                        </button>
                                     </div>
-                                    <textarea
-                                        value={script.codigo}
-                                        onChange={e => setSc({...script, codigo: e.target.value})}
-                                        rows={20}
-                                        className="flex-1 bg-white dark:bg-slate-800 px-3 py-3 text-sm font-mono text-slate-800 dark:text-slate-200 resize-none outline-none leading-6"
-                                        placeholder="<!-- Cole seu código aqui -->"
-                                        spellCheck={false}
-                                    />
+                                    <div className="p-6 space-y-4">
+                                        <div className="grid grid-cols-3 gap-4">
+                                            <div>
+                                                <label className="text-xs font-bold text-slate-500 uppercase block mb-1.5">Nome</label>
+                                                <input value={script.nome} onChange={e => setSc({...script, nome: e.target.value})}
+                                                    className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2 text-sm" placeholder="Ex: Facebook Pixel" />
+                                            </div>
+                                            <div>
+                                                <label className="text-xs font-bold text-slate-500 uppercase block mb-1.5">Local da publicação</label>
+                                                <select value={script.local} onChange={e => setSc({...script, local: e.target.value})}
+                                                    className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2 text-sm">
+                                                    <option value="todas">Todas as páginas</option>
+                                                    <option value="home">Página inicial</option>
+                                                    <option value="imoveis">Imóveis</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="text-xs font-bold text-slate-500 uppercase block mb-1.5">Posição</label>
+                                                <select value={script.posicao} onChange={e => setSc({...script, posicao: e.target.value})}
+                                                    className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2 text-sm">
+                                                    <option value="">Selecione</option>
+                                                    <option value="head">Head</option>
+                                                    <option value="body_inicio">Body (início)</option>
+                                                    <option value="body_fim">Body (fim)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="border border-slate-200 dark:border-slate-600 rounded-xl overflow-hidden">
+                                            <div className="bg-slate-100 dark:bg-slate-700 px-3 py-2 border-b border-slate-200 dark:border-slate-600">
+                                                <span className="text-xs font-bold text-slate-500">Código</span>
+                                            </div>
+                                            <div className="flex">
+                                                <div className="bg-slate-50 dark:bg-slate-900 px-3 py-3 text-xs text-slate-400 border-r border-slate-200 dark:border-slate-600 select-none" style={{ minWidth: "40px" }}>
+                                                    {Array.from({ length: 15 }, (_, i) => <div key={i} className="leading-6">{i + 1}</div>)}
+                                                </div>
+                                                <textarea
+                                                    value={script.codigo}
+                                                    onChange={e => setSc({...script, codigo: e.target.value})}
+                                                    rows={15}
+                                                    className="flex-1 bg-white dark:bg-slate-800 px-3 py-3 text-sm font-mono text-slate-800 dark:text-slate-200 resize-none outline-none leading-6"
+                                                    placeholder="<!-- Cole seu código aqui -->"
+                                                    spellCheck={false}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="px-6 pb-6 flex gap-3 justify-end border-t border-slate-100 dark:border-slate-700 pt-4">
+                                        <button onClick={() => setShowAddScript(false)} className="px-5 py-2 text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors">
+                                            Cancelar
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setScripts(prev => [...prev.filter(s => s.nome !== script.nome), script]);
+                                                setShowAddScript(false);
+                                                toast.success("Script adicionado!");
+                                            }}
+                                            className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-colors"
+                                        >
+                                            <Save className="w-4 h-4" /> Salvar script
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </Card>
-                        <SaveBar onSave={save} saving={saving} />
+                        )}
                     </div>
                 )}
 
