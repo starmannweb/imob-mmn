@@ -1,25 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Upload, Plus, Trash2, Edit2, AlertTriangle, ExternalLink, X, Globe, Phone } from "lucide-react";
+import { Save, Upload, Plus, Trash2, Edit2, AlertTriangle, ExternalLink, X, Globe, Phone, User, Link2, MessageCircle, Calendar, Megaphone, Image, ShieldCheck, Search, FileText, Shuffle, Code, Wrench } from "lucide-react";
 import { toast } from "sonner";
 
 /* ─────────────────────────────────────
    TABS (todas visíveis, sem scroll)
 ───────────────────────────────────── */
 const TABS = [
-    { id: "contato",    label: "Dados de contato" },
-    { id: "dominio",    label: "Domínio" },
-    { id: "whatsapp",   label: "Whatsapp" },
-    { id: "visitas",    label: "Agendar Visitas" },
-    { id: "popup",      label: "Popup" },
-    { id: "restricao",  label: "Restrição de fotos" },
-    { id: "lgpd",       label: "LGPD" },
-    { id: "seo",        label: "SEO" },
-    { id: "formulario", label: "Formulário de contato" },
-    { id: "rodizio",    label: "Rodízio de leads" },
-    { id: "script",     label: "Injetar script" },
-    { id: "manutencao", label: "Manutenção" },
+    { id: "contato",    label: "Dados de contato",     icon: User },
+    { id: "dominio",    label: "Domínio",              icon: Link2 },
+    { id: "whatsapp",   label: "Whatsapp",             icon: MessageCircle },
+    { id: "visitas",    label: "Agendar Visitas",      icon: Calendar },
+    { id: "popup",      label: "Popup",                icon: Megaphone },
+    { id: "restricao",  label: "Restrição de fotos",   icon: Image },
+    { id: "lgpd",       label: "LGPD",                 icon: ShieldCheck },
+    { id: "seo",        label: "SEO",                  icon: Search },
+    { id: "formulario", label: "Formulário de contato", icon: FileText },
+    { id: "rodizio",    label: "Rodízio de leads",     icon: Shuffle },
+    { id: "script",     label: "Injetar script",       icon: Code },
+    { id: "manutencao", label: "Manutenção",           icon: Wrench },
 ];
 
 /* ─────────────────────────────────────
@@ -153,22 +153,23 @@ export default function SiteSettingsClient() {
                     <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Configurações</p>
                 </div>
                 <nav className="py-1">
-                    {TABS.map(t => (
-                        <button
-                            key={t.id}
-                            onClick={() => setTab(t.id)}
-                            className={`w-full text-left px-4 py-2 text-sm font-medium transition-colors border-l-2 ${
-                                tab === t.id
-                                    ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-600"
-                                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/40 border-transparent"
-                            }`}
-                        >
-                            {t.label}
-                            {t.id === "rodizio" && (
-                                <span className="block text-[10px] text-slate-400 font-normal mt-0.5 pl-2">↳ Meus imóveis</span>
-                            )}
-                        </button>
-                    ))}
+                    {TABS.map(t => {
+                        const Icon = t.icon;
+                        return (
+                            <button
+                                key={t.id}
+                                onClick={() => setTab(t.id)}
+                                className={`w-full text-left px-3 py-2 text-sm font-medium transition-colors border-l-2 flex items-center gap-2.5 ${
+                                    tab === t.id
+                                        ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-600"
+                                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/40 border-transparent"
+                                }`}
+                            >
+                                <Icon className="w-3.5 h-3.5 shrink-0" />
+                                <span className="truncate">{t.label}</span>
+                            </button>
+                        );
+                    })}
                 </nav>
             </aside>
 

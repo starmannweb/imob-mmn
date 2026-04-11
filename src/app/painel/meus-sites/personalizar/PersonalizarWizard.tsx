@@ -969,33 +969,18 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
 
                         <span className="text-xs text-slate-400">{currentStep} de {STEPS.length}</span>
 
-                        {currentStep === 4 ? (
-                            <button
-                                onClick={handleSave}
-                                disabled={isSaving}
-                                className="flex items-center gap-2 px-6 py-2.5 text-white font-bold text-sm rounded-xl transition-colors shadow-sm disabled:opacity-70"
-                                style={{ backgroundColor: themeHex }}
-                            >
-                                {isSaving ? (
-                                    <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Salvando...</>
-                                ) : (
-                                    <><Globe className="w-4 h-4" /> Salvar e Publicar</>
-                                )}
-                            </button>
-                        ) : (
-                            <button
-                                onClick={goNext}
-                                className="flex items-center gap-2 px-6 py-2.5 text-white font-bold text-sm rounded-xl transition-colors shadow-sm"
-                                style={{ backgroundColor: themeHex }}
-                            >
-                                Continuar
-                                <ChevronRight className="w-4 h-4" />
-                            </button>
-                        )}
+                        <button
+                            onClick={goNext}
+                            className="flex items-center gap-2 px-6 py-2.5 text-white font-bold text-sm rounded-xl transition-colors shadow-sm"
+                            style={{ backgroundColor: themeHex }}
+                        >
+                            Continuar
+                            <ChevronRight className="w-4 h-4" />
+                        </button>
                     </div>
                 )}
 
-                {/* Rodapé do passo 3 tem apenas o botão "Voltar" para consistência */}
+                {/* Rodapé do passo 3 */}
                 {currentStep === 3 && (
                     <div className="px-8 py-5 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/30">
                         <button
@@ -1006,7 +991,14 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
                             Voltar
                         </button>
                         <span className="text-xs text-slate-400">3 de {STEPS.length}</span>
-                        <div className="w-24" />
+                        <button
+                            onClick={goNext}
+                            className="flex items-center gap-2 px-6 py-2.5 text-white font-bold text-sm rounded-xl transition-colors shadow-sm"
+                            style={{ backgroundColor: themeHex }}
+                        >
+                            Continuar
+                            <ChevronRight className="w-4 h-4" />
+                        </button>
                     </div>
                 )}
             </div>

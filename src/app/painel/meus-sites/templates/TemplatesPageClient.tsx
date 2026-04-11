@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Sparkles, Eye } from "lucide-react";
+import { Check, Sparkles, Eye, X } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 
@@ -31,6 +31,7 @@ const TEMPLATES = [
 export function TemplatesPageClient() {
     const [activeCategory, setActiveCategory] = useState("all");
     const [selected, setSelected] = useState<number | null>(null);
+    const [previewing, setPreviewing] = useState<(typeof TEMPLATES)[0] | null>(null);
 
     const filtered = activeCategory === "all"
         ? TEMPLATES
@@ -38,10 +39,12 @@ export function TemplatesPageClient() {
 
     const handleSelect = (id: number) => {
         setSelected(id);
+        setPreviewing(null);
         toast.success(`Template #${id} selecionado com sucesso!`);
     };
 
     return (
+        <>
         <div className="flex gap-6">
             {/* Sidebar */}
             <aside className="w-64 flex-shrink-0">
@@ -130,7 +133,10 @@ export function TemplatesPageClient() {
                                         >
                                             <Sparkles className="w-3.5 h-3.5" /> Usar este
                                         </button>
-                                        <button className="bg-white hover:bg-slate-100 text-slate-900 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors">
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); setPreviewing(tpl); }}
+                                            className="bg-white hover:bg-slate-100 text-slate-900 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors"
+                                        >
                                             <Eye className="w-3.5 h-3.5" /> Visualizar
                                         </button>
                                     </div>
@@ -157,5 +163,72 @@ export function TemplatesPageClient() {
                 </div>
             </div>
         </div>
+
+            {/* Preview Modal */}
+            {previewing && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 animate-in fade-in duration-200">
+                    <div className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-2xl w-full max-w-2xl flex flex-col">
+                        {/* Modal Header */}
+                        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-700">
+                            <div>
+                                <h3 className="font-bold text-slate-800 dark:text-slate-200">{previewing.name} — Template #{previewing.id}</h3>
+                                <p className="text-xs text-slate-500 mt-0.5">Visualização do layout</p>
+                            </div>
+                            <button onClick={() => setPreviewing(null)} className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                                <X className="w-4 h-4" />
+                            </button>
+                        </div>
+
+                        {/* Mockup Preview */}
+                        <div className="p-6">
+                            <div className={`w-full aspect-video rounded-xl overflow-hidden bg-gradient-to-br ${previewing.color} flex flex-col shadow-inner`}>
+                                {/* Nav */}
+                                <div className="h-10 bg-black/25 flex items-center px-5 gap-3 shrink-0">
+                                    <div className="w-16 h-3 bg-white/40 rounded" />
+                                    <div className="flex-1" />
+                                    <div className="w-8 h-2 bg-white/25 rounded" />
+                                    <div className="w-8 h-2 bg-white/25 rounded" />
+                                    <div className="w-8 h-2 bg-white/25 rounded" />
+                                    <div className="w-12 h-5 bg-white/20 rounded-md border border-white/20" />
+                                </div>
+                                {/* Hero */}
+                                <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8">
+                                    <div className="w-16 h-16 rounded-full bg-white/20 border-2 border-white/30 mb-1" />
+                                    <div className="w-48 h-4 bg-white/50 rounded" />
+                                    <div className="w-32 h-3 bg-white/30 rounded" />
+                                    <div className="flex gap-2 mt-3">
+                                        <div className="w-20 h-7 bg-white/30 rounded-lg border border-white/30" />
+                                        <div className="w-20 h-7 bg-white/15 rounded-lg border border-white/20" />
+                                    </div>
+                                </div>
+                                {/* Cards row */}
+                                <div className="flex gap-3 px-5 pb-5">
+                                    {[1,2,3].map(i => (
+                                        <div key={i} className="flex-1 bg-white/10 rounded-lg border border-white/15 p-2 flex flex-col gap-1.5">
+                                            <div className="w-full h-12 bg-white/15 rounded" />
+                                            <div className="w-3/4 h-2 bg-white/25 rounded" />
+                                            <div className="w-1/2 h-2 bg-white/15 rounded" />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Modal Footer */}
+                        <div className="px-6 pb-6 flex gap-3 justify-end">
+                            <button onClick={() => setPreviewing(null)} className="px-5 py-2 text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors">
+                                Fechar
+                            </button>
+                            <button
+                                onClick={() => handleSelect(previewing.id)}
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-colors"
+                            >
+                                <Sparkles className="w-4 h-4" /> Usar este template
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
     );
 }

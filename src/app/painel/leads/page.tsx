@@ -3,9 +3,10 @@ export const dynamic = 'force-dynamic';
 import { createClient } from "@/utils/supabase/server";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { MapPin, Phone, Mail, Clock, CheckCircle2, Inbox, Plus, Users, Target, AlertCircle, BarChart2, LineChart, PieChart, Info, DollarSign, Search, DownloadCloud, MoreHorizontal, Filter } from "lucide-react";
+import { Clock, CheckCircle2, DownloadCloud, Filter, Inbox, LineChart, Mail, MoreHorizontal, Phone, Search, Target, Users } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { LeadCaptureTab } from "./LeadCaptureTab";
 import { NewLeadModal } from "./NewLeadModal";
 
 function formatLeadCreatedAt(value: string | null | undefined) {
@@ -48,6 +49,43 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
     }
 
     const leadList = leads ?? [];
+    const { data: profile } = await supabase
+        .from("users")
+        .select("referral_code")
+        .eq("id", user.id)
+        .single();
+
+    const { count: propertiesCount } = await supabase
+        .from("properties")
+        .select("*", { count: "exact", head: true })
+        .eq("owner_id", user.id);
+
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.adigitalmultinivel.com.br";
+    const siteSlug = profile?.referral_code?.toLowerCase() || user.id.substring(0, 8);
+    const siteUrl = `${baseUrl}/corretor/${siteSlug}`;
+
+    const originCounts = leadList.reduce(
+        (acc, lead) => {
+            switch (lead.origin) {
+                case "portal":
+                    acc.portal += 1;
+                    break;
+                case "manual":
+                    acc.manual += 1;
+                    break;
+                case "referral":
+                    acc.referral += 1;
+                    break;
+                case "website":
+                default:
+                    acc.website += 1;
+                    break;
+            }
+
+            return acc;
+        },
+        { website: 0, portal: 0, manual: 0, referral: 0 }
+    );
 
     const statusMap: Record<string, { label: string, color: string, bg: string }> = {
         'new': { label: 'Novo Lead', color: 'text-blue-700 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30' },
@@ -253,9 +291,9 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                             </div>
                             <h2 className="text-xl font-extrabold mb-2 text-slate-800 dark:text-slate-100">Nenhum lead encontrado</h2>
                             <p className="text-slate-500 dark:text-slate-400 text-sm max-w-sm mb-8 font-medium">Compartilhe links ou integre seus anúncios para receber novos leads direto no CRM.</p>
-                            <button className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-sm py-2.5 px-8 rounded-lg transition-colors shadow-sm">
-                                Importar Leads
-                            </button>
+                            <Link href="/painel/leads?tab=novos" className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-2.5 px-8 rounded-lg transition-colors shadow-sm inline-flex items-center gap-2">
+                                <Inbox className="w-4 h-4" /> Configurar Captação
+                            </Link>
                         </div>
                     )}
                 </>
@@ -273,16 +311,13 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                     <button className="text-sm font-semibold text-slate-500 hover:text-slate-700 underline underline-offset-4">Baixar planilha de exemplo</button>
                 </div>
             ) : currentTab === 'novos' ? (
-                <div className="bg-white dark:bg-[#1a1f2c] rounded-xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm text-center flex flex-col items-center min-h-[400px] justify-center">
-                    <Target className="w-16 h-16 text-emerald-500 mb-6 opacity-80" />
-                    <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">Obter Novos Leads</h2>
-                    <p className="text-slate-500 dark:text-slate-400 max-w-md mb-8">
-                        Conecte suas campanhas de marketing ou ative a captação automática para receber leads qualificados direto no seu CRM.
-                    </p>
-                    <button className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-6 py-3 rounded-lg flex items-center gap-2 shadow-sm transition-colors">
-                        <Plus className="w-5 h-5" /> Configurar Captação
-                    </button>
-                </div>
+                <LeadCaptureTab
+                    siteUrl={siteUrl}
+                    propertiesCount={propertiesCount || 0}
+                    totalLeads={leadList.length}
+                    newLeads={leadList.filter((lead) => lead.status === 'new').length}
+                    originCounts={originCounts}
+                />
             ) : null}
         </div>
     );

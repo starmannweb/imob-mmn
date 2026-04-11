@@ -93,7 +93,7 @@ export default function CrmPageClient({ kanbanLeads, currentTab }: CrmPageClient
                             onClick={() => setShowAddDealModal(true)}
                             className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm shadow-emerald-500/20 flex items-center gap-2 transition-all"
                         >
-                            <Plus className="w-4 h-4" /> Novo Lead
+                            <Plus className="w-4 h-4" /> Novo Negócio
                         </button>
 
                         {/* Toggle Pipeline / Lista */}

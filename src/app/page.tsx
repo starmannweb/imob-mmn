@@ -49,14 +49,86 @@ export default function LandingPage() {
                     HERO
                 ═══════════════════════ */}
                 <section className="relative w-full min-h-[88vh] flex items-center overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-indigo-950">
-                    {/* Background deco */}
-                    <div className="absolute inset-0 pointer-events-none">
-                        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-                        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-3xl" />
+                    {/* Animated Buildings Skyline */}
+                    <div className="absolute inset-0 pointer-events-none overflow-hidden">
                         {/* Grid pattern */}
                         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
+                        {/* Glow blobs */}
+                        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+                        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
+
+                        {/* Buildings SVG Skyline */}
+                        <svg
+                            className="absolute bottom-0 right-0 w-full max-w-3xl h-auto opacity-[0.18]"
+                            viewBox="0 0 900 500"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            preserveAspectRatio="xMaxYMax meet"
+                        >
+                            {/* Building 1 - tall tower far right */}
+                            <rect x="820" y="80" width="60" height="420" rx="4" fill="#60a5fa" style={{ animation: "buildingRise 1.4s ease-out forwards", transformOrigin: "bottom" }} />
+                            <rect x="832" y="90" width="8" height="8" fill="#93c5fd" opacity="0.8" />
+                            <rect x="848" y="90" width="8" height="8" fill="#93c5fd" opacity="0.8" />
+                            <rect x="864" y="90" width="8" height="8" fill="#93c5fd" opacity="0.8" />
+                            <rect x="832" y="106" width="8" height="8" fill="#93c5fd" opacity="0.5" />
+                            <rect x="848" y="106" width="8" height="8" fill="#93c5fd" opacity="0.9" />
+                            <rect x="864" y="106" width="8" height="8" fill="#93c5fd" opacity="0.4" />
+
+                            {/* Building 2 - medium */}
+                            <rect x="740" y="160" width="70" height="340" rx="4" fill="#818cf8" style={{ animation: "buildingRise 1.1s ease-out 0.1s forwards", transformOrigin: "bottom", opacity: 0 }} />
+                            <rect x="752" y="170" width="9" height="9" fill="#a5b4fc" opacity="0.7" />
+                            <rect x="768" y="170" width="9" height="9" fill="#a5b4fc" opacity="0.9" />
+                            <rect x="784" y="170" width="9" height="9" fill="#a5b4fc" opacity="0.5" />
+                            <rect x="752" y="187" width="9" height="9" fill="#a5b4fc" opacity="0.4" />
+                            <rect x="768" y="187" width="9" height="9" fill="#a5b4fc" opacity="0.8" />
+
+                            {/* Building 3 - short wide */}
+                            <rect x="670" y="230" width="60" height="270" rx="4" fill="#3b82f6" style={{ animation: "buildingRise 1.0s ease-out 0.2s forwards", transformOrigin: "bottom", opacity: 0 }} />
+                            <rect x="680" y="240" width="8" height="8" fill="#93c5fd" opacity="0.6" />
+                            <rect x="695" y="240" width="8" height="8" fill="#93c5fd" opacity="0.9" />
+                            <rect x="710" y="240" width="8" height="8" fill="#93c5fd" opacity="0.4" />
+
+                            {/* Building 4 - very tall center */}
+                            <rect x="590" y="50" width="70" height="450" rx="4" fill="#6366f1" style={{ animation: "buildingRise 1.6s ease-out 0.05s forwards", transformOrigin: "bottom", opacity: 0 }} />
+                            {/* Antenna */}
+                            <rect x="623" y="20" width="4" height="30" fill="#818cf8" />
+                            <rect x="596" y="60" width="10" height="10" fill="#a5b4fc" opacity="0.8" />
+                            <rect x="612" y="60" width="10" height="10" fill="#a5b4fc" opacity="0.6" />
+                            <rect x="628" y="60" width="10" height="10" fill="#a5b4fc" opacity="0.9" />
+                            <rect x="644" y="60" width="10" height="10" fill="#a5b4fc" opacity="0.5" />
+                            <rect x="596" y="78" width="10" height="10" fill="#a5b4fc" opacity="0.4" />
+                            <rect x="612" y="78" width="10" height="10" fill="#a5b4fc" opacity="0.7" />
+                            <rect x="628" y="78" width="10" height="10" fill="#a5b4fc" opacity="0.3" />
+
+                            {/* Building 5 */}
+                            <rect x="510" y="190" width="70" height="310" rx="4" fill="#4f46e5" style={{ animation: "buildingRise 1.2s ease-out 0.15s forwards", transformOrigin: "bottom", opacity: 0 }} />
+                            <rect x="520" y="200" width="9" height="9" fill="#818cf8" opacity="0.7" />
+                            <rect x="536" y="200" width="9" height="9" fill="#818cf8" opacity="0.5" />
+                            <rect x="552" y="200" width="9" height="9" fill="#818cf8" opacity="0.9" />
+
+                            {/* Building 6 - shorter */}
+                            <rect x="450" y="270" width="50" height="230" rx="4" fill="#2563eb" style={{ animation: "buildingRise 0.9s ease-out 0.25s forwards", transformOrigin: "bottom", opacity: 0 }} />
+
+                            {/* Ground line */}
+                            <rect x="0" y="498" width="900" height="2" fill="#60a5fa" opacity="0.3" />
+                        </svg>
+
+                        {/* Floating particles */}
+                        <div className="absolute top-20 right-1/4 w-1 h-1 bg-blue-400 rounded-full" style={{ animation: "floatUp 4s ease-in-out infinite" }} />
+                        <div className="absolute top-40 right-1/3 w-1.5 h-1.5 bg-indigo-400 rounded-full" style={{ animation: "floatUp 6s ease-in-out infinite 1s" }} />
+                        <div className="absolute top-60 right-1/5 w-1 h-1 bg-blue-300 rounded-full" style={{ animation: "floatUp 5s ease-in-out infinite 2s" }} />
                     </div>
+
+                    <style>{`
+                        @keyframes buildingRise {
+                            from { opacity: 0; transform: scaleY(0); }
+                            to   { opacity: 1; transform: scaleY(1); }
+                        }
+                        @keyframes floatUp {
+                            0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+                            50%       { transform: translateY(-24px) scale(1.3); opacity: 1; }
+                        }
+                    `}</style>
 
                     <div className="max-w-7xl mx-auto px-4 md:px-8 w-full relative z-10">
                         <div className="max-w-3xl">

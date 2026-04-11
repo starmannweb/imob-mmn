@@ -90,7 +90,7 @@ export default async function MeusSitesPage() {
                                 Seu site pessoal com todos os seus imóveis cadastrados. Compartilhe com seus clientes para captação automática de leads.
                             </p>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-row gap-2 shrink-0">
                             <a
                                 href={`/corretor/${siteSlug}`}
                                 target="_blank"
