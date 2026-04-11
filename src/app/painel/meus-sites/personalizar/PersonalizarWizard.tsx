@@ -3,7 +3,9 @@
 import { useState } from "react";
 import {
     ChevronRight, ChevronLeft, Upload, Check, Eye, Link2,
-    MapPin, Heart, Globe, Home, HelpCircle, ExternalLink
+    MapPin, Heart, Globe, Home, HelpCircle, ExternalLink,
+    Monitor, Smartphone, Droplets, SlidersHorizontal, LayoutGrid,
+    ListFilter, Menu, AlignLeft
 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -23,9 +25,10 @@ interface PersonalizarWizardProps {
 const STEPS = [
     { id: 1, label: "Identidade Visual",  desc: "Logo e banner" },
     { id: 2, label: "Escolher Modelo",    desc: "Template e cores" },
-    { id: 3, label: "Seções do Site",     desc: "Layout e conteúdo" },
-    { id: 4, label: "Ferramentas IA",     desc: "Textos com IA" },
-    { id: 5, label: "Publicar",           desc: "Site no ar" },
+    { id: 3, label: "Aparência",          desc: "Menu, filtros e layout" },
+    { id: 4, label: "Seções do Site",     desc: "Páginas e conteúdo" },
+    { id: 5, label: "Ferramentas IA",     desc: "Textos com IA" },
+    { id: 6, label: "Publicar",           desc: "Site no ar" },
 ];
 
 const COLOR_THEMES = [
@@ -97,6 +100,10 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
         { id: "blog", label: "Blog", ativo: false, editavel: true },
         { id: "financiamento", label: "Financiamento", ativo: false, editavel: true },
     ]);
+    const [aparencia, setAparencia] = useState({
+        menuPosicao: "cabecalho",
+        cardFilters: ["recentes", "atualizados", "preco_asc", "preco_desc"] as string[],
+    });
 
     const themeHex = COLOR_THEMES.find(t => t.id === selectedTheme)?.hex ?? "#2563EB";
 
@@ -108,7 +115,7 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
         setTimeout(() => {
             setIsSaving(false);
             toast.success("Configurações salvas com sucesso!");
-            setCurrentStep(5);
+            setCurrentStep(6);
         }, 1000);
     };
 
@@ -118,7 +125,7 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
         setTimeout(() => {
             setIsGenerating(false);
             toast.success("Conteúdo gerado com IA!");
-            setCurrentStep(5);
+            setCurrentStep(6);
         }, 2000);
     };
 
@@ -514,10 +521,166 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
                     )}
 
                     {/* ════════════════════════════
-                        PASSO 3 — Seções do Site
-                        Galeria topo + seções + botão
+                        PASSO 3 — Aparência
+                        Menu, filtros, layout
                     ════════════════════════════ */}
                     {currentStep === 3 && (
+                        <div className="p-8 space-y-6 animate-in fade-in duration-300">
+                            <div>
+                                <h3 className="text-xl font-extrabold text-slate-900 dark:text-white">Aparência</h3>
+                                <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+                                    Configure o menu de navegação, filtros de imóveis e layout geral do site.
+                                </p>
+                            </div>
+
+                            {/* Posição do Menu */}
+                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-9 h-9 bg-blue-50 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                                        <Menu className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-slate-700 dark:text-slate-300 text-sm">Posição do Menu de Páginas</h4>
+                                        <p className="text-xs text-slate-500">Onde o menu principal aparecerá no seu site.</p>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-3 gap-3">
+                                    {[
+                                        { val: "cabecalho", label: "Cabeçalho", icon: <AlignLeft className="w-5 h-5" />, desc: "Menu no topo da página" },
+                                        { val: "rodape",    label: "Rodapé",    icon: <AlignLeft className="w-5 h-5 rotate-180" />, desc: "Menu apenas no rodapé" },
+                                        { val: "separado",  label: "Barra Inferior", icon: <Monitor className="w-5 h-5" />, desc: "Aba separada na parte inferior" },
+                                    ].map(opt => (
+                                        <button
+                                            key={opt.val}
+                                            onClick={() => setAparencia({ ...aparencia, menuPosicao: opt.val })}
+                                            className={[
+                                                "flex flex-col items-center gap-2 p-4 rounded-xl border-2 text-center transition-all",
+                                                aparencia.menuPosicao === opt.val
+                                                    ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+                                                    : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-300",
+                                            ].join(" ")}
+                                        >
+                                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${aparencia.menuPosicao === opt.val ? "bg-blue-100 dark:bg-blue-900/40" : "bg-slate-100 dark:bg-slate-700"}`}>
+                                                {opt.icon}
+                                            </div>
+                                            <span className="font-bold text-xs">{opt.label}</span>
+                                            <span className="text-[10px] opacity-70">{opt.desc}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Barra de Pesquisa (Desktop / Mobile) */}
+                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-9 h-9 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
+                                        <SlidersHorizontal className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-slate-700 dark:text-slate-300 text-sm">Barra de Pesquisa</h4>
+                                        <p className="text-xs text-slate-500">Exibir barra de busca no site.</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-4">
+                                    {[
+                                        { key: "desktop", icon: <Monitor className="w-4 h-4" />, label: "Desktop" },
+                                        { key: "mobile",  icon: <Smartphone className="w-4 h-4" />, label: "Mobile" },
+                                    ].map(item => (
+                                        <label key={item.key} className="flex items-center gap-3 cursor-pointer group">
+                                            <label className="relative flex cursor-pointer">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={searchBar[item.key as keyof typeof searchBar]}
+                                                    onChange={e => setSearchBar({ ...searchBar, [item.key]: e.target.checked })}
+                                                    className="sr-only peer"
+                                                />
+                                                <div className="w-10 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:bg-blue-600 peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:border-slate-300 after:rounded-full after:h-4 after:w-4 after:transition-all" />
+                                            </label>
+                                            <div className="flex items-center gap-1.5 text-sm font-medium text-slate-700 dark:text-slate-300">
+                                                {item.icon} {item.label}
+                                            </div>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Filtros de Cards de Imóveis */}
+                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-9 h-9 bg-purple-50 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                                        <ListFilter className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-slate-700 dark:text-slate-300 text-sm">Filtros dos Cards de Imóveis</h4>
+                                        <p className="text-xs text-slate-500">Opções de ordenação exibidas no site.</p>
+                                    </div>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                    {[
+                                        { val: "recentes",     label: "Últimos cadastrados" },
+                                        { val: "atualizados",  label: "Últimos atualizados" },
+                                        { val: "preco_asc",    label: "Menor → maior preço" },
+                                        { val: "preco_desc",   label: "Maior → menor preço" },
+                                    ].map(f => {
+                                        const active = aparencia.cardFilters.includes(f.val);
+                                        return (
+                                            <button
+                                                key={f.val}
+                                                onClick={() => setAparencia({
+                                                    ...aparencia,
+                                                    cardFilters: active
+                                                        ? aparencia.cardFilters.filter(x => x !== f.val)
+                                                        : [...aparencia.cardFilters, f.val],
+                                                })}
+                                                className={[
+                                                    "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border transition-all",
+                                                    active
+                                                        ? "bg-purple-50 dark:bg-purple-900/20 border-purple-300 dark:border-purple-700 text-purple-700 dark:text-purple-300"
+                                                        : "bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400",
+                                                ].join(" ")}
+                                            >
+                                                {active && <Check className="w-3 h-3" />}
+                                                {f.label}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            {/* Layout dos Cards */}
+                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-9 h-9 bg-amber-50 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
+                                        <LayoutGrid className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-slate-700 dark:text-slate-300 text-sm">Layout dos Cards</h4>
+                                        <p className="text-xs text-slate-500">Quantos imóveis por linha no site.</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-3">
+                                    {[
+                                        { cols: 2, label: "2 por linha" },
+                                        { cols: 3, label: "3 por linha" },
+                                        { cols: 4, label: "4 por linha" },
+                                    ].map(opt => (
+                                        <button
+                                            key={opt.cols}
+                                            className="flex items-center gap-2 px-4 py-2.5 rounded-lg border-2 text-sm font-bold transition-all border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-blue-400 hover:text-blue-600"
+                                        >
+                                            {opt.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ════════════════════════════
+                        PASSO 4 — Seções do Site
+                        Galeria topo + seções + botão
+                    ════════════════════════════ */}
+                    {currentStep === 4 && (
                         <div className="animate-in fade-in duration-300">
 
                             {/* Galeria de 3 imagens — simula o header do site */}
@@ -637,10 +800,10 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
                     )}
 
                     {/* ════════════════════════════
-                        PASSO 4 — Ferramentas IA
+                        PASSO 5 — Ferramentas IA
                         Card centrado com input inline
                     ════════════════════════════ */}
-                    {currentStep === 4 && (
+                    {currentStep === 5 && (
                         <div className="p-8 flex items-start justify-center min-h-[480px] animate-in fade-in duration-300">
                             <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-8 w-full max-w-xl shadow-sm">
 
@@ -709,10 +872,10 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
                     )}
 
                     {/* ════════════════════════════
-                        PASSO 5 — Publicar
+                        PASSO 6 — Publicar
                         Dois cards com botões verdes
                     ════════════════════════════ */}
-                    {currentStep === 5 && (
+                    {currentStep === 6 && (
                         <div
                             className="relative flex flex-col items-center justify-center min-h-[480px] p-8 animate-in fade-in zoom-in-95 duration-300"
                         >

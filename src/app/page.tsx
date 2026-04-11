@@ -1,361 +1,317 @@
 export const dynamic = 'force-dynamic';
 
-import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
-import { Search, Mic, Home as HomeIcon, Building, Warehouse, Grid, Moon, Menu, MapPin, Bed, Bath, Car, Maximize, Filter, X } from "lucide-react";
+import {
+    Globe, BarChart3, Users, Building2, Zap, ShieldCheck,
+    ArrowRight, Star, CheckCircle2, MessageCircle, TrendingUp,
+    Layers, Cpu, Lock
+} from "lucide-react";
 
-export default async function Home() {
-  const supabase = await createClient();
+export default function LandingPage() {
+    return (
+        <div className="min-h-screen bg-white flex flex-col font-sans overflow-x-hidden">
 
-  // Buscar imóveis do sistema em destaque (para demonstração)
-  const { data: properties } = await supabase
-    .from("properties")
-    .select("*")
-    .eq("status", "available")
-    .limit(4);
-
-  return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-
-      {/* Header Público */}
-      <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-slate-200/60 shadow-sm transition-all">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
-
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center text-white font-black text-xl italic tracking-tighter">
-              A
-            </div>
-            <div className="flex flex-col">
-              <span className="font-extrabold text-[15px] leading-tight text-slate-900">ADigital <span className="text-blue-600 font-bold">Multinível</span></span>
-              <span className="text-[10px] text-slate-500 font-medium tracking-wide">Sistema <span className="text-blue-500">4%</span> • <span className="text-emerald-500">2%</span> • <span className="text-amber-500">1%</span></span>
-            </div>
-          </div>
-
-          <div className="hidden md:flex items-center gap-8">
-            <Link href="/login" className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Entrar</Link>
-            <Link href="/registrar" className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Cadastrar-se</Link>
-
-            <div className="flex gap-2 items-center">
-              <Link href="/registrar">
-                <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-2.5 text-sm font-bold shadow-md shadow-blue-500/20 transition-all hover:scale-105 active:scale-95">
-                  Virar gestor multinível
-                </button>
-              </Link>
-              <button className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-50 transition-colors bg-white">
-                <Moon className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button className="md:hidden p-2 text-slate-600">
-            <Menu className="w-6 h-6" />
-          </button>
-        </div>
-      </header>
-
-      <main className="flex-1 w-full flex flex-col items-center pt-24 pb-20">
-
-        {/* Banner & Perfil do Corretor */}
-        <div className="w-full max-w-7xl px-4 md:px-8 mb-16">
-          <div className="w-full h-[200px] md:h-[280px] bg-[#d0dcfb] rounded-t-3xl relative overflow-hidden">
-          </div>
-          <div className="bg-white rounded-b-3xl px-6 md:px-12 pb-8 shadow-sm border border-slate-100 border-t-0 flex flex-col md:flex-row gap-6 relative">
-            <div className="w-32 h-32 md:w-36 md:h-36 rounded-full bg-slate-50 border-4 border-white shadow-xl flex items-center justify-center text-5xl font-normal text-slate-800 shrink-0 -mt-16 md:-mt-20 relative z-10">
-              ZK
-            </div>
-            <div className="flex-1 pt-4 md:pt-6">
-              <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">ZKF INTERMEDIACAO IMOBILIARIA LTDA</h1>
-              <span className="text-sm text-slate-500 block mt-1">@Zanzini</span>
-              <p className="text-sm text-slate-400 mt-2 italic font-light">Não há descrição disponível.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Destaque (Feature Hero) */}
-        <div className="w-full max-w-7xl px-4 md:px-8 mb-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-2">Imóveis em <span className="text-blue-600">Destaque</span></h2>
-          <p className="text-sm text-slate-500 mb-10">Confira os imóveis selecionados desta semana</p>
-
-          {/* Mock do destaque principal gigante */}
-          <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 group cursor-pointer text-left max-w-4xl mx-auto transition-transform hover:-translate-y-1">
-            <div className="relative h-64 md:h-[400px] bg-slate-200 overflow-hidden">
-              {/* Placeholder da Imagem com Gradiente */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent z-10 w-full h-full"></div>
-
-              {/* Imagem Fake */}
-              <div className="absolute inset-0 bg-slate-300 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"></div>
-
-              <div className="absolute top-4 right-4 z-20">
-                <span className="bg-blue-500 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1">
-                  ★ Destaque
-                </span>
-              </div>
-
-              <div className="absolute bottom-6 left-6 z-20">
-                <h3 className="text-white text-3xl font-black tracking-tight mb-2">R$ 1.625.000,00</h3>
-              </div>
-            </div>
-            <div className="p-6 md:p-8">
-              <h4 className="text-xl md:text-2xl font-bold text-slate-900 leading-tight mb-3">Casa Sobreposta Alta com Piscina e Churrasqueira para Venda com 3 Quartos</h4>
-              <p className="text-slate-500 text-sm flex items-center gap-1.5 mb-6">
-                <MapPin className="w-4 h-4 text-blue-500 shrink-0" /> Embaré, Santos - SP
-              </p>
-
-              <div className="grid grid-cols-4 gap-2 md:gap-4 border-t border-slate-100 pt-6">
-                <div className="flex flex-col items-center justify-center text-center">
-                  <Bed className="w-6 h-6 text-slate-400 mb-2" />
-                  <span className="text-lg font-bold text-slate-800">3</span>
-                  <span className="text-[10px] md:text-xs text-slate-500 uppercase tracking-wider">Quartos</span>
-                </div>
-                <div className="flex flex-col items-center justify-center text-center">
-                  <Bath className="w-6 h-6 text-slate-400 mb-2" />
-                  <span className="text-lg font-bold text-slate-800">5</span>
-                  <span className="text-[10px] md:text-xs text-slate-500 uppercase tracking-wider">Banheiros</span>
-                </div>
-                <div className="flex flex-col items-center justify-center text-center">
-                  <Car className="w-6 h-6 text-slate-400 mb-2" />
-                  <span className="text-lg font-bold text-slate-800">2</span>
-                  <span className="text-[10px] md:text-xs text-slate-500 uppercase tracking-wider">Vagas</span>
-                </div>
-                <div className="flex flex-col items-center justify-center text-center">
-                  <Maximize className="w-6 h-6 text-slate-400 mb-2" />
-                  <span className="text-lg font-bold text-slate-800">155</span>
-                  <span className="text-[10px] md:text-xs text-slate-500 uppercase tracking-wider">m²</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Filtros Rápidos Premium Box */}
-        <div className="w-full max-w-7xl px-4 md:px-8 mb-16">
-          <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200/60 relative overflow-hidden">
-
-            {/* SVG Deco Fundo Fake */}
-            <div className="absolute right-0 top-0 opacity-[0.03] scale-150 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
-              <Grid className="w-64 h-64" />
-            </div>
-
-            <div className="flex items-center justify-between mb-8 relative z-10">
-              <h3 className="text-lg font-bold flex items-center gap-2 text-slate-800">
-                <Filter className="w-5 h-5 text-blue-500" /> Filtros Rápidos
-              </h3>
-              <button className="bg-blue-600/10 hover:bg-blue-600/20 text-blue-700 text-xs font-bold px-4 py-2 rounded-full flex items-center gap-2 transition-colors">
-                <Mic className="w-4 h-4" /> Busca por Voz com IA
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 relative z-10">
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Pretenção</label>
-                <select className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-700 font-medium outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-                  <option>Todas</option>
-                  <option>Venda</option>
-                  <option>Locação</option>
-                </select>
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Tipo de Imóvel</label>
-                <select className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-700 font-medium outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-                  <option>Todos os tipos</option>
-                  <option>Casa</option>
-                  <option>Apartamento</option>
-                  <option>Sobrado</option>
-                </select>
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Buscar</label>
-                <div className="relative">
-                  <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
-                  <input type="text" placeholder="Cidade, bairro, código..." className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-4 py-3 text-sm text-slate-700 font-medium outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-2">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-3 block relative z-10">Acesso Rápido</label>
-              <div className="flex flex-wrap gap-2 relative z-10">
-                <button className="flex items-center gap-2 bg-white border border-slate-200 hover:border-blue-400 hover:text-blue-600 px-4 py-2 rounded-xl text-xs font-bold text-slate-600 transition-colors shadow-sm">
-                  <HomeIcon className="w-3.5 h-3.5" /> Casa
-                </button>
-                <button className="flex items-center gap-2 bg-white border border-slate-200 hover:border-blue-400 hover:text-blue-600 px-4 py-2 rounded-xl text-xs font-bold text-slate-600 transition-colors shadow-sm">
-                  <Building className="w-3.5 h-3.5" /> Casa de Condomínio
-                </button>
-                <button className="flex items-center gap-2 bg-white border border-slate-200 hover:border-blue-400 hover:text-blue-600 px-4 py-2 rounded-xl text-xs font-bold text-slate-600 transition-colors shadow-sm">
-                  <HomeIcon className="w-3.5 h-3.5" /> Sobrado
-                </button>
-                <button className="flex items-center gap-2 bg-white border border-slate-200 hover:border-blue-400 hover:text-blue-600 px-4 py-2 rounded-xl text-xs font-bold text-slate-600 transition-colors shadow-sm">
-                  <Building className="w-3.5 h-3.5" /> Sobrado de Condomínio
-                </button>
-                <button className="flex items-center gap-2 bg-white border border-slate-200 hover:border-blue-400 hover:text-blue-600 px-4 py-2 rounded-xl text-xs font-bold text-slate-600 transition-colors shadow-sm">
-                  <Warehouse className="w-3.5 h-3.5" /> Terreno
-                </button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* Grid de Imóveis Principais */}
-        <div className="w-full max-w-7xl px-4 md:px-8">
-
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-3">
-              <h2 className="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">Imóveis disponíveis</h2>
-              <span className="bg-slate-200 text-slate-600 text-xs font-bold px-2 py-0.5 rounded">1 resultado</span>
-            </div>
-            <button className="text-slate-500 hover:text-slate-800 text-sm font-bold flex items-center gap-2">
-              <X className="w-4 h-4" /> Ocultar Filtros
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-
-            {/* Exemplo Mockado 1 - Para preencher */}
-            <Link href="/imoveis/exemplo" className="group">
-              <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 block h-full flex flex-col">
-                <div className="relative h-48 bg-slate-200 overflow-hidden shrink-0">
-                  <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors z-10"></div>
-                  <div className="absolute inset-0 bg-slate-300 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"></div>
-                  <div className="absolute top-3 right-3 z-20">
-                    <span className="bg-blue-500 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-widest">
-                      Destaque
-                    </span>
-                  </div>
-                </div>
-                <div className="p-5 flex-1 flex flex-col">
-                  <h3 className="font-bold text-slate-900 text-[15px] leading-snug mb-2 line-clamp-2">Casa Sobreposta Alta com Piscina e Churrasqueira...</h3>
-                  <p className="text-slate-500 text-[11px] flex items-center gap-1 mb-4 italic">
-                    <MapPin className="w-3 h-3 text-red-500" /> Embaré, Santos
-                  </p>
-
-                  <div className="flex items-center gap-4 text-slate-500 mb-6 mt-auto border-t border-slate-100 pt-4 mt-4">
-                    <div className="flex items-center gap-1.5"><Bed className="w-3.5 h-3.5 text-slate-400" /><span className="text-xs font-bold text-slate-700">3</span></div>
-                    <div className="flex items-center gap-1.5"><Bath className="w-3.5 h-3.5 text-slate-400" /><span className="text-xs font-bold text-slate-700">5</span></div>
-                    <div className="flex items-center gap-1.5"><Car className="w-3.5 h-3.5 text-slate-400" /><span className="text-xs font-bold text-slate-700">2</span></div>
-                    <div className="flex items-center gap-1.5"><Maximize className="w-3.5 h-3.5 text-slate-400" /><span className="text-xs font-bold text-slate-700">155m²</span></div>
-                  </div>
-
-                  <div className="flex items-end justify-between">
-                    <div>
-                      <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block mb-0.5">Venda</span>
-                      <span className="text-lg font-black text-blue-700 tracking-tight leading-none">R$ 1.625.000,00</span>
-                    </div>
-                    <span className="text-xs font-bold text-indigo-500 group-hover:underline">Detalhes &rarr;</span>
-                  </div>
-                </div>
-              </div>
-            </Link>
-
-            {/* Resto dos Dinamicos (Se Ouver) */}
-            {properties?.map(p => (
-              <Link key={p.id} href={`/imoveis/${p.slug}`} className="group">
-                <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 block h-full flex flex-col">
-                  <div className="relative h-48 bg-slate-200 overflow-hidden shrink-0">
-                    <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors z-10"></div>
-                  </div>
-                  <div className="p-5 flex-1 flex flex-col">
-                    <h3 className="font-bold text-slate-900 text-[15px] leading-snug mb-4 line-clamp-2">{p.title}</h3>
-
-                    <div className="flex items-center gap-4 text-slate-500 mb-6 mt-auto pt-4 border-t border-slate-100">
-                      <div className="flex items-center gap-1.5"><Maximize className="w-3.5 h-3.5 text-slate-400" /><span className="text-xs font-bold">{p.area || '-'} m²</span></div>
+            {/* ═══════════════════════
+                HEADER
+            ═══════════════════════ */}
+            <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-slate-100 shadow-sm">
+                <div className="max-w-7xl mx-auto px-4 md:px-8 h-18 flex items-center justify-between py-4">
+                    <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-black text-lg shadow-md shadow-blue-500/30">
+                            A
+                        </div>
+                        <div>
+                            <span className="font-extrabold text-[15px] leading-tight text-slate-900">Imob<span className="text-blue-600">Painel</span></span>
+                            <span className="block text-[10px] text-slate-400 font-medium tracking-wide">Sistema Multinível</span>
+                        </div>
                     </div>
 
-                    <div className="flex items-end justify-between">
-                      <div>
-                        <span className="text-lg font-black text-blue-700 tracking-tight leading-none">R$ {p.price_sale ? p.price_sale.toLocaleString('pt-BR') : '-'}</span>
-                      </div>
-                      <span className="text-xs font-bold text-indigo-500 group-hover:underline">Detalhes &rarr;</span>
+                    <nav className="hidden md:flex items-center gap-8">
+                        <a href="#funcionalidades" className="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors">Funcionalidades</a>
+                        <a href="#planos" className="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors">Planos</a>
+                        <a href="#depoimentos" className="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors">Depoimentos</a>
+                    </nav>
+
+                    <div className="flex items-center gap-3">
+                        <Link href="/login" className="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors">
+                            Entrar
+                        </Link>
+                        <Link href="/registrar" className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-5 py-2.5 text-sm font-bold shadow-md shadow-blue-500/20 transition-all hover:scale-105 active:scale-95">
+                            Criar conta grátis
+                        </Link>
                     </div>
-                  </div>
                 </div>
-              </Link>
-            ))}
+            </header>
 
-          </div>
+            <main className="flex-1 pt-20">
+
+                {/* ═══════════════════════
+                    HERO
+                ═══════════════════════ */}
+                <section className="relative w-full min-h-[88vh] flex items-center overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-indigo-950">
+                    {/* Background deco */}
+                    <div className="absolute inset-0 pointer-events-none">
+                        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+                        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-3xl" />
+                        {/* Grid pattern */}
+                        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
+                    </div>
+
+                    <div className="max-w-7xl mx-auto px-4 md:px-8 w-full relative z-10">
+                        <div className="max-w-3xl">
+                            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-4 py-1.5 mb-8">
+                                <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+                                <span className="text-xs font-bold text-white/80 tracking-wide uppercase">Plataforma Multinível para Corretores</span>
+                            </div>
+
+                            <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight tracking-tight mb-6">
+                                Seu site imobiliário,<br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">
+                                    sua rede de afiliados.
+                                </span>
+                            </h1>
+
+                            <p className="text-lg md:text-xl text-white/60 mb-10 leading-relaxed max-w-2xl">
+                                Crie seu site personalizado, gerencie imóveis, capture leads e construa uma rede multinível de corretores — tudo em uma única plataforma.
+                            </p>
+
+                            <div className="flex flex-wrap gap-4">
+                                <Link href="/registrar" className="bg-white text-slate-900 hover:bg-slate-100 rounded-xl px-8 py-4 text-base font-extrabold shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
+                                    Começar grátis <ArrowRight className="w-5 h-5" />
+                                </Link>
+                                <Link href="/demo" className="bg-white/10 hover:bg-white/15 text-white border border-white/20 rounded-xl px-8 py-4 text-base font-bold transition-all flex items-center gap-2">
+                                    Ver demonstração
+                                </Link>
+                            </div>
+
+                            {/* Social proof */}
+                            <div className="mt-12 flex items-center gap-6 flex-wrap">
+                                <div className="flex -space-x-2">
+                                    {["A","B","C","D"].map((l, i) => (
+                                        <div key={i} className={`w-9 h-9 rounded-full border-2 border-slate-900 flex items-center justify-center text-xs font-black text-white ${["bg-blue-500","bg-purple-500","bg-emerald-500","bg-amber-500"][i]}`}>
+                                            {l}
+                                        </div>
+                                    ))}
+                                </div>
+                                <div>
+                                    <div className="flex items-center gap-1 mb-0.5">
+                                        {[1,2,3,4,5].map(s => <Star key={s} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />)}
+                                    </div>
+                                    <p className="text-xs text-white/50 font-medium">+500 corretores usando hoje</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* ═══════════════════════
+                    FUNCIONALIDADES
+                ═══════════════════════ */}
+                <section id="funcionalidades" className="py-24 bg-white">
+                    <div className="max-w-7xl mx-auto px-4 md:px-8">
+                        <div className="text-center mb-16">
+                            <span className="text-xs font-bold text-blue-600 uppercase tracking-widest">Funcionalidades</span>
+                            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mt-3 mb-4">Tudo que você precisa em um só lugar</h2>
+                            <p className="text-slate-500 max-w-2xl mx-auto text-lg">
+                                Ferramentas profissionais para corretores que querem crescer com tecnologia e inteligência.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {[
+                                {
+                                    icon: <Globe className="w-6 h-6" />,
+                                    color: "blue",
+                                    title: "Site Personalizado",
+                                    desc: "Crie seu site profissional com templates modernos, domínio próprio e editor visual intuitivo."
+                                },
+                                {
+                                    icon: <Users className="w-6 h-6" />,
+                                    color: "purple",
+                                    title: "CRM de Leads",
+                                    desc: "Pipeline kanban completo para acompanhar cada lead do primeiro contato até a assinatura."
+                                },
+                                {
+                                    icon: <TrendingUp className="w-6 h-6" />,
+                                    color: "emerald",
+                                    title: "Rede Multinível",
+                                    desc: "Sistema de comissões 4% · 2% · 1% em rede. Construa sua equipe e aumente sua renda passiva."
+                                },
+                                {
+                                    icon: <Building2 className="w-6 h-6" />,
+                                    color: "amber",
+                                    title: "Gestão de Imóveis",
+                                    desc: "Cadastre, organize e publique sua carteira de imóveis com fotos, valores e detalhes completos."
+                                },
+                                {
+                                    icon: <Cpu className="w-6 h-6" />,
+                                    color: "indigo",
+                                    title: "IA para Corretores",
+                                    desc: "Geração automática de textos, descrições e anúncios otimizados com inteligência artificial."
+                                },
+                                {
+                                    icon: <MessageCircle className="w-6 h-6" />,
+                                    color: "rose",
+                                    title: "WhatsApp Integrado",
+                                    desc: "Botão de WhatsApp personalizado, atendimento rodízio e automação de mensagens para leads."
+                                },
+                                {
+                                    icon: <BarChart3 className="w-6 h-6" />,
+                                    color: "cyan",
+                                    title: "Relatórios e Analytics",
+                                    desc: "Acompanhe visitas ao site, origem dos leads, conversões e desempenho da sua rede."
+                                },
+                                {
+                                    icon: <Zap className="w-6 h-6" />,
+                                    color: "orange",
+                                    title: "Automações",
+                                    desc: "Disparo automático de e-mails, WhatsApp e notificações conforme o funil de vendas avança."
+                                },
+                                {
+                                    icon: <ShieldCheck className="w-6 h-6" />,
+                                    color: "teal",
+                                    title: "Segurança e LGPD",
+                                    desc: "Dados protegidos, cookies configuráveis e conformidade total com a legislação brasileira."
+                                },
+                            ].map(feat => {
+                                const iconBg: Record<string, string> = {
+                                    blue:    "bg-blue-50 text-blue-600",
+                                    purple:  "bg-purple-50 text-purple-600",
+                                    emerald: "bg-emerald-50 text-emerald-600",
+                                    amber:   "bg-amber-50 text-amber-600",
+                                    indigo:  "bg-indigo-50 text-indigo-600",
+                                    rose:    "bg-rose-50 text-rose-600",
+                                    cyan:    "bg-cyan-50 text-cyan-600",
+                                    orange:  "bg-orange-50 text-orange-600",
+                                    teal:    "bg-teal-50 text-teal-600",
+                                };
+                                return (
+                                    <div key={feat.title} className="group bg-white border border-slate-100 rounded-2xl p-6 hover:shadow-xl hover:border-blue-100 transition-all">
+                                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${iconBg[feat.color]}`}>
+                                            {feat.icon}
+                                        </div>
+                                        <h3 className="font-extrabold text-slate-900 text-base mb-2">{feat.title}</h3>
+                                        <p className="text-sm text-slate-500 leading-relaxed">{feat.desc}</p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+
+                {/* ═══════════════════════
+                    PLANOS
+                ═══════════════════════ */}
+                <section id="planos" className="py-24 bg-slate-50">
+                    <div className="max-w-7xl mx-auto px-4 md:px-8">
+                        <div className="text-center mb-16">
+                            <span className="text-xs font-bold text-blue-600 uppercase tracking-widest">Planos</span>
+                            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mt-3 mb-4">Simples e transparente</h2>
+                            <p className="text-slate-500 text-lg">Comece grátis e escale quando precisar.</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                            {[
+                                {
+                                    name: "Starter",
+                                    price: "Grátis",
+                                    period: "para sempre",
+                                    highlight: false,
+                                    features: ["1 site personalizado", "Até 10 imóveis", "CRM básico", "WhatsApp integrado", "Suporte por e-mail"],
+                                },
+                                {
+                                    name: "Pro",
+                                    price: "R$ 97",
+                                    period: "/ mês",
+                                    highlight: true,
+                                    features: ["Sites ilimitados", "Imóveis ilimitados", "CRM avançado + Pipeline", "IA para textos", "Rede multinível ativa", "Relatórios completos", "Suporte prioritário"],
+                                },
+                                {
+                                    name: "Enterprise",
+                                    price: "Sob consulta",
+                                    period: "",
+                                    highlight: false,
+                                    features: ["Tudo do Pro", "White-label completo", "API customizada", "Onboarding dedicado", "SLA garantido", "Gerente de conta"],
+                                },
+                            ].map(plan => (
+                                <div key={plan.name} className={`rounded-2xl p-8 flex flex-col ${plan.highlight ? "bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-2xl shadow-blue-500/30 scale-[1.02]" : "bg-white border border-slate-200"}`}>
+                                    <div className="mb-6">
+                                        <p className={`text-sm font-bold uppercase tracking-widest mb-2 ${plan.highlight ? "text-blue-200" : "text-slate-400"}`}>{plan.name}</p>
+                                        <div className="flex items-baseline gap-1">
+                                            <span className={`text-4xl font-extrabold ${plan.highlight ? "text-white" : "text-slate-900"}`}>{plan.price}</span>
+                                            {plan.period && <span className={`text-sm font-medium ${plan.highlight ? "text-blue-200" : "text-slate-400"}`}>{plan.period}</span>}
+                                        </div>
+                                    </div>
+                                    <ul className="space-y-3 flex-1 mb-8">
+                                        {plan.features.map(f => (
+                                            <li key={f} className="flex items-center gap-2.5 text-sm">
+                                                <CheckCircle2 className={`w-4 h-4 shrink-0 ${plan.highlight ? "text-blue-200" : "text-emerald-500"}`} />
+                                                <span className={plan.highlight ? "text-white/90" : "text-slate-600"}>{f}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <Link
+                                        href="/registrar"
+                                        className={`w-full py-3 rounded-xl text-sm font-extrabold text-center transition-all ${plan.highlight ? "bg-white text-blue-600 hover:bg-blue-50" : "bg-slate-900 text-white hover:bg-slate-800"}`}
+                                    >
+                                        {plan.name === "Enterprise" ? "Falar com vendas" : "Começar agora"}
+                                    </Link>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* ═══════════════════════
+                    CTA FINAL
+                ═══════════════════════ */}
+                <section className="py-24 bg-gradient-to-br from-slate-900 to-blue-950 relative overflow-hidden">
+                    <div className="absolute inset-0 pointer-events-none">
+                        <div className="absolute top-0 left-1/3 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl" />
+                        <div className="absolute bottom-0 right-1/3 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl" />
+                    </div>
+                    <div className="max-w-3xl mx-auto px-4 md:px-8 text-center relative z-10">
+                        <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <Layers className="w-8 h-8 text-white" />
+                        </div>
+                        <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
+                            Pronto para escalar seu negócio imobiliário?
+                        </h2>
+                        <p className="text-white/60 text-lg mb-8">
+                            Crie sua conta grátis em menos de 2 minutos. Sem cartão de crédito.
+                        </p>
+                        <Link href="/registrar" className="inline-flex items-center gap-2 bg-white text-slate-900 hover:bg-slate-100 rounded-xl px-8 py-4 text-base font-extrabold shadow-xl transition-all hover:scale-105">
+                            Criar conta gratuita <ArrowRight className="w-5 h-5" />
+                        </Link>
+                    </div>
+                </section>
+            </main>
+
+            {/* ═══════════════════════
+                FOOTER
+            ═══════════════════════ */}
+            <footer className="bg-slate-950 text-white py-12">
+                <div className="max-w-7xl mx-auto px-4 md:px-8">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center text-white font-black">
+                                A
+                            </div>
+                            <span className="font-extrabold text-white">Imob<span className="text-blue-400">Painel</span></span>
+                        </div>
+                        <div className="flex items-center gap-6 text-xs text-slate-500">
+                            <a href="#" className="hover:text-slate-300 transition-colors">Termos de uso</a>
+                            <a href="#" className="hover:text-slate-300 transition-colors">Privacidade</a>
+                            <a href="#" className="hover:text-slate-300 transition-colors">Suporte</a>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-slate-500">
+                            <Lock className="w-3.5 h-3.5" />
+                            <span>&copy; 2026 ImobPainel. Todos os direitos reservados.</span>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
-
-      </main>
-
-      {/* Footer Público Corretor */}
-      <footer className="bg-white border-t border-slate-200 mt-20">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-
-            {/* Corretor Info */}
-            <div className="col-span-1 border-b md:border-b-0 border-slate-100 pb-8 md:pb-0">
-              <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl mb-4 shadow-md">
-                ZL
-              </div>
-              <h4 className="font-extrabold text-slate-900 mb-2">ZKF INTERMEDIACAO IMOBILIARIA LTDA</h4>
-              <p className="text-xs text-slate-500 font-medium leading-relaxed">
-                ZKF INTERMEDIACAO IMOBILIARIA LTDA - Corretor Imobiliário. Encontre os melhores imóveis com atendimento personalizado.
-              </p>
-            </div>
-
-            {/* Links Rápidos */}
-            <div>
-              <h5 className="font-bold text-slate-800 mb-4">Links Rápidos</h5>
-              <ul className="space-y-3 text-xs font-medium text-slate-500">
-                <li><Link href="/" className="hover:text-blue-600 focus:outline-none">Sobre Nós</Link></li>
-                <li><Link href="/" className="hover:text-blue-600 focus:outline-none">Como Funciona</Link></li>
-                <li><Link href="/" className="hover:text-blue-600 focus:outline-none">Anunciar Imóvel</Link></li>
-              </ul>
-            </div>
-
-            {/* Suporte */}
-            <div>
-              <h5 className="font-bold text-slate-800 mb-4">Suporte</h5>
-              <ul className="space-y-3 text-xs font-medium text-slate-500">
-                <li><Link href="/" className="hover:text-blue-600 focus:outline-none">Perguntas Frequentes</Link></li>
-                <li><Link href="/" className="hover:text-blue-600 focus:outline-none">Fale Conosco</Link></li>
-                <li><Link href="/" className="hover:text-blue-600 focus:outline-none">Termos de uso e política de privacidade</Link></li>
-              </ul>
-            </div>
-
-            {/* Contato Box */}
-            <div>
-              <h5 className="font-bold text-slate-800 mb-4">Contato</h5>
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="bg-slate-50 w-10 h-10 rounded-lg flex items-center justify-center border border-slate-100 shrink-0">
-                    <Mic className="w-4 h-4 text-slate-600" />
-                  </div>
-                  <div className="flex flex-col justify-center h-10">
-                    <span className="text-[10px] uppercase font-bold text-slate-400">Telefone</span>
-                    <span className="text-xs font-bold text-slate-700">13991396602</span>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="bg-slate-50 w-10 h-10 rounded-lg flex items-center justify-center border border-slate-100 shrink-0">
-                    {/* A icon was used in the print for email, lets use generic mail */}
-                    <span className="text-slate-600 font-bold">@</span>
-                  </div>
-                  <div className="flex flex-col justify-center h-10">
-                    <span className="text-[10px] uppercase font-bold text-slate-400">E-mail</span>
-                    <span className="text-xs font-bold text-slate-700 truncate w-32">dizanzini@gmail.com</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div className="mt-16 pt-8 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="font-extrabold text-[15px] leading-tight text-slate-900 border-r border-slate-300 pr-5">ADigital <span className="text-blue-600 font-bold">Multinível</span></div>
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs italic">f</div>
-                <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">ig</div>
-              </div>
-            </div>
-            <p className="text-[11px] font-semibold text-slate-400">
-              &copy; 2026 Imobiliária ADigital. Todos direitos reservados.
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
+    );
 }

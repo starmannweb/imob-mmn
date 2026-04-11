@@ -8,7 +8,6 @@ import { toast } from "sonner";
    TABS (todas visíveis, sem scroll)
 ───────────────────────────────────── */
 const TABS = [
-    { id: "aparencia",  label: "Aparência" },
     { id: "contato",    label: "Dados de contato" },
     { id: "dominio",    label: "Domínio" },
     { id: "whatsapp",   label: "Whatsapp" },
@@ -84,7 +83,7 @@ function SaveBar({ onSave, saving }: { onSave: () => void; saving: boolean }) {
    COMPONENTE PRINCIPAL
 ═══════════════════════════════════════════ */
 export default function SiteSettingsClient() {
-    const [tab, setTab]     = useState("aparencia");
+    const [tab, setTab]     = useState("contato");
     const [saving, setSaving] = useState(false);
 
     /* ── Estado global das abas ── */
