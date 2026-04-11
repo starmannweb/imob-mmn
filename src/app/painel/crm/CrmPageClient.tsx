@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
     ChevronRight, Kanban, List, Grid, Plus, Search, Filter,
     TrendingUp, Users, Clock, Target, CheckCircle2, XCircle,
-    ArrowUpRight, Inbox
+    ArrowUpRight, Inbox, UserPlus, Copy, Check, X
 } from "lucide-react";
 import CrmKanban from "./crm-kanban";
 import AddDealModal from "./AddDealModal";
@@ -13,6 +13,7 @@ import AddDealModal from "./AddDealModal";
 interface CrmPageClientProps {
     kanbanLeads: any[];
     currentTab: string;
+    inviteLink: string;
 }
 
 const STAGE_META: Record<string, { label: string; color: string; bg: string; dot: string }> = {
@@ -26,9 +27,17 @@ const STAGE_META: Record<string, { label: string; color: string; bg: string; dot
     lost:          { label: "Perdido",    color: "text-red-700",     bg: "bg-red-100",     dot: "bg-red-500" },
 };
 
-export default function CrmPageClient({ kanbanLeads, currentTab }: CrmPageClientProps) {
+export default function CrmPageClient({ kanbanLeads, currentTab, inviteLink }: CrmPageClientProps) {
     const [showAddDealModal, setShowAddDealModal] = useState(false);
+    const [showInviteModal, setShowInviteModal] = useState(false);
+    const [linkCopied, setLinkCopied] = useState(false);
     const [search, setSearch] = useState("");
+
+    const handleCopyInvite = () => {
+        navigator.clipboard.writeText(inviteLink);
+        setLinkCopied(true);
+        setTimeout(() => setLinkCopied(false), 2500);
+    };
 
     const novos      = kanbanLeads.filter(l => l.stage === "contact").length;
     const contatados = kanbanLeads.filter(l => l.stage === "service").length;
@@ -89,6 +98,12 @@ export default function CrmPageClient({ kanbanLeads, currentTab }: CrmPageClient
                     </div>
 
                     <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setShowInviteModal(true)}
+                            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-700 text-slate-700 dark:text-slate-200 px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all hover:shadow-sm"
+                        >
+                            <UserPlus className="w-4 h-4 text-indigo-500" /> Convidar Afiliado
+                        </button>
                         <button
                             onClick={() => setShowAddDealModal(true)}
                             className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm shadow-emerald-500/20 flex items-center gap-2 transition-all"
@@ -242,6 +257,69 @@ export default function CrmPageClient({ kanbanLeads, currentTab }: CrmPageClient
                 isOpen={showAddDealModal}
                 onClose={() => setShowAddDealModal(false)}
             />
+
+            {/* Invite Affiliate Modal */}
+            {showInviteModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 animate-in fade-in duration-200">
+                    <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 w-full max-w-md">
+                        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-700">
+                            <div className="flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center">
+                                    <UserPlus className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-slate-800 dark:text-slate-200 text-sm">Convidar Corretor Afiliado</h3>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400">Compartilhe seu link de indicação</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => setShowInviteModal(false)}
+                                className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+                            >
+                                <X className="w-4 h-4 text-slate-500" />
+                            </button>
+                        </div>
+
+                        <div className="p-6 space-y-4">
+                            <p className="text-sm text-slate-600 dark:text-slate-400">
+                                Envie este link para corretores que deseja convidar para sua rede de afiliados.
+                                Quando se cadastrarem, eles entrarão automaticamente na sua rede.
+                            </p>
+
+                            <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex items-center gap-3">
+                                <span className="text-xs text-slate-600 dark:text-slate-300 flex-1 truncate font-mono">{inviteLink}</span>
+                                <button
+                                    onClick={handleCopyInvite}
+                                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
+                                        linkCopied
+                                            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                                            : "bg-indigo-600 text-white hover:bg-indigo-700"
+                                    }`}
+                                >
+                                    {linkCopied ? <><Check className="w-3.5 h-3.5" /> Copiado!</> : <><Copy className="w-3.5 h-3.5" /> Copiar</>}
+                                </button>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3 pt-1">
+                                <a
+                                    href={`https://wa.me/?text=${encodeURIComponent(`Olá! Te convido para fazer parte da minha rede de corretores afiliados. Acesse: ${inviteLink}`)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-colors"
+                                >
+                                    Enviar por WhatsApp
+                                </a>
+                                <a
+                                    href="/painel/rede"
+                                    className="flex items-center justify-center gap-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2.5 rounded-xl text-xs font-bold transition-colors"
+                                >
+                                    Ver Minha Rede
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 }

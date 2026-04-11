@@ -205,23 +205,19 @@ export default async function MinhaRedePage({ searchParams }: { searchParams: Pr
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
-                                                <td className="px-6 py-4">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center font-bold text-slate-700 text-sm border-2 border-white shadow-sm shrink-0">ZK</div>
-                                                        <div>
-                                                            <div className="font-bold text-slate-800 text-[13px] flex items-center gap-2">{profile?.full_name || 'ZKF INTERMEDIACAO IMOBILIARIA LTDA'}</div>
-                                                            <span className="text-slate-400 text-xs">@{profile?.full_name?.split(' ')[0].toLowerCase() || 'Zanzini'}</span>
+                                            {network?.length === 0 && (
+                                                <tr>
+                                                    <td colSpan={7} className="px-6 py-16 text-center">
+                                                        <div className="flex flex-col items-center gap-3">
+                                                            <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center">
+                                                                <Users className="w-7 h-7 text-slate-400" />
+                                                            </div>
+                                                            <p className="font-bold text-slate-600">Nenhum afiliado ainda</p>
+                                                            <p className="text-sm text-slate-400 max-w-xs">Convide corretores usando seu link de indicação para construir sua rede.</p>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 text-[13px] font-medium text-slate-600">13991396602</td>
-                                                <td className="px-6 py-4 text-[13px] font-medium text-slate-600">dizanzini@gmail.com</td>
-                                                <td className="px-6 py-4"><div className="flex items-center gap-1.5 text-[13px] font-medium text-slate-400 italic"><Network className="w-3.5 h-3.5" /> Não informado</div></td>
-                                                <td className="px-6 py-4"><span className="px-3 py-1 bg-white border border-blue-200 text-blue-600 text-[11px] font-bold rounded-full">Dono</span></td>
-                                                <td className="px-6 py-4"><span className="px-3 py-1 bg-white border border-blue-200 text-blue-600 text-[11px] font-bold rounded-full">Ativo</span></td>
-                                                <td className="px-6 py-4 text-center"><button className="text-slate-400 hover:text-blue-600 p-1 rounded transition-colors inline-block"><Eye className="w-5 h-5" /></button></td>
-                                            </tr>
+                                                    </td>
+                                                </tr>
+                                            )}
                                             {network?.map((broker) => (
                                                 <tr key={broker.id} className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
                                                     <td className="px-6 py-4">
@@ -248,7 +244,7 @@ export default async function MinhaRedePage({ searchParams }: { searchParams: Pr
                                 {/* Pagination Footer */}
                                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-6 border-t border-slate-100 text-sm text-slate-500">
                                     <div className="flex items-center gap-2">
-                                        <span>Mostrando <strong>1</strong> até <strong>{(network?.length || 0) + 1}</strong> de <strong>{(network?.length || 0) + 1}</strong> resultados</span>
+                                        <span>Mostrando <strong>1</strong> até <strong>{network?.length || 0}</strong> de <strong>{network?.length || 0}</strong> resultados</span>
                                         <span className="bg-slate-50 px-3 py-1 ml-4 rounded border border-slate-200 flex items-center gap-2">Por página: <select className="bg-transparent font-bold text-slate-700 outline-none"><option>20</option><option>50</option><option>100</option></select></span>
                                     </div>
                                     <div className="flex items-center gap-1">

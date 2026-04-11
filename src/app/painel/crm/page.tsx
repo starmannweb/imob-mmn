@@ -17,14 +17,18 @@ export default async function CrmPage({ searchParams }: { searchParams: Promise<
     const currentTab = sp.tab || 'pipeline';
 
     // Fetch leads for this user, including property info
-    const { data: leads } = await supabase
-        .from("leads")
-        .select(`
-            *,
-            property:properties(title, slug)
-        `)
-        .eq("assigned_to", user.id)
-        .order("created_at", { ascending: false });
+    const [{ data: leads }, { data: profile }] = await Promise.all([
+        supabase
+            .from("leads")
+            .select(`*, property:properties(title, slug)`)
+            .eq("assigned_to", user.id)
+            .order("created_at", { ascending: false }),
+        supabase
+            .from("users")
+            .select("referral_code")
+            .eq("id", user.id)
+            .single(),
+    ]);
 
     // Transform leads for the kanban component
     const kanbanLeads = (leads || []).map(lead => ({
@@ -33,15 +37,19 @@ export default async function CrmPage({ searchParams }: { searchParams: Promise<
         phone: lead.phone_whatsapp,
         email: lead.email,
         property_title: lead.property?.title || 'Sem imóvel',
-        value: 0, // Valor padrão, pode ser ajustado depois
+        value: 0,
         created_at: lead.created_at,
         stage: lead.status === 'new' ? 'contact' : lead.status || 'contact',
     }));
 
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.adigitalmultinivel.com.br";
+    const inviteLink = `${baseUrl}/registrar?ref=${profile?.referral_code || ""}`;
+
     return (
-        <CrmPageClient 
-            kanbanLeads={kanbanLeads} 
+        <CrmPageClient
+            kanbanLeads={kanbanLeads}
             currentTab={currentTab}
+            inviteLink={inviteLink}
         />
 
     );
