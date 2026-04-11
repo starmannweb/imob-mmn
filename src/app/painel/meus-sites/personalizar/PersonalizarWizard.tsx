@@ -83,7 +83,20 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
     const [formData, setFormData] = useState({
         siteName: profile?.full_name || "",
         tagline:  "Especialista em imóveis de alto padrão",
+        creci: "",
     });
+    const [watermark, setWatermark] = useState({
+        ativo: false, usarLogo: true, usarNome: true, usarCreci: true,
+        posicao: "inferior_direito",
+    });
+    const [searchBar, setSearchBar] = useState({ desktop: true, mobile: true });
+    const [menuPages, setMenuPages] = useState([
+        { id: "imoveis", label: "Imóveis", ativo: true, editavel: false },
+        { id: "sobre", label: "Sobre", ativo: true, editavel: true },
+        { id: "contato", label: "Contato", ativo: true, editavel: true },
+        { id: "blog", label: "Blog", ativo: false, editavel: true },
+        { id: "financiamento", label: "Financiamento", ativo: false, editavel: true },
+    ]);
 
     const themeHex = COLOR_THEMES.find(t => t.id === selectedTheme)?.hex ?? "#2563EB";
 
@@ -200,40 +213,65 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
                             <div>
                                 <h3 className="text-xl font-extrabold text-slate-900 dark:text-white">Identidade Visual</h3>
                                 <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
-                                    Configure logotipo, banner e as informações básicas do seu site.
+                                    Configure logotipos, banner, marca d&apos;água e barra de pesquisa do seu site.
                                 </p>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5">
-                                    <h4 className="font-bold text-slate-700 dark:text-slate-300 text-sm mb-3">Logo do Site</h4>
-                                    <div className="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl h-36 flex flex-col items-center justify-center text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors group">
-                                        <Upload className="w-8 h-8 mb-2 group-hover:text-blue-500 transition-colors" />
-                                        <p className="text-sm font-bold text-slate-500">Fazer upload da logo</p>
-                                        <p className="text-xs text-slate-400 mt-1">PNG, JPG ou SVG · Máx. 2 MB</p>
+                            {/* Logos Desktop + Mobile + Banner */}
+                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5">
+                                <h4 className="font-bold text-slate-700 dark:text-slate-300 text-sm mb-4">Logo do Site</h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Versão Desktop</p>
+                                        <div className="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl h-28 flex flex-col items-center justify-center text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors group">
+                                            <Upload className="w-6 h-6 mb-1.5 group-hover:text-blue-500 transition-colors" />
+                                            <p className="text-sm font-bold text-slate-500">Fazer upload</p>
+                                            <p className="text-xs text-slate-400 mt-0.5">PNG, SVG · Recomendado: 300×80px</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Versão Mobile</p>
+                                        <div className="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl h-28 flex flex-col items-center justify-center text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors group">
+                                            <Upload className="w-6 h-6 mb-1.5 group-hover:text-blue-500 transition-colors" />
+                                            <p className="text-sm font-bold text-slate-500">Fazer upload</p>
+                                            <p className="text-xs text-slate-400 mt-0.5">PNG, SVG · Recomendado: 120×120px</p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5">
-                                    <h4 className="font-bold text-slate-700 dark:text-slate-300 text-sm mb-3">Banner Principal</h4>
-                                    <div className="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl h-36 flex flex-col items-center justify-center text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors group">
-                                        <Upload className="w-8 h-8 mb-2 group-hover:text-blue-500 transition-colors" />
+                                <div>
+                                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Banner Principal</p>
+                                    <div className="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl h-28 flex flex-col items-center justify-center text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors group">
+                                        <Upload className="w-6 h-6 mb-1.5 group-hover:text-blue-500 transition-colors" />
                                         <p className="text-sm font-bold text-slate-500">Fazer upload do banner</p>
-                                        <p className="text-xs text-slate-400 mt-1">PNG ou JPG · Mín. 1920 × 600 px</p>
+                                        <p className="text-xs text-slate-400 mt-0.5">PNG ou JPG · Mín. 1920 × 600 px</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 space-y-4">
+                            {/* Informações do Site */}
+                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 space-y-4">
                                 <h4 className="font-bold text-slate-700 dark:text-slate-300 text-sm">Informações do Site</h4>
-                                <div>
-                                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Nome do Site</label>
-                                    <input
-                                        type="text"
-                                        value={formData.siteName}
-                                        onChange={e => setFormData({ ...formData, siteName: e.target.value })}
-                                        className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                                        placeholder="Ex: João Silva Imóveis"
-                                    />
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Nome do Site</label>
+                                        <input
+                                            type="text"
+                                            value={formData.siteName}
+                                            onChange={e => setFormData({ ...formData, siteName: e.target.value })}
+                                            className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                            placeholder="Ex: João Silva Imóveis"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">CRECI</label>
+                                        <input
+                                            type="text"
+                                            value={formData.creci}
+                                            onChange={e => setFormData({ ...formData, creci: e.target.value })}
+                                            className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                            placeholder="Ex: CRECI 12345-J"
+                                        />
+                                    </div>
                                 </div>
                                 <div>
                                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Slogan / Tagline</label>
@@ -244,6 +282,80 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
                                         className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                                         placeholder="Ex: Especialista em imóveis de alto padrão"
                                     />
+                                </div>
+                            </div>
+
+                            {/* Marca d'água */}
+                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5">
+                                <div className="flex items-center justify-between mb-3">
+                                    <div>
+                                        <h4 className="font-bold text-slate-700 dark:text-slate-300 text-sm">Marca d&apos;água automática nas fotos</h4>
+                                        <p className="text-xs text-slate-500 mt-0.5">Aplica marca d&apos;água automática nas fotos dos imóveis.</p>
+                                    </div>
+                                    <label className="relative flex cursor-pointer">
+                                        <input type="checkbox" checked={watermark.ativo} onChange={e => setWatermark({ ...watermark, ativo: e.target.checked })} className="sr-only peer" />
+                                        <div className="w-10 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:bg-blue-600 peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:border-slate-300 after:rounded-full after:h-4 after:w-4 after:transition-all" />
+                                    </label>
+                                </div>
+                                {watermark.ativo && (
+                                    <div className="border-t border-slate-100 dark:border-slate-700 pt-4 space-y-4">
+                                        <div>
+                                            <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Elementos da marca d&apos;água</p>
+                                            <div className="flex flex-wrap gap-3">
+                                                {[
+                                                    { key: "usarLogo",  label: "Logo" },
+                                                    { key: "usarNome",  label: "Nome do corretor" },
+                                                    { key: "usarCreci", label: "CRECI" },
+                                                ].map(el => (
+                                                    <label key={el.key} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 px-3 py-2 rounded-lg cursor-pointer">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={watermark[el.key as keyof typeof watermark] as boolean}
+                                                            onChange={e => setWatermark({ ...watermark, [el.key]: e.target.checked })}
+                                                            className="rounded border-slate-300 text-blue-600 accent-blue-600"
+                                                        />
+                                                        {el.label}
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wide block mb-1.5">Posição</label>
+                                            <select
+                                                value={watermark.posicao}
+                                                onChange={e => setWatermark({ ...watermark, posicao: e.target.value })}
+                                                className="border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 rounded-lg px-3 py-2 text-sm text-slate-700 dark:text-slate-300"
+                                            >
+                                                <option value="inferior_direito">Inferior direito</option>
+                                                <option value="inferior_esquerdo">Inferior esquerdo</option>
+                                                <option value="superior_direito">Superior direito</option>
+                                                <option value="superior_esquerdo">Superior esquerdo</option>
+                                                <option value="centro">Centro</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Barra de Pesquisa */}
+                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5">
+                                <h4 className="font-bold text-slate-700 dark:text-slate-300 text-sm mb-3">Barra de Pesquisa</h4>
+                                <p className="text-xs text-slate-500 mb-4">Defina em quais versões do site a barra de busca ficará visível.</p>
+                                <div className="flex gap-6">
+                                    <label className="flex items-center gap-3 cursor-pointer group">
+                                        <label className="relative flex cursor-pointer">
+                                            <input type="checkbox" checked={searchBar.desktop} onChange={e => setSearchBar({ ...searchBar, desktop: e.target.checked })} className="sr-only peer" />
+                                            <div className="w-10 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:bg-blue-600 peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:border-slate-300 after:rounded-full after:h-4 after:w-4 after:transition-all" />
+                                        </label>
+                                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Exibir no Desktop</span>
+                                    </label>
+                                    <label className="flex items-center gap-3 cursor-pointer group">
+                                        <label className="relative flex cursor-pointer">
+                                            <input type="checkbox" checked={searchBar.mobile} onChange={e => setSearchBar({ ...searchBar, mobile: e.target.checked })} className="sr-only peer" />
+                                            <div className="w-10 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:bg-blue-600 peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:border-slate-300 after:rounded-full after:h-4 after:w-4 after:transition-all" />
+                                        </label>
+                                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Exibir no Mobile</span>
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -450,6 +562,42 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
                                     <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
                                         Ative ou desative as seções que aparecerão no seu site.
                                     </p>
+                                </div>
+
+                                {/* Menu e Páginas */}
+                                <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
+                                    <div className="px-5 py-3 bg-slate-50 dark:bg-slate-900/40 flex items-center justify-between">
+                                        <h4 className="font-bold text-slate-700 dark:text-slate-300 text-sm">Menu e Páginas</h4>
+                                        <span className="text-xs text-slate-500">Ative as páginas que aparecerão no menu</span>
+                                    </div>
+                                    {menuPages.map(page => (
+                                        <div key={page.id} className="flex items-center justify-between px-5 py-3.5 border-t border-slate-100 dark:border-slate-700">
+                                            <div className="flex items-center gap-3 flex-1">
+                                                {page.editavel ? (
+                                                    <input
+                                                        type="text"
+                                                        defaultValue={page.label}
+                                                        className="text-sm font-bold text-slate-700 dark:text-slate-300 bg-transparent border-b border-dashed border-slate-300 dark:border-slate-600 focus:outline-none focus:border-blue-500 w-36"
+                                                    />
+                                                ) : (
+                                                    <p className="text-sm font-bold text-slate-700 dark:text-slate-300">{page.label}</p>
+                                                )}
+                                                {!page.editavel && (
+                                                    <span className="text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-500 px-1.5 py-0.5 rounded font-medium">obrigatória</span>
+                                                )}
+                                            </div>
+                                            <label className="relative flex items-center cursor-pointer">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={page.ativo}
+                                                    disabled={!page.editavel}
+                                                    onChange={() => setMenuPages(prev => prev.map(p => p.id === page.id ? { ...p, ativo: !p.ativo } : p))}
+                                                    className="sr-only peer"
+                                                />
+                                                <div className={`w-10 h-5 rounded-full peer peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:border-slate-300 after:rounded-full after:h-4 after:w-4 after:transition-all ${!page.editavel ? "bg-slate-300 dark:bg-slate-600 opacity-50" : "bg-slate-200 dark:bg-slate-700 peer-checked:bg-blue-600"}`} />
+                                            </label>
+                                        </div>
+                                    ))}
                                 </div>
 
                                 {/* Toggles de seção */}
