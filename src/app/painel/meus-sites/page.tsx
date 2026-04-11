@@ -2,9 +2,8 @@ export const dynamic = 'force-dynamic';
 
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { ChevronRight, Globe, ExternalLink, Settings, Palette, Sparkles } from "lucide-react";
+import { ChevronRight, Globe, ExternalLink, Settings, Palette } from "lucide-react";
 import Link from "next/link";
-import { GenerateSiteModal } from "./GenerateSiteModal";
 import { CopySiteLink } from "./CopySiteLink";
 import { TemplatesSelectorClient } from "./TemplatesSelectorClient";
 
@@ -137,27 +136,6 @@ export default async function MeusSitesPage() {
             <TemplatesSelectorClient initialSelected="clean" />
 
 
-            {/* IA Section */}
-            <div className="bg-gradient-to-r from-slate-900 to-blue-900 rounded-2xl p-6 md:p-8 text-white relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
-                <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-3">
-                        <div className="bg-white/10 p-2 rounded-lg">
-                            <Sparkles className="w-5 h-5 text-yellow-400" />
-                        </div>
-                        <h3 className="text-lg font-bold">Gerador de Sites com IA</h3>
-                    </div>
-                    <p className="text-white/70 text-sm max-w-xl mb-4">
-                        Descreva como quer seu site e nossa IA cria automaticamente uma lead page personalizada para você.
-                        Escolha cores, layout e estilo com apenas uma descrição.
-                    </p>
-                    <GenerateSiteModal>
-                        <button className="bg-white text-slate-900 px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-slate-100 transition-colors flex items-center gap-2">
-                            <Sparkles className="w-4 h-4 text-blue-600" /> Testar Gerador IA Premium
-                        </button>
-                    </GenerateSiteModal>
-                </div>
-            </div>
         </div>
     );
 }

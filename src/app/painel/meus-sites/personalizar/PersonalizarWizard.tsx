@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
     ChevronRight, ChevronLeft, Upload, Check, Eye, Link2,
-    MapPin, Heart, Globe, Home, HelpCircle, ExternalLink,
+    MapPin, Heart, Globe, Home, ExternalLink,
     Monitor, Smartphone, Droplets, SlidersHorizontal, LayoutGrid,
     ListFilter, Menu, AlignLeft
 } from "lucide-react";
@@ -27,8 +27,7 @@ const STEPS = [
     { id: 2, label: "Escolher Modelo",    desc: "Template e cores" },
     { id: 3, label: "Aparência",          desc: "Menu, filtros e layout" },
     { id: 4, label: "Seções do Site",     desc: "Páginas e conteúdo" },
-    { id: 5, label: "Ferramentas IA",     desc: "Textos com IA" },
-    { id: 6, label: "Publicar",           desc: "Site no ar" },
+    { id: 5, label: "Publicar",           desc: "Site no ar" },
 ];
 
 const COLOR_THEMES = [
@@ -79,9 +78,6 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
     const [activeSections, setActiveSections] = useState<Record<string, boolean>>(
         Object.fromEntries(SECTIONS.map(s => [s.id, s.default]))
     );
-    const [aiDescription, setAiDescription] = useState("");
-    const [aiQty, setAiQty]                 = useState(1);
-    const [isGenerating, setIsGenerating]   = useState(false);
     const [isSaving, setIsSaving]           = useState(false);
     const [formData, setFormData] = useState({
         siteName: profile?.full_name || "",
@@ -115,18 +111,8 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
         setTimeout(() => {
             setIsSaving(false);
             toast.success("Configurações salvas com sucesso!");
-            setCurrentStep(6);
+            setCurrentStep(5);
         }, 1000);
-    };
-
-    const handleGenerateAI = () => {
-        if (!aiDescription.trim()) { toast.error("Descreva seu perfil para a IA"); return; }
-        setIsGenerating(true);
-        setTimeout(() => {
-            setIsGenerating(false);
-            toast.success("Conteúdo gerado com IA!");
-            setCurrentStep(6);
-        }, 2000);
     };
 
     const handleCopyLink = () => {
@@ -800,82 +786,10 @@ export default function PersonalizarWizard({ siteSlug, siteUrl, profile }: Perso
                     )}
 
                     {/* ════════════════════════════
-                        PASSO 5 — Ferramentas IA
-                        Card centrado com input inline
-                    ════════════════════════════ */}
-                    {currentStep === 5 && (
-                        <div className="p-8 flex items-start justify-center min-h-[480px] animate-in fade-in duration-300">
-                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-8 w-full max-w-xl shadow-sm">
-
-                                {/* Ícone "?" */}
-                                <div className="w-20 h-20 rounded-2xl bg-teal-500 flex items-center justify-center mx-auto mb-6 shadow-lg">
-                                    <HelpCircle className="w-11 h-11 text-white" />
-                                </div>
-
-                                <h3 className="text-xl font-extrabold text-slate-900 dark:text-white text-center mb-2">
-                                    Gerar Conteúdo com IA
-                                </h3>
-                                <p className="text-slate-500 dark:text-slate-400 text-sm text-center mb-6 leading-relaxed">
-                                    Descreva seu perfil e especialidade imobiliária. Nossa IA criará textos profissionais
-                                    para o slogan, apresentação e seções do seu site automaticamente.
-                                </p>
-
-                                {/* Descrição */}
-                                <div className="mb-4">
-                                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">
-                                        Descrição do seu perfil
-                                    </label>
-                                    <textarea
-                                        value={aiDescription}
-                                        onChange={e => setAiDescription(e.target.value)}
-                                        rows={3}
-                                        className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none resize-none"
-                                        placeholder="Ex: Sou corretor há 10 anos, especializado em apartamentos de alto padrão em São Paulo..."
-                                    />
-                                </div>
-
-                                {/* Input inline com botão Gerar + quantidade */}
-                                <div className="flex items-stretch gap-2">
-                                    <div className="flex-1 flex items-center bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 text-sm text-slate-500">
-                                        <span className="truncate">{aiDescription ? `"${aiDescription.substring(0, 40)}..."` : "Texto gerado aparecerá aqui"}</span>
-                                    </div>
-                                    <div className="flex items-center gap-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3">
-                                        <span className="text-xs text-slate-500 whitespace-nowrap">Nº variações</span>
-                                        <input
-                                            type="number"
-                                            min={1}
-                                            max={5}
-                                            value={aiQty}
-                                            onChange={e => setAiQty(Number(e.target.value))}
-                                            className="w-10 bg-transparent text-center text-sm font-bold text-slate-800 dark:text-slate-200 outline-none"
-                                        />
-                                    </div>
-                                    <button
-                                        onClick={handleGenerateAI}
-                                        disabled={isGenerating}
-                                        className="bg-amber-500 hover:bg-amber-600 disabled:opacity-70 text-white font-bold px-5 py-2.5 rounded-xl flex items-center gap-2 transition-colors shrink-0"
-                                    >
-                                        {isGenerating ? (
-                                            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                        ) : "Gerar"}
-                                    </button>
-                                </div>
-
-                                <button
-                                    onClick={() => setCurrentStep(5)}
-                                    className="w-full mt-4 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 font-bold py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors text-sm"
-                                >
-                                    Pular esta etapa
-                                </button>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* ════════════════════════════
-                        PASSO 6 — Publicar
+                        PASSO 5 — Publicar
                         Dois cards com botões verdes
                     ════════════════════════════ */}
-                    {currentStep === 6 && (
+                    {currentStep === 5 && (
                         <div
                             className="relative flex flex-col items-center justify-center min-h-[480px] p-8 animate-in fade-in zoom-in-95 duration-300"
                         >

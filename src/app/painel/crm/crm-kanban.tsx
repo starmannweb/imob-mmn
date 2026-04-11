@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Phone, Mail, Clock, GripVertical, MoreHorizontal, MessageSquare, Search, Filter, Calendar, MapPin, BadgeCheck, FileText, UserPlus, X } from "lucide-react";
+import { Plus, Phone, Mail, Clock, GripVertical, MoreHorizontal, MessageSquare, Calendar, MapPin, BadgeCheck, FileText, UserPlus, X } from "lucide-react";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,7 +42,6 @@ const CRM_STAGES: Column[] = [
 
 export default function CrmKanban({ initialDeals = [] }: { initialDeals?: Deal[] }) {
     const [deals, setDeals] = useState<Deal[]>(initialDeals);
-    const [searchQuery, setSearchQuery] = useState("");
     const [isClient, setIsClient] = useState(false);
     const [isNewDealOpen, setIsClientOpen] = useState(false);
 
@@ -111,13 +110,8 @@ export default function CrmKanban({ initialDeals = [] }: { initialDeals?: Deal[]
         console.log(`Moved deal ${draggableId} to ${newStage}`);
     };
 
-    const filteredDeals = deals.filter(d =>
-        d.lead_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        d.property_title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
     const getDealsByStage = (stage: string) => {
-        return filteredDeals.filter(d => d.stage === stage);
+        return deals.filter(d => d.stage === stage);
     };
 
     const formatCurrency = (value: number) => {
@@ -129,27 +123,11 @@ export default function CrmKanban({ initialDeals = [] }: { initialDeals?: Deal[]
     return (
         <div className="flex flex-col h-full overflow-hidden">
             {/* Toolbar Superior */}
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8 bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
-                <div className="flex items-center gap-4 w-full md:w-auto">
-                    <div className="relative flex-1 md:w-80">
-                        <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                        <input
-                            type="text"
-                            placeholder="Buscar por cliente ou imóvel..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-xl pl-10 pr-4 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500/20"
-                        />
-                    </div>
-                    <Button variant="outline" className="gap-2">
-                        <Filter className="w-4 h-4" /> Filtros
-                    </Button>
-                </div>
-
-                <div className="text-right hidden lg:block">
-                    <p className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Total em Negociação</p>
+            <div className="flex items-center justify-end mb-6">
+                <div className="text-right">
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Total em Negociação</p>
                     <p className="text-lg font-black text-indigo-600 dark:text-indigo-400">
-                        {formatCurrency(filteredDeals.reduce((acc, curr) => acc + (curr.value || 0), 0))}
+                        {formatCurrency(deals.reduce((acc, curr) => acc + (curr.value || 0), 0))}
                     </p>
                 </div>
             </div>
