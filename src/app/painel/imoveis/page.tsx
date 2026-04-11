@@ -1,10 +1,11 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { Building2, History, LayoutGrid, List, Plus, Search, Target } from "lucide-react";
+import { Building2, LayoutGrid, List, Plus, Target, Globe } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/server";
+import { ImoveisSearchSidebar } from "./ImoveisSearchSidebar";
 
 import { deleteProperty } from "./actions";
 
@@ -23,6 +24,67 @@ const statusMap = {
     rented: { label: "Alugado", classes: "bg-blue-600/95 text-white" },
 } as const;
 
+const PORTAIS = [
+    { name: "ZAP Imóveis", logo: "ZAP", color: "bg-red-500", desc: "Maior portal de imóveis do Brasil", active: false, url: "https://www.zapimoveis.com.br" },
+    { name: "Viva Real", logo: "VR", color: "bg-emerald-500", desc: "Portal focado em compra e locação", active: false, url: "https://www.vivareal.com.br" },
+    { name: "OLX Imóveis", logo: "OLX", color: "bg-amber-500", desc: "Classificados com grande alcance", active: false, url: "https://www.olx.com.br" },
+    { name: "Imovel Web", logo: "IW", color: "bg-blue-600", desc: "Portal com grande volume de buscas", active: false, url: "https://www.imovelweb.com.br" },
+    { name: "GURU", logo: "GURU", color: "bg-purple-600", desc: "Plataforma inteligente de imóveis", active: false, url: "#" },
+    { name: "62 Imóveis", logo: "62", color: "bg-orange-500", desc: "Portal regional de Goiás", active: false, url: "#" },
+    { name: "Imóvel Guide", logo: "IG", color: "bg-cyan-600", desc: "Guia completo de imóveis", active: false, url: "#" },
+    { name: "Lopes", logo: "LP", color: "bg-slate-800", desc: "Rede de imobiliárias premium", active: false, url: "https://www.lopes.com.br" },
+    { name: "Casa Mineira", logo: "CM", color: "bg-green-700", desc: "Portal regional de Minas Gerais", active: false, url: "#" },
+];
+
+function PortaisTab() {
+    return (
+        <div className="space-y-6">
+            <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+                <div className="flex items-start gap-4 mb-6">
+                    <div className="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-xl">
+                        <Globe className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                        <h2 className="text-xl font-bold text-slate-900 dark:text-white">Integração com Portais</h2>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl">
+                            Publique seus imóveis automaticamente nos principais portais imobiliários do Brasil. Configure cada integração e gerencie tudo em um só lugar.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {PORTAIS.map(portal => (
+                        <div key={portal.name} className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl p-4 flex flex-col gap-3">
+                            <div className="flex items-center gap-3">
+                                <div className={`${portal.color} w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-xs flex-shrink-0`}>
+                                    {portal.logo}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="font-bold text-slate-900 dark:text-white text-sm">{portal.name}</h3>
+                                    <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">{portal.desc}</p>
+                                </div>
+                                <span className="flex-shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400">
+                                    Inativo
+                                </span>
+                            </div>
+                            <button className="w-full py-2 border-2 border-dashed border-slate-300 dark:border-slate-600 hover:border-blue-400 dark:hover:border-blue-600 text-slate-500 dark:text-slate-400 hover:text-blue-600 text-xs font-semibold rounded-lg transition-colors">
+                                Configurar integração
+                            </button>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl flex items-start gap-3">
+                    <div className="w-5 h-5 bg-amber-400 rounded-full flex items-center justify-center text-white text-[10px] font-black flex-shrink-0 mt-0.5">!</div>
+                    <p className="text-xs text-amber-800 dark:text-amber-300">
+                        As integrações com portais externos requerem conta ativa em cada portal e a configuração de credenciais de API. Entre em contato com cada portal para obter suas chaves de acesso.
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 function EmptyState({ title, description }: { title: string; description: string }) {
     return (
         <div className="flex flex-col items-center justify-center py-24 text-center bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-200 dark:border-slate-800 border-dashed">
@@ -36,7 +98,7 @@ function EmptyState({ title, description }: { title: string; description: string
 export default async function ImoveisPage({
     searchParams,
 }: {
-    searchParams: Promise<{ tab?: string; view?: string }>;
+    searchParams: Promise<{ tab?: string; view?: string; status?: string; tipo?: string; negocio?: string; precoMin?: string; precoMax?: string; areaMin?: string; areaMax?: string; quartos?: string; bairro?: string; logradouro?: string; ref?: string }>;
 }) {
     const supabase = await createClient();
     const {
@@ -46,13 +108,22 @@ export default async function ImoveisPage({
     const currentTab = sp.tab || "meus_imoveis";
     const viewMode = sp.view === "list" ? "list" : "grid";
 
-    const response = user?.id
-        ? await supabase
-              .from("properties")
-              .select("id, title, slug, status, area, price_sale")
-              .eq("owner_id", user.id)
-              .order("created_at", { ascending: false })
-        : { data: [], error: null };
+    let query = user?.id
+        ? supabase.from("properties").select("id, title, slug, status, area, price_sale").eq("owner_id", user.id)
+        : null;
+
+    if (query) {
+        if (sp.status) query = query.eq("status", sp.status);
+        if (sp.bairro) query = query.ilike("neighborhood", `%${sp.bairro}%`);
+        if (sp.logradouro) query = query.ilike("address", `%${sp.logradouro}%`);
+        if (sp.precoMin) query = query.gte("price_sale", Number(sp.precoMin));
+        if (sp.precoMax) query = query.lte("price_sale", Number(sp.precoMax));
+        if (sp.areaMin) query = query.gte("area", Number(sp.areaMin));
+        if (sp.areaMax) query = query.lte("area", Number(sp.areaMax));
+        query = query.order("created_at", { ascending: false });
+    }
+
+    const response = query ? await query : { data: [], error: null };
 
     if (response.error) console.error(response.error);
     const properties = (response.data || []) as Property[];
@@ -61,37 +132,13 @@ export default async function ImoveisPage({
         { id: "meus_imoveis", label: "Meus imóveis" },
         { id: "marketplace", label: "Marketplace" },
         { id: "radar", label: "Radar Imobiliário", icon: <Target className="w-4 h-4" /> },
+        { id: "portais", label: "Portais", icon: <Globe className="w-4 h-4" /> },
     ];
 
     return (
         <div className="animate-in flex-1 w-full max-w-[1500px]">
             <div className="flex flex-col lg:flex-row gap-8 w-full">
-                <aside className="w-full lg:w-72 shrink-0">
-                    <div className="bg-white dark:bg-[#1e293b] p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm sticky top-24">
-                        <h2 className="font-bold text-slate-900 dark:text-white mb-4 text-sm uppercase tracking-wider">Pesquisa</h2>
-                        <div className="space-y-3">
-                            {["Digite a referência, ou", "Digite o logradouro, ou"].map((placeholder) => (
-                                <div key={placeholder} className="relative">
-                                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                                    <input type="text" placeholder={placeholder} className="w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 dark:bg-[#0f172a] border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium text-slate-900 dark:text-slate-100 placeholder-slate-400" />
-                                </div>
-                            ))}
-                            <select className="w-full px-3 py-2.5 text-sm bg-slate-50 dark:bg-[#0f172a] border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-500 font-medium appearance-none">
-                                <option>Selecione o condomínio, ou</option>
-                            </select>
-                            <button className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm py-3 rounded-lg transition-colors shadow-sm shadow-emerald-500/20 mt-2">
-                                Pesquisar por características
-                            </button>
-                        </div>
-                        <div className="mt-8 border-t border-slate-100 dark:border-slate-800/80 pt-6">
-                            <h3 className="font-bold text-slate-900 dark:text-white mb-4 text-sm flex items-center gap-2"><Search className="w-4 h-4 text-slate-400" /> Últimas pesquisas</h3>
-                            <div className="flex flex-col items-center justify-center py-6 text-slate-400">
-                                <History className="w-6 h-6 mb-2 opacity-50" />
-                                <span className="text-xs font-semibold">Sem histórico</span>
-                            </div>
-                        </div>
-                    </div>
-                </aside>
+                <ImoveisSearchSidebar />
 
                 <section className="flex-1 min-w-0 flex flex-col">
                     <div className="flex flex-wrap gap-2 mb-6 bg-slate-100 dark:bg-slate-900/50 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700/50 overflow-x-auto hide-scrollbar">
@@ -113,7 +160,9 @@ export default async function ImoveisPage({
                         ))}
                     </div>
 
-                    {currentTab === "radar" ? (
+                    {currentTab === "portais" ? (
+                        <PortaisTab />
+                    ) : currentTab === "radar" ? (
                         <div className="bg-white dark:bg-[#1e293b] p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
                             <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
                                 <Target className="w-6 h-6 text-blue-500" />
