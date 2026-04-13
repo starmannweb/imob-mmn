@@ -29,7 +29,7 @@ export function CopyInviteHeaderButton({ inviteLink }: { inviteLink: string }) {
             ) : (
                 <>
                     <Share2 className="w-4 h-4" />
-                    Convidar o corretor para ser seu afiliado
+                    Convidar novo corretor
                 </>
             )}
         </button>

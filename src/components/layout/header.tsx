@@ -1,9 +1,10 @@
 import { signOut } from "@/app/auth/actions";
 import { createClient } from "@/utils/supabase/server";
-import { Bell, User, LogOut, Share2 } from "lucide-react";
+import { Bell, User, LogOut } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "../theme-toggle";
 import { CopyInviteHeaderButton } from "./copy-invite-header-button";
+import { SupportDropdown } from "./support-dropdown";
 
 export default async function Header() {
     const supabase = await createClient();
@@ -17,7 +18,8 @@ export default async function Header() {
         .single() : { data: null };
 
     const referralCode = profile?.referral_code || user?.id;
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.adigitalmultinivel.com.br";
+    const { getSiteUrl } = await import("@/utils/siteUrl");
+    const siteUrl = await getSiteUrl();
     const inviteLink = `${siteUrl}/registrar?ref=${referralCode}`;
 
     return (
@@ -31,7 +33,7 @@ export default async function Header() {
                     </div>
 
                     <div className="flex items-center gap-4">
-                        {/* Notificações e Tema */}
+                        {/* Notificações, Suporte e Tema */}
                         <div className="flex items-center gap-2 border-r border-slate-200 dark:border-slate-700 pr-5 relative">
                             {/* Notificações */}
                             <div className="relative group">
@@ -61,6 +63,7 @@ export default async function Header() {
                                     </div>
                                 </div>
                             </div>
+                            <SupportDropdown />
                             <ThemeToggle />
                         </div>
 

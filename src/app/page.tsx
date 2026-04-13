@@ -22,7 +22,7 @@ export default function LandingPage() {
                         </div>
                         <div>
                             <span className="font-extrabold text-[15px] leading-tight text-slate-900">Imob<span className="text-blue-600">Painel</span></span>
-                            <span className="block text-[10px] text-slate-400 font-medium tracking-wide">Sistema Multinível</span>
+                            <span className="block text-[10px] text-slate-400 font-medium tracking-wide">Plataforma Imobiliária</span>
                         </div>
                     </div>
 
@@ -260,18 +260,18 @@ export default function LandingPage() {
                         <div className="max-w-3xl">
                             <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-4 py-1.5 mb-8">
                                 <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-                                <span className="text-xs font-bold text-white/80 tracking-wide uppercase">Plataforma Multinível para Corretores</span>
+                                <span className="text-xs font-bold text-white/80 tracking-wide uppercase">Plataforma Imobiliária para Corretores</span>
                             </div>
 
                             <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight tracking-tight mb-6">
                                 Seu site imobiliário,<br />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">
-                                    sua rede de afiliados.
+                                    sua rede de corretores.
                                 </span>
                             </h1>
 
                             <p className="text-lg md:text-xl text-white/60 mb-10 leading-relaxed max-w-2xl">
-                                Crie seu site personalizado, gerencie imóveis, capture leads e construa uma rede multinível de corretores — tudo em uma única plataforma.
+                                Crie seu site personalizado, gerencie imóveis, capture leads e construa sua rede de corretores parceiros — tudo em uma única plataforma.
                             </p>
 
                             <div className="flex flex-wrap gap-4">
@@ -333,8 +333,8 @@ export default function LandingPage() {
                                 {
                                     icon: <TrendingUp className="w-6 h-6" />,
                                     color: "emerald",
-                                    title: "Rede Multinível",
-                                    desc: "Sistema de comissões 4% · 2% · 1% em rede. Construa sua equipe e aumente sua renda passiva."
+                                    title: "Rede de Parceiros",
+                                    desc: "Sistema de comissões em rede. Construa sua equipe de corretores parceiros e aumente sua renda."
                                 },
                                 {
                                     icon: <Building2 className="w-6 h-6" />,
@@ -423,7 +423,7 @@ export default function LandingPage() {
                                     price: "R$ 97",
                                     period: "/ mês",
                                     highlight: true,
-                                    features: ["Sites ilimitados", "Imóveis ilimitados", "CRM avançado + Pipeline", "IA para textos", "Rede multinível ativa", "Relatórios completos", "Suporte prioritário"],
+                                    features: ["Sites ilimitados", "Imóveis ilimitados", "CRM avançado + Pipeline", "IA para textos", "Rede de parceiros ativa", "Relatórios completos", "Suporte prioritário"],
                                 },
                                 {
                                     name: "Enterprise",

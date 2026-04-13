@@ -60,7 +60,8 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
         .select("*", { count: "exact", head: true })
         .eq("owner_id", user.id);
 
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.adigitalmultinivel.com.br";
+    const { getSiteUrl } = await import("@/utils/siteUrl");
+    const baseUrl = await getSiteUrl();
     const siteSlug = profile?.referral_code?.toLowerCase() || user.id.substring(0, 8);
     const siteUrl = `${baseUrl}/corretor/${siteSlug}`;
 

@@ -29,7 +29,8 @@ export default async function MeusSitesPage() {
         .eq("owner_id", user.id);
 
     const siteSlug = profile?.referral_code?.toLowerCase() || user.id.substring(0, 8);
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.adigitalmultinivel.com.br";
+    const { getSiteUrl } = await import("@/utils/siteUrl");
+    const baseUrl = await getSiteUrl();
 
     return (
         <div className="flex-1 flex flex-col w-full max-w-6xl pb-12">

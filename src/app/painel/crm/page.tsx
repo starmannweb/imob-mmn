@@ -42,7 +42,7 @@ export default async function CrmPage({ searchParams }: { searchParams: Promise<
         stage: lead.status === 'new' ? 'contact' : lead.status || 'contact',
     }));
 
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.adigitalmultinivel.com.br";
+    const baseUrl = await import("@/utils/siteUrl").then(m => m.getSiteUrl());
     const inviteLink = `${baseUrl}/registrar?ref=${profile?.referral_code || ""}`;
 
     return (
